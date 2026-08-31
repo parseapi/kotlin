@@ -301,6 +301,32 @@ data class Email(
 	val deep: EmailDeep? = null,
 )
 
+@Serializable
+data class VatAddress(
+	val street: String? = null,
+	val city: String? = null,
+	val postal: String? = null,
+	val country: String? = null,
+)
+
+@Serializable
+data class VatDeep(
+	val registered: Boolean? = null,
+	val name: String? = null,
+	val address: VatAddress? = null,
+	val consultation: String? = null,
+	val consulted: String? = null,
+)
+
+@Serializable
+data class Vat(
+	val vat: String? = null,
+	val valid: Boolean,
+	val country: String? = null,
+	val from: String? = null,
+	val deep: VatDeep? = null,
+)
+
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
 class PhoneDeep

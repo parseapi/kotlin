@@ -68,6 +68,13 @@ class UrlMappingTest {
 	}
 
 	@Test
+	fun vatFromDeep() = runBlocking {
+		val stub = StubTransport(200, """{"vat":"DE136695976","valid":true,"country":"DE"}""")
+		client(stub).vat("DE136695976", from = "IE6388047V", deep = true)
+		assertEquals("https://api.parseapi.com/vat/DE136695976?from=IE6388047V&deep=true", stub.requests[0].url)
+	}
+
+	@Test
 	fun phoneEncodesPlus() = runBlocking {
 		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US"}""")
 		client(stub).phone("+14155552671")

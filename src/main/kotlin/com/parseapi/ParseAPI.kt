@@ -191,6 +191,10 @@ class ParseAPI(
 	suspend fun email(email: String, deep: Boolean = false): Email =
 		get("/email/${enc(email)}", deepQuery(deep))
 
+	/** Format and checksum on every call. Deep asks the live EU registry. */
+	suspend fun vat(number: String, country: String? = null, from: String? = null, deep: Boolean = false): Vat =
+		get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
+
 	suspend fun phone(number: String, country: String? = null, deep: Boolean = false): Phone =
 		get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 

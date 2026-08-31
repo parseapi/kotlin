@@ -24,6 +24,7 @@ One method per endpoint, named after the route. Every method is a suspend functi
 parse.ip("8.8.8.8")
 parse.ipSelf()
 parse.email("hello@gmail.com")
+parse.vat("DE136695976")
 parse.phone("+14155552671")
 parse.postal("SW1A 1AA")
 parse.postal("28202", country = "US")
