@@ -332,6 +332,8 @@ data class Iban(
 	val iban: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
+	/** Print form in groups of four, for display. Null when invalid. */
+	val formatted: String? = null,
 	val checksum: String? = null,
 	/** Bank identifier parsed from the number, not a name. */
 	val bank: String? = null,
