@@ -327,6 +327,19 @@ data class Vat(
 	val deep: VatDeep? = null,
 )
 
+@Serializable
+data class Iban(
+	val iban: String? = null,
+	val valid: Boolean,
+	val country: String? = null,
+	val checksum: String? = null,
+	/** Bank identifier parsed from the number, not a name. */
+	val bank: String? = null,
+	/** Branch identifier when that country has one. */
+	val branch: String? = null,
+	val account: String? = null,
+)
+
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
 class PhoneDeep

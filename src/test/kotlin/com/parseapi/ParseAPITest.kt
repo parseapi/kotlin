@@ -75,6 +75,13 @@ class UrlMappingTest {
 	}
 
 	@Test
+	fun ibanCountry() = runBlocking {
+		val stub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"country":"DE","checksum":"89","bank":"37040044","branch":null,"account":"0532013000"}""")
+		client(stub).iban("89370400440532013000", country = "DE")
+		assertEquals("https://api.parseapi.com/iban/89370400440532013000?country=DE", stub.requests[0].url)
+	}
+
+	@Test
 	fun phoneEncodesPlus() = runBlocking {
 		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US"}""")
 		client(stub).phone("+14155552671")

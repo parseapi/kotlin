@@ -195,6 +195,10 @@ class ParseAPI(
 	suspend fun vat(number: String, country: String? = null, from: String? = null, deep: Boolean = false): Vat =
 		get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
 
+	/** Checksum and structure. bank and branch are codes inside the number, not names. */
+	suspend fun iban(iban: String, country: String? = null): Iban =
+		get("/iban/${enc(iban)}", listOf("country" to country))
+
 	suspend fun phone(number: String, country: String? = null, deep: Boolean = false): Phone =
 		get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 

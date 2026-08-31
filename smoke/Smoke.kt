@@ -84,6 +84,10 @@ fun main(): Unit = runBlocking {
 	expectOk("postalDistance", { parse.postalDistance("28202", "10001", country = "US") }) { if (it.distance > 800 && it.distance < 1000) null else "distance ${it.distance}" }
 	expectOk("email", { parse.email("hello@gmail.com") }) { if (it.valid) null else "not valid" }
 	expectOk("vat", { parse.vat("DE136695976") }) { if (it.valid && it.country == "DE") null else "not valid DE" }
+	expectOk("iban", { parse.iban("DE89370400440532013000") }) {
+		if (it.valid && it.country == "DE" && it.bank == "37040044") null else "not valid DE"
+	}
+	expectOk("iban junk", { parse.iban("hello") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("phone", { parse.phone("+14155552671") }) { if (it.phone == "+14155552671") null else "wrong phone" }
 	// Metered core siblings: junk numbers answer 200 valid false, free, no vendor dip.
 	expectOk("carrier junk free", { parse.carrier("555-0100") }) { if (!it.valid) null else "expected invalid" }
