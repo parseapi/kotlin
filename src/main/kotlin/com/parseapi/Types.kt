@@ -371,6 +371,66 @@ data class Npi(
 )
 
 @Serializable
+data class HtsMeasure(
+	/** Chapter 99 heading, dotted (9903.01.24). */
+	val heading: String,
+	/** The measure text verbatim. */
+	val description: String,
+	/** The rate string verbatim. */
+	val rate: String? = null,
+	/** Effective from, ISO YYYY-MM-DD. Null when the schedule states none. */
+	val from: String? = null,
+	/** Expires, ISO YYYY-MM-DD. Null when open-ended. */
+	val until: String? = null,
+)
+
+@Serializable
+data class HtsDeep(
+	/** The origin country the measures were resolved for. */
+	val origin: String? = null,
+	/** Composed ad valorem percent. Null when the components do not compose cleanly. */
+	@SerialName("effective_rate") val effectiveRate: Double? = null,
+	/** Every Chapter 99 tariff measure that applies to this code from this origin. */
+	val measures: List<HtsMeasure>? = null,
+)
+
+@Serializable
+data class Hts(
+	/** Normalized code with dots (8471.30.01.00). */
+	val hts: String,
+	/** The schedule line verbatim. */
+	val description: String,
+	/** Parent descriptions from the schedule outline, outermost first. */
+	val lineage: List<String> = emptyList(),
+	/** Units of quantity (No., kg). */
+	val units: List<String> = emptyList(),
+	/** Column 1 general rate, verbatim. */
+	val general: String? = null,
+	/** Column 1 special rate, verbatim. */
+	val special: String? = null,
+	/** Column 2 rate, verbatim. */
+	val other: String? = null,
+	/** The official release that answered (2026HTSRev17). */
+	val revision: String,
+	val deep: HtsDeep? = null,
+)
+
+@Serializable
+data class HtsSearchHit(
+	val hts: String,
+	val description: String,
+	val general: String? = null,
+)
+
+@Serializable
+data class HtsSearch(
+	val q: String,
+	val revision: String,
+	/** Up to 20 lines, best match first. */
+	val codes: List<HtsSearchHit> = emptyList(),
+)
+
+@Serializable
 data class VinRecall(
 	/** Government campaign number. */
 	val campaign: String,
@@ -385,7 +445,7 @@ data class VinRecall(
 data class VinDeep(
 	/**
 	 * Open recall campaigns for the decoded vehicle. Empty when none,
-	 * null when the registry did not answer.
+	 * null when the recall registry did not answer.
 	 */
 	val recalls: List<VinRecall>? = null,
 )
@@ -642,6 +702,34 @@ data class Name(
 	val suffix: String? = null,
 	val gender: String? = null,
 	val salutation: String? = null,
+)
+
+/** One official OFAC record, verbatim. */
+@Serializable
+data class SanctionsMatch(
+	/** OFAC uid, stable across publications. */
+	val id: Long,
+	/** "sdn" or "consolidated". */
+	val list: String,
+	/** "individual", "entity", "vessel", or "aircraft". */
+	val type: String,
+	/** Listed primary name, verbatim. */
+	val name: String,
+	/** Official sanctions program codes (SDGT, CUBA, IRGC). */
+	val programs: List<String> = emptyList(),
+)
+
+/**
+ * An OFAC screening result. Sanctioned false means not on the list as
+ * published. It is not clearance.
+ */
+@Serializable
+data class Sanctions(
+	/** The name you passed, folded to its match key. */
+	val name: String,
+	val sanctioned: Boolean,
+	/** Official records matched. Empty when sanctioned is false. */
+	val matches: List<SanctionsMatch> = emptyList(),
 )
 
 @Serializable
