@@ -130,14 +130,14 @@ class ParseAPI(
 	suspend fun countryStates(code: String): CountryStates =
 		get("/country/${enc(code)}/states")
 
-	suspend fun state(code: String, country: String): State =
+	suspend fun state(code: String, country: String? = null): State =
 		get("/state/${enc(code)}", listOf("country" to country))
 
-	suspend fun stateDistricts(code: String, country: String): StateDistricts =
+	suspend fun stateDistricts(code: String, country: String? = null): StateDistricts =
 		get("/state/${enc(code)}/districts", listOf("country" to country))
 
-	suspend fun district(code: String, country: String? = null): District =
-		get("/district/${enc(code)}", listOf("country" to country))
+	suspend fun district(code: String, country: String? = null, state: String? = null): District =
+		get("/district/${enc(code)}", listOf("country" to country, "state" to state))
 
 	suspend fun city(name: String, country: String? = null, state: String? = null): City =
 		get("/city/${enc(name)}", listOf("country" to country, "state" to state))
@@ -152,6 +152,25 @@ class ParseAPI(
 	suspend fun cityNearest(lat: Double, lon: Double): CityNearest =
 		get("/city", listOf("lat" to num(lat), "lon" to num(lon)))
 
+	suspend fun cityNearby(
+		name: String,
+		radius: Double? = null,
+		unit: String? = null,
+		country: String? = null,
+		state: String? = null,
+		limit: Int? = null,
+	): CityNearby =
+		get(
+			"/city/${enc(name)}/nearby",
+			listOf(
+				"radius" to radius?.let(::num),
+				"unit" to unit,
+				"country" to country,
+				"state" to state,
+				"limit" to limit?.toString(),
+			),
+		)
+
 	/** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). */
 	suspend fun language(code: String): Language =
 		get("/language/${enc(code)}")
@@ -160,13 +179,13 @@ class ParseAPI(
 	suspend fun name(name: String): Name =
 		get("/name/${enc(name)}")
 
-	suspend fun postal(code: String, country: String): Postal =
+	suspend fun postal(code: String, country: String? = null): Postal =
 		get("/postal/${enc(code)}", listOf("country" to country))
 
-	suspend fun postalNearby(code: String, country: String, radius: Double? = null, unit: String? = null): PostalNearby =
+	suspend fun postalNearby(code: String, country: String? = null, radius: Double? = null, unit: String? = null): PostalNearby =
 		get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit))
 
-	suspend fun postalDistance(from: String, to: String, country: String): PostalDistance =
+	suspend fun postalDistance(from: String, to: String, country: String? = null): PostalDistance =
 		get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country))
 
 	suspend fun email(email: String, deep: Boolean = false): Email =

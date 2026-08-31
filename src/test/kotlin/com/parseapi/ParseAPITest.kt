@@ -117,6 +117,30 @@ class UrlMappingTest {
 	}
 
 	@Test
+	fun stateByNameOmitsCountry() = runBlocking {
+		val stub = StubTransport(200, """{"state":"CO","name":"Colorado","country":"US"}""")
+		client(stub).state("colorado")
+		assertEquals("https://api.parseapi.com/state/colorado", stub.requests[0].url)
+	}
+
+	@Test
+	fun cityNearbyPath() = runBlocking {
+		val stub = StubTransport(
+			200,
+			"""{"city":"Denver","country":"US","radius":8,"unit":"mi","nearby":[]}""",
+		)
+		client(stub).cityNearby("denver", radius = 8.0, unit = "mi", limit = 3)
+		assertEquals("https://api.parseapi.com/city/denver/nearby?radius=8&unit=mi&limit=3", stub.requests[0].url)
+	}
+
+	@Test
+	fun postalBareOmitsCountry() = runBlocking {
+		val stub = StubTransport(200, """{"postal":"SW1A 1AA","country":"GB"}""")
+		client(stub).postal("SW1A 1AA")
+		assertEquals("https://api.parseapi.com/postal/SW1A%201AA", stub.requests[0].url)
+	}
+
+	@Test
 	fun postalDistancePath() = runBlocking {
 		val stub = StubTransport(
 			200,

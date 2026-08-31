@@ -1,5 +1,6 @@
 package com.parseapi
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 // Response types for the parseAPI public API. Shapes are append-only
@@ -110,6 +111,13 @@ data class State(
 	val population: Long? = null,
 	val area: Double? = null,
 	val timezone: String? = null,
+	val timezones: List<String> = emptyList(),
+	@SerialName("iso_3166_2") val iso31662: String? = null,
+	val fips: String? = null,
+	val capital: String? = null,
+	val areaCodes: List<String> = emptyList(),
+	val tax: String? = null,
+	val taxRate: Double? = null,
 )
 
 @Serializable
@@ -142,18 +150,30 @@ data class District(
 	val population: Long? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
+	val seat: String? = null,
+	val timezone: String? = null,
+	val timezones: List<String> = emptyList(),
 )
 
 @Serializable
 data class City(
 	val name: String,
 	val localName: String? = null,
+	val type: String? = null,
+	val capital: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
+	val district: String? = null,
+	val districtName: String? = null,
 	val country: String,
+	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
+	val elevation: Double? = null,
+	val elevationFt: Double? = null,
 	val population: Long? = null,
+	val landArea: Double? = null,
+	val waterArea: Double? = null,
 	val timezone: String? = null,
 	/** Minted parse id (city_ + 12 chars). Stable pin via cityId(). */
 	val id: String,
@@ -164,12 +184,21 @@ data class City(
 data class CityNearest(
 	val name: String,
 	val localName: String? = null,
+	val type: String? = null,
+	val capital: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
+	val district: String? = null,
+	val districtName: String? = null,
 	val country: String,
+	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
+	val elevation: Double? = null,
+	val elevationFt: Double? = null,
 	val population: Long? = null,
+	val landArea: Double? = null,
+	val waterArea: Double? = null,
 	val timezone: String? = null,
 	val id: String,
 	val distance: Double,
@@ -185,6 +214,16 @@ data class CitySearch(
 )
 
 @Serializable
+data class CityNearby(
+	val city: String,
+	val state: String? = null,
+	val country: String,
+	val radius: Double,
+	val unit: String,
+	val nearby: List<CityNearest> = emptyList(),
+)
+
+@Serializable
 data class Postal(
 	val postal: String,
 	val city: String? = null,
@@ -196,11 +235,14 @@ data class Postal(
 	val stateName: String? = null,
 	val stateNameLocal: String? = null,
 	val country: String,
+	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	val landArea: Double? = null,
+	val waterArea: Double? = null,
 	val timezone: String? = null,
 	val currency: String? = null,
 	val neighbors: List<String> = emptyList(),
