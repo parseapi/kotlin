@@ -82,6 +82,14 @@ class UrlMappingTest {
 	}
 
 	@Test
+	fun npi() = runBlocking {
+		val stub = StubTransport(200, """{"npi":"1881018208","valid":true,"registered":true,"type":"organization","name":"Mayo Clinic"}""")
+		val record = client(stub).npi("1881018208")
+		assertEquals("https://api.parseapi.com/npi/1881018208", stub.requests[0].url)
+		assertEquals(true, record.registered)
+	}
+
+	@Test
 	fun phoneEncodesPlus() = runBlocking {
 		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US"}""")
 		client(stub).phone("+14155552671")

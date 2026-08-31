@@ -199,6 +199,10 @@ class ParseAPI(
 	suspend fun iban(iban: String, country: String? = null): Iban =
 		get("/iban/${enc(iban)}", listOf("country" to country))
 
+	/** NPI lookup in the CMS NPPES registry of US healthcare providers. */
+	suspend fun npi(npi: String): Npi =
+		get("/npi/${enc(npi)}")
+
 	suspend fun phone(number: String, country: String? = null, deep: Boolean = false): Phone =
 		get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 

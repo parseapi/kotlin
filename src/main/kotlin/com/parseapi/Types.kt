@@ -343,6 +343,34 @@ data class Iban(
 )
 
 @Serializable
+data class Npi(
+	/** Normalized 10-digit NPI. Invalid input still echoes the fold. */
+	val npi: String? = null,
+	val valid: Boolean,
+	/** Exists in the CMS NPPES registry. */
+	val registered: Boolean? = null,
+	val active: Boolean? = null,
+	/** On the OIG exclusion list. */
+	val excluded: Boolean? = null,
+	/** individual or organization. */
+	val type: String? = null,
+	val name: String? = null,
+	val first: String? = null,
+	val last: String? = null,
+	val credential: String? = null,
+	val specialty: String? = null,
+	/** NUCC taxonomy code. */
+	val taxonomy: String? = null,
+	val address: String? = null,
+	val city: String? = null,
+	val state: String? = null,
+	val stateName: String? = null,
+	val postal: String? = null,
+	val country: String? = null,
+	val phone: String? = null,
+)
+
+@Serializable
 data class VinRecall(
 	/** Government campaign number. */
 	val campaign: String,
