@@ -554,6 +554,8 @@ data class CurrencyRate(
 	val quote: String,
 	val rate: Double,
 	val date: String,
+	val amount: Double? = null,
+	val converted: Double? = null,
 	val source: String? = null,
 )
 

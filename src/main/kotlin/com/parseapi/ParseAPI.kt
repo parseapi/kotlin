@@ -226,9 +226,9 @@ class ParseAPI(
 	suspend fun currency(code: String): Currency =
 		get("/currency/${enc(code)}")
 
-	/** Daily official reference cross rate. */
-	suspend fun currencyRate(base: String, quote: String): CurrencyRate =
-		get("/currency/${enc(base)}/${enc(quote)}")
+	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
+	suspend fun currencyRate(base: String, quote: String, date: String? = null, amount: Double? = null): CurrencyRate =
+		get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
 
 	suspend fun timezone(id: String, at: String? = null): Timezone =
 		get("/timezone/${enc(id)}", listOf("at" to at))
