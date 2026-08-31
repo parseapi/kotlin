@@ -342,6 +342,59 @@ data class Iban(
 	val account: String? = null,
 )
 
+@Serializable
+data class VinRecall(
+	/** Government campaign number. */
+	val campaign: String,
+	/** Report date, ISO YYYY-MM-DD. */
+	val date: String? = null,
+	val component: String? = null,
+	/** The filed summary verbatim. */
+	val summary: String? = null,
+)
+
+@Serializable
+data class VinDeep(
+	/**
+	 * Open recall campaigns for the decoded vehicle. Empty when none,
+	 * null when the registry did not answer.
+	 */
+	val recalls: List<VinRecall>? = null,
+)
+
+@Serializable
+data class Vin(
+	/** Normalized VIN, uppercase, no spaces. Invalid input still echoes the fold. */
+	val vin: String? = null,
+	val valid: Boolean,
+	val year: Int? = null,
+	val make: String? = null,
+	val model: String? = null,
+	val trim: String? = null,
+	val series: String? = null,
+	/** Body style (sedan, coupe, suv, pickup). */
+	val body: String? = null,
+	/** Vehicle type (passenger car, truck, motorcycle, bus, trailer). */
+	val type: String? = null,
+	val doors: Int? = null,
+	val cylinders: Int? = null,
+	/** Engine displacement in liters. */
+	val displacement: Double? = null,
+	val fuel: String? = null,
+	val horsepower: Double? = null,
+	/** fwd, rwd, awd, 4wd. */
+	val drive: String? = null,
+	/** automatic, manual, cvt. */
+	val transmission: String? = null,
+	val manufacturer: String? = null,
+	@SerialName("plant_city") val plantCity: String? = null,
+	@SerialName("plant_state") val plantState: String? = null,
+	@SerialName("plant_country") val plantCountry: String? = null,
+	/** Gross vehicle weight rating class as filed. */
+	val gvwr: String? = null,
+	val deep: VinDeep? = null,
+)
+
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
 class PhoneDeep

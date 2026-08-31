@@ -189,6 +189,16 @@ class HeadersTest {
 		client(stub).useragent("SomeAgent/1.0")
 		assertEquals("SomeAgent/1.0", stub.requests[0].headers["User-Agent"])
 	}
+
+	@Test
+	fun vinDeep() = runBlocking {
+		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","plant_city":"Marysville","deep":{"recalls":[]}}""")
+		val decoded = client(stub).vin("1HGCM82633A004352", deep = true)
+		assertEquals("https://api.parseapi.com/vin/1HGCM82633A004352?deep=true", stub.requests[0].url)
+		assertEquals(2003, decoded.year)
+		assertEquals("Marysville", decoded.plantCity)
+		assertEquals(0, decoded.deep?.recalls?.size)
+	}
 }
 
 class ErrorsTest {

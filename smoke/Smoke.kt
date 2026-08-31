@@ -98,6 +98,8 @@ fun main(): Unit = runBlocking {
 	expectOk("useragent", {
 		parse.useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 	}) { if (it.browser == "Chrome") null else "browser ${it.browser}" }
+	expectOk("vin", { parse.vin("1HGCM82633A004352") }) { if (it.valid && it.make == "Honda" && it.year == 2003) null else "wrong decode" }
+	expectOk("vin junk", { parse.vin("1HGCM82613A004352") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("currency", { parse.currency("USD") }) { if (it.symbol == "$") null else "wrong symbol" }
 	expectOk("currencyRate", { parse.currencyRate("USD", "EUR") }) { if (it.rate > 0 && it.rate < 10) null else "rate ${it.rate}" }
 	expectOk("language", { parse.language("en") }) { if (it.language == "en" && it.name == "English") null else "wrong language" }

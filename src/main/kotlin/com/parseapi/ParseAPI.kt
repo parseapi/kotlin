@@ -227,6 +227,10 @@ class ParseAPI(
 	suspend fun useragent(ua: String, deep: Boolean = false): Useragent =
 		get("/useragent", deepQuery(deep), userAgent = ua)
 
+	/** Decodes a 17-character VIN. Deep adds open recall campaigns on paid plans. */
+	suspend fun vin(vin: String, deep: Boolean = false): Vin =
+		get("/vin/${enc(vin)}", deepQuery(deep))
+
 	suspend fun currency(code: String): Currency =
 		get("/currency/${enc(code)}")
 
