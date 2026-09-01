@@ -704,34 +704,6 @@ data class Name(
 	val salutation: String? = null,
 )
 
-/** One official OFAC record, verbatim. */
-@Serializable
-data class SanctionsMatch(
-	/** OFAC uid, stable across publications. */
-	val id: Long,
-	/** "sdn" or "consolidated". */
-	val list: String,
-	/** "individual", "entity", "vessel", or "aircraft". */
-	val type: String,
-	/** Listed primary name, verbatim. */
-	val name: String,
-	/** Official sanctions program codes (SDGT, CUBA, IRGC). */
-	val programs: List<String> = emptyList(),
-)
-
-/**
- * An OFAC screening result. Sanctioned false means not on the list as
- * published. It is not clearance.
- */
-@Serializable
-data class Sanctions(
-	/** The name you passed, folded to its match key. */
-	val name: String,
-	val sanctioned: Boolean,
-	/** Official records matched. Empty when sanctioned is false. */
-	val matches: List<SanctionsMatch> = emptyList(),
-)
-
 @Serializable
 data class CurrencyRate(
 	val base: String,
