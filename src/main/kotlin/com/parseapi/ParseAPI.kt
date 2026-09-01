@@ -356,7 +356,7 @@ class ParseAPI(
 	}
 
 	companion object {
-		const val VERSION = "0.1.0"
+		const val VERSION = "0.2.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
 		private const val RETRY_AFTER_CAP_MS = 5_000L
 	}
