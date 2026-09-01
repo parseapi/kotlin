@@ -365,6 +365,8 @@ data class Npi(
 	/** Exists in the CMS NPPES registry. */
 	val registered: Boolean? = null,
 	val active: Boolean? = null,
+	/** Date CMS deactivated the NPI, YYYY-MM-DD. Null when still active. */
+	val deactivatedAt: String? = null,
 	/** On the OIG exclusion list. */
 	val excluded: Boolean? = null,
 	/** individual or organization. */
