@@ -108,8 +108,8 @@ fun main(): Unit = runBlocking {
 	expectOk("currencyRate", { parse.currencyRate("USD", "EUR") }) { if (it.rate > 0 && it.rate < 10) null else "rate ${it.rate}" }
 	expectOk("language", { parse.language("en") }) { if (it.language == "en" && it.name == "English") null else "wrong language" }
 	expectOk("name", { parse.name("BILLY O'SHALL") }) { if (it.name == "Billy O'Shall" && it.valid && it.gender == "male") null else "wrong name" }
-	expectOk("sanctions", { parse.sanctions("AEROCARIBBEAN AIRLINES") }) { if (it.sanctioned && it.matches.firstOrNull()?.list == "sdn") null else "expected sdn match" }
-	expectOk("sanctions clean", { parse.sanctions("Jane Smith") }) { if (!it.sanctioned && it.matches.isEmpty()) null else "expected no match" }
+	expectOk("ofac", { parse.ofac("AEROCARIBBEAN AIRLINES") }) { if (it.sanctioned && it.matches.firstOrNull()?.list == "sdn") null else "expected sdn match" }
+	expectOk("ofac clean", { parse.ofac("Jane Smith") }) { if (!it.sanctioned && it.matches.isEmpty()) null else "expected no match" }
 	expectOk("timezone", { parse.timezone("America/New_York") }) { if (it.offsetMinutes == -240 || it.offsetMinutes == -300) null else "offset ${it.offsetMinutes}" }
 	expectOk("timezoneAt", { parse.timezoneAt(40.7128, -74.006) }) { if (it.timezone == "America/New_York") null else "zone ${it.timezone}" }
 	expectOk("holiday", { parse.holiday("US") }) { if (it.holidays.size > 5) null else "too few holidays" }

@@ -183,8 +183,8 @@ class ParseAPI(
 	 * Screen a name against the official OFAC lists. Exact match after
 	 * normalization, never fuzzy. Sanctioned false is not clearance.
 	 */
-	suspend fun sanctions(name: String): Sanctions =
-		get("/sanctions/${enc(name)}")
+	suspend fun ofac(name: String): Sanctions =
+		get("/ofac/${enc(name)}")
 
 	suspend fun postal(code: String, country: String? = null): Postal =
 		get("/postal/${enc(code)}", listOf("country" to country))
