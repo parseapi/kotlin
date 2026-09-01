@@ -199,9 +199,9 @@ class ParseAPI(
 	suspend fun iban(iban: String, country: String? = null): Iban =
 		get("/iban/${enc(iban)}", listOf("country" to country))
 
-	/** NPI lookup in the CMS NPPES registry of US healthcare providers. */
-	suspend fun npi(npi: String): Npi =
-		get("/npi/${enc(npi)}")
+	/** NPI lookup in the CMS NPPES registry of US healthcare providers. Deep adds Medicare enrollment on paid plans. */
+	suspend fun npi(npi: String, deep: Boolean = false): Npi =
+		get("/npi/${enc(npi)}", deepQuery(deep))
 
 	suspend fun phone(number: String, country: String? = null, deep: Boolean = false): Phone =
 		get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))

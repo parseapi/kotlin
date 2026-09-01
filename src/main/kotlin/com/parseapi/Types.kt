@@ -383,6 +383,25 @@ data class Npi(
 	val postal: String? = null,
 	val country: String? = null,
 	val phone: String? = null,
+	val deep: NpiDeep? = null,
+)
+
+@Serializable
+data class NpiEnrollment(
+	/** part_a, part_b, practitioner, dme, order_refer, mdpp. Null when unknown. */
+	val type: String? = null,
+	val specialty: String? = null,
+	val state: String? = null,
+)
+
+@Serializable
+data class NpiDeep(
+	/** In the published Medicare FFS enrollment extract. */
+	val medicare: Boolean? = null,
+	/** On the CMS opt-out affidavit list. Matched by NPI only. */
+	val optOut: Boolean? = null,
+	/** Enrollment rows. Empty when medicare is false. */
+	val enrollments: List<NpiEnrollment>? = null,
 )
 
 @Serializable
