@@ -148,7 +148,11 @@ data class District(
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	val population: Long? = null,
+	/** Total area in km2 (land + water, or the official total). */
+	val area: Double? = null,
+	/** Land area in km2. Null when the source publishes total only. */
 	val landArea: Double? = null,
+	/** Water area in km2. Null when the source publishes total only. */
 	val waterArea: Double? = null,
 	val seat: String? = null,
 	val timezone: String? = null,
@@ -160,7 +164,8 @@ data class City(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
-	val capital: String? = null,
+	/** What this city is the capital of: country, state, or null. */
+	val capitalOf: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val district: String? = null,
@@ -172,7 +177,11 @@ data class City(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	/** Total area in km2 (land + water, or the official total). */
+	val area: Double? = null,
+	/** Land area in km2. Null when the source publishes total only. */
 	val landArea: Double? = null,
+	/** Water area in km2. Null when the source publishes total only. */
 	val waterArea: Double? = null,
 	val timezone: String? = null,
 	/** Minted parse id (city_ + 12 chars). Stable pin via cityId(). */
@@ -185,7 +194,7 @@ data class CityNearest(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
-	val capital: String? = null,
+	val capitalOf: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val district: String? = null,
@@ -197,6 +206,7 @@ data class CityNearest(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
 	val timezone: String? = null,
@@ -241,7 +251,11 @@ data class Postal(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	/** Total area in km2. Null when the source has no water split. */
+	val area: Double? = null,
+	/** Land area in km2, where the source has it. */
 	val landArea: Double? = null,
+	/** Water area in km2, where the source has it. */
 	val waterArea: Double? = null,
 	val timezone: String? = null,
 	val currency: String? = null,
@@ -315,7 +329,8 @@ data class VatDeep(
 	val name: String? = null,
 	val address: VatAddress? = null,
 	val consultation: String? = null,
-	val consulted: String? = null,
+	/** Registry timestamp of this check, ISO. */
+	val consultedAt: String? = null,
 )
 
 @Serializable
@@ -427,7 +442,7 @@ data class HtsSearch(
 	val q: String,
 	val revision: String,
 	/** Up to 20 lines, best match first. */
-	val codes: List<HtsSearchHit> = emptyList(),
+	val lines: List<HtsSearchHit> = emptyList(),
 )
 
 @Serializable
@@ -491,15 +506,15 @@ class PhoneDeep
 data class Phone(
 	val phone: String? = null,
 	val valid: Boolean,
+	val country: String? = null,
 	/**
 	 * What the numbering plan can see: mobile, landline, toll_free, unknown.
-	 * Never voip (that is the carrier field's word). Present when valid.
+	 * Never voip (that is the carrier field's word). Null when invalid.
 	 */
 	val type: String? = null,
-	/** NPA-derived state code (US/CA). Present when valid. */
+	/** NPA-derived state code (US/CA). */
 	val state: String? = null,
 	val stateName: String? = null,
-	val country: String? = null,
 	val national: String? = null,
 	val international: String? = null,
 	val deep: PhoneDeep? = null,
@@ -510,7 +525,7 @@ data class Carrier(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
-	/** The network's word, including voip. Present when valid. */
+	/** The network's word, including voip. Null when invalid. */
 	val type: String? = null,
 	/** Current carrier display name. Null when the probe had no answer. */
 	val carrier: String? = null,
@@ -528,8 +543,8 @@ data class Caller(
 	val valid: Boolean,
 	val country: String? = null,
 	/**
-	 * CNAM record verbatim (all-caps telco artifact). Null when no record
-	 * or outside NANP. Present when valid.
+	 * CNAM record verbatim (all-caps telco artifact). Null when no record,
+	 * outside NANP, or invalid.
 	 */
 	val caller: String? = null,
 )
@@ -539,7 +554,7 @@ data class Hlr(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
-	/** Assigned to a subscriber. Present when valid. */
+	/** Assigned to a subscriber. Null when invalid. */
 	val live: Boolean? = null,
 	/** Handset reachable right now. Null means unconfirmed, never no. */
 	val connected: Boolean? = null,
