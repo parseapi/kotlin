@@ -352,6 +352,10 @@ data class Iban(
 	val checksum: String? = null,
 	/** Bank identifier parsed from the number, not a name. */
 	val bank: String? = null,
+	/** Institution name from the national bank-code directory. Null when unsourced. */
+	val bankName: String? = null,
+	/** BIC from that same directory. Null when unsourced or missing. */
+	val bic: String? = null,
 	/** Branch identifier when that country has one. */
 	val branch: String? = null,
 	val account: String? = null,
