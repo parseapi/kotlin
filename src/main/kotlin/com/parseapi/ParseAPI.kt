@@ -236,15 +236,15 @@ class ParseAPI(
 		get("/vin/${enc(vin)}", deepQuery(deep))
 
 	/**
-	 * Looks up a US Harmonized Tariff Schedule code. Deep with an origin
+	 * Looks up US import duty for an HTS code. Deep with an origin
 	 * resolves the Chapter 99 tariff measures that apply from that country.
 	 */
-	suspend fun hts(code: String, deep: Boolean = false, origin: String? = null): Hts =
-		get("/hts/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
+	suspend fun tariff(code: String, deep: Boolean = false, origin: String? = null): Hts =
+		get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
 
 	/** Searches tariff schedule descriptions by product. */
-	suspend fun htsSearch(q: String): HtsSearch =
-		get("/hts", listOf("q" to q))
+	suspend fun tariffSearch(q: String): HtsSearch =
+		get("/tariff", listOf("q" to q))
 
 	suspend fun currency(code: String): Currency =
 		get("/currency/${enc(code)}")
