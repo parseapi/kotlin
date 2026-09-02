@@ -536,6 +536,8 @@ data class Phone(
 	/** NPA-derived state code (US/CA). */
 	val state: String? = null,
 	val stateName: String? = null,
+	/** Numbering-plan IANA zone. Null when the prefix covers more than one zone. */
+	val timezone: String? = null,
 	val national: String? = null,
 	val international: String? = null,
 	val deep: PhoneDeep? = null,
