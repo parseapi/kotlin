@@ -16,8 +16,7 @@ class StubTransport(
 
 	constructor(status: Int, body: String) : this(mutableListOf(ParseAPIResponse(status, body, emptyMap())))
 
-	@Synchronized
-	override fun execute(request: ParseAPIRequest): ParseAPIResponse {
+	override suspend fun execute(request: ParseAPIRequest): ParseAPIResponse {
 		requests.add(request)
 		return if (responses.size > 1) responses.removeFirst() else responses[0]
 	}
@@ -27,13 +26,7 @@ private fun client(
 	stub: StubTransport,
 	appId: String? = null,
 	retries: Int = 0,
-): ParseAPI = ParseAPI(
-	key = "parse_testtesttesttest",
-	appId = appId,
-	baseUrl = "https://api.parseapi.com",
-	retries = retries,
-	transport = stub,
-)
+): ParseAPI = ParseAPI("parse_testtesttesttest") { this.appId = appId; this.baseUrl = "https://api.parseapi.com"; this.retries = retries; this.transport = stub }
 
 private const val IP_BODY = """{"ip":"8.8.8.8","country":null,"country_name":null,"continent":null,"asn":null,"asn_name":null}"""
 private const val DOMAIN_BODY = """{"domain":"x.com","available":false}"""
@@ -70,21 +63,21 @@ class UrlMappingTest {
 	@Test
 	fun vatFromDeep() = runBlocking {
 		val stub = StubTransport(200, """{"vat":"DE136695976","valid":true,"country":"DE"}""")
-		client(stub).vat("DE136695976", from = "IE6388047V", deep = true)
+		client(stub).vat("DE136695976") { this.from = "IE6388047V"; this.deep = true }
 		assertEquals("https://api.parseapi.com/vat/DE136695976?from=IE6388047V&deep=true", stub.requests[0].url)
 	}
 
 	@Test
 	fun ibanCountry() = runBlocking {
 		val stub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"country":"DE","checksum":"89","bank":"37040044","branch":null,"account":"0532013000"}""")
-		client(stub).iban("89370400440532013000", country = "DE")
+		client(stub).iban("89370400440532013000") { this.country = "DE" }
 		assertEquals("https://api.parseapi.com/iban/89370400440532013000?country=DE", stub.requests[0].url)
 	}
 
 	@Test
 	fun vinDeep() = runBlocking {
 		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","plant_city":"Marysville","deep":{"recalls":[]}}""")
-		val decoded = client(stub).vin("1HGCM82633A004352", deep = true)
+		val decoded = client(stub).vin("1HGCM82633A004352") { this.deep = true }
 		assertEquals("https://api.parseapi.com/vin/1HGCM82633A004352?deep=true", stub.requests[0].url)
 		assertEquals(2003, decoded.year)
 		assertEquals("Marysville", decoded.plantCity)
@@ -109,14 +102,14 @@ class UrlMappingTest {
 	@Test
 	fun stateSendsCountry() = runBlocking {
 		val stub = StubTransport(200, """{"state":"NC","name":"North Carolina","country":"US"}""")
-		client(stub).state("NC", country = "US")
+		client(stub).state("NC") { this.country = "US" }
 		assertEquals("https://api.parseapi.com/state/NC?country=US", stub.requests[0].url)
 	}
 
 	@Test
 	fun citySearchQuery() = runBlocking {
 		val stub = StubTransport(200, """{"q":"char","cities":[]}""")
-		client(stub).citySearch("char", country = "US", limit = 5)
+		client(stub).citySearch(query = "char") { this.country = "US"; this.limit = 5 }
 		assertEquals("https://api.parseapi.com/city?q=char&country=US&limit=5", stub.requests[0].url)
 	}
 
@@ -130,14 +123,14 @@ class UrlMappingTest {
 	@Test
 	fun pointCoordsAndDeep() = runBlocking {
 		val stub = StubTransport(200, """{"latitude":36.07,"longitude":-79.79,"deep":{}}""")
-		client(stub).point(36.07, -79.79, deep = true)
+		client(stub).point(36.07, -79.79) { this.deep = true }
 		assertEquals("https://api.parseapi.com/point?lat=36.07&lon=-79.79&deep=true", stub.requests[0].url)
 	}
 
 	@Test
 	fun deepOmittedWhenFalse() = runBlocking {
 		val stub = StubTransport(200, IP_BODY)
-		client(stub).ip("8.8.8.8", deep = false)
+		client(stub).ip("8.8.8.8") { this.deep = false }
 		assertEquals("https://api.parseapi.com/ip/8.8.8.8", stub.requests[0].url)
 	}
 
@@ -161,7 +154,7 @@ class UrlMappingTest {
 			200,
 			"""{"city":"Denver","country":"US","radius":8,"unit":"mi","nearby":[]}""",
 		)
-		client(stub).cityNearby("denver", radius = 8.0, unit = "mi", limit = 3)
+		client(stub).cityNearby("denver") { this.radius = 8.0; this.unit = "mi"; this.limit = 3 }
 		assertEquals("https://api.parseapi.com/city/denver/nearby?radius=8&unit=mi&limit=3", stub.requests[0].url)
 	}
 
@@ -178,7 +171,7 @@ class UrlMappingTest {
 			200,
 			"""{"country":"US","from":{"postal":"28202"},"to":{"postal":"10001"},"distance":1,"distance_mi":1}""",
 		)
-		client(stub).postalDistance("28202", "10001", country = "US")
+		client(stub).postalDistance("28202", "10001") { this.country = "US" }
 		assertEquals("https://api.parseapi.com/postal/28202/distance/10001?country=US", stub.requests[0].url)
 	}
 }
@@ -297,7 +290,7 @@ class RetriesTest {
 			if (calls == 1) throw java.io.IOException("connection reset")
 			ParseAPIResponse(200, DOMAIN_BODY, emptyMap())
 		}
-		val parse = ParseAPI("parse_testtesttesttest", baseUrl = "https://api.parseapi.com", retries = 2, transport = transport)
+		val parse = ParseAPI("parse_testtesttesttest") { this.baseUrl = "https://api.parseapi.com"; this.retries = 2; this.transport = transport }
 		val result = parse.domain("x.com")
 		assertFalse(result.available)
 		assertEquals(2, calls)
@@ -311,7 +304,7 @@ class DecodingTest {
 			200,
 			"""{"ip":"8.8.8.8","country":"US","country_name":"United States","continent":"NA","asn":"AS15169","asn_name":"Google","deep":{"state":"CA","datacenter":true}}""",
 		)
-		val result = client(stub).ip("8.8.8.8", deep = true)
+		val result = client(stub).ip("8.8.8.8") { this.deep = true }
 		assertEquals("United States", result.countryName)
 		assertEquals("Google", result.asnName)
 		assertEquals("CA", result.deep?.state)
@@ -322,7 +315,7 @@ class DecodingTest {
 	@Test
 	fun deepTriad() = runBlocking {
 		val locked = StubTransport(200, """{"ip":"8.8.8.8","deep":{}}""")
-		val lockedResult = client(locked).ip("8.8.8.8", deep = true)
+		val lockedResult = client(locked).ip("8.8.8.8") { this.deep = true }
 		assertNotNull(lockedResult.deep)
 		assertNull(lockedResult.deep?.datacenter)
 
@@ -365,7 +358,7 @@ class DecodingTest {
 	@Test
 	fun emptyPhoneDeepDecodes() = runBlocking {
 		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US","deep":{}}""")
-		val result = client(stub).phone("+14155552671", deep = true)
+		val result = client(stub).phone("+14155552671") { this.deep = true }
 		assertNotNull(result.deep)
 		assertTrue(result.valid)
 	}

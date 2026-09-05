@@ -1,0 +1,2 @@
+# The compiler API dump ends each declaration block with a blank line.
+api/*.api whitespace=-blank-at-eof

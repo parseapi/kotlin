@@ -3,10 +3,11 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
 	kotlin("jvm") version "2.1.20"
 	kotlin("plugin.serialization") version "2.1.20"
+	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
 }
 
 group = "com.parseapi"
-version = "0.2.1"
+version = "0.3.0"
 
 repositories {
 	mavenCentral()
@@ -14,7 +15,7 @@ repositories {
 
 dependencies {
 	api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
-	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+	api("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
 	testImplementation(kotlin("test"))
 }
 

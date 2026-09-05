@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 // JSON keys are snake_case and map via the SnakeCase naming strategy.
 
 @Serializable
-data class IpDeep(
+class IpDeep private constructor(
 	val state: String? = null,
 	val city: String? = null,
 	val registry: String? = null,
@@ -23,7 +23,7 @@ data class IpDeep(
 )
 
 @Serializable
-data class Ip(
+class Ip private constructor(
 	val ip: String,
 	val country: String? = null,
 	val countryName: String? = null,
@@ -34,7 +34,7 @@ data class Ip(
 )
 
 @Serializable
-data class Continent(
+class Continent private constructor(
 	val continent: String,
 	val name: String,
 	val region: String,
@@ -45,7 +45,7 @@ data class Continent(
 )
 
 @Serializable
-data class ContinentCountryItem(
+class ContinentCountryItem private constructor(
 	val country: String,
 	val name: String,
 	val emoji: String? = null,
@@ -53,13 +53,13 @@ data class ContinentCountryItem(
 )
 
 @Serializable
-data class ContinentCountries(
+class ContinentCountries private constructor(
 	val continent: String,
-	val countries: List<ContinentCountryItem>,
+	val countries: List<ContinentCountryItem> = emptyList(),
 )
 
 @Serializable
-data class Country(
+class Country private constructor(
 	val country: String,
 	val iso3: String,
 	val numeric: Int,
@@ -83,23 +83,45 @@ data class Country(
 	val emoji: String? = null,
 	val languages: List<String> = emptyList(),
 	val borders: List<String> = emptyList(),
+	val blocs: List<String> = emptyList(),
 )
 
 @Serializable
-data class CountryStateItem(
+class CountryStateItem private constructor(
 	val state: String,
 	val name: String,
 	val type: String? = null,
 )
 
 @Serializable
-data class CountryStates(
-	val country: String,
-	val states: List<CountryStateItem>,
+class Bloc private constructor(
+	val bloc: String,
+	val name: String,
+	val members: Int,
 )
 
 @Serializable
-data class State(
+class BlocCountryItem private constructor(
+	val country: String,
+	val name: String,
+	val emoji: String? = null,
+	val callingCode: String? = null,
+)
+
+@Serializable
+class BlocCountries private constructor(
+	val bloc: String,
+	val countries: List<BlocCountryItem> = emptyList(),
+)
+
+@Serializable
+class CountryStates private constructor(
+	val country: String,
+	val states: List<CountryStateItem> = emptyList(),
+)
+
+@Serializable
+class State private constructor(
 	val state: String,
 	val name: String,
 	val localName: String? = null,
@@ -121,23 +143,23 @@ data class State(
 )
 
 @Serializable
-data class StateDistrictItem(
+class StateDistrictItem private constructor(
 	val district: String,
 	val name: String,
 	val type: String? = null,
 )
 
 @Serializable
-data class StateDistricts(
+class StateDistricts private constructor(
 	val state: String,
 	val stateName: String? = null,
 	val country: String,
 	val countryName: String? = null,
-	val districts: List<StateDistrictItem>,
+	val districts: List<StateDistrictItem> = emptyList(),
 )
 
 @Serializable
-data class District(
+class District private constructor(
 	val district: String,
 	val name: String,
 	val type: String? = null,
@@ -160,7 +182,7 @@ data class District(
 )
 
 @Serializable
-data class City(
+class City private constructor(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
@@ -190,7 +212,7 @@ data class City(
 
 /** Nearest-city lookups add the distance from the query point. */
 @Serializable
-data class CityNearest(
+class CityNearest private constructor(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
@@ -216,15 +238,15 @@ data class CityNearest(
 )
 
 @Serializable
-data class CitySearch(
+class CitySearch private constructor(
 	val q: String,
 	val country: String? = null,
 	val state: String? = null,
-	val cities: List<City>,
+	val cities: List<City> = emptyList(),
 )
 
 @Serializable
-data class CityNearby(
+class CityNearby private constructor(
 	val city: String,
 	val state: String? = null,
 	val country: String,
@@ -234,7 +256,7 @@ data class CityNearby(
 )
 
 @Serializable
-data class Postal(
+class Postal private constructor(
 	val postal: String,
 	val city: String? = null,
 	val cityLocal: String? = null,
@@ -263,7 +285,7 @@ data class Postal(
 )
 
 @Serializable
-data class PostalNearbyItem(
+class PostalNearbyItem private constructor(
 	val postal: String,
 	val city: String? = null,
 	val state: String? = null,
@@ -273,22 +295,22 @@ data class PostalNearbyItem(
 )
 
 @Serializable
-data class PostalNearby(
+class PostalNearby private constructor(
 	val postal: String,
 	val country: String,
 	val radius: Double,
 	val unit: String,
-	val nearby: List<PostalNearbyItem>,
+	val nearby: List<PostalNearbyItem> = emptyList(),
 )
 
 @Serializable
-data class PostalDistanceEnd(
+class PostalDistanceEnd private constructor(
 	val postal: String,
 	val city: String? = null,
 )
 
 @Serializable
-data class PostalDistance(
+class PostalDistance private constructor(
 	val country: String,
 	val from: PostalDistanceEnd,
 	val to: PostalDistanceEnd,
@@ -297,13 +319,13 @@ data class PostalDistance(
 )
 
 @Serializable
-data class EmailDeep(
+class EmailDeep private constructor(
 	val deliverable: Boolean? = null,
 	val catchall: Boolean? = null,
 )
 
 @Serializable
-data class Email(
+class Email private constructor(
 	val email: String,
 	/** Suggested full address when the host is a known misspelling. Never a guess. */
 	val didyoumean: String? = null,
@@ -316,7 +338,7 @@ data class Email(
 )
 
 @Serializable
-data class VatAddress(
+class VatAddress private constructor(
 	val street: String? = null,
 	val city: String? = null,
 	val postal: String? = null,
@@ -324,7 +346,7 @@ data class VatAddress(
 )
 
 @Serializable
-data class VatDeep(
+class VatDeep private constructor(
 	val registered: Boolean? = null,
 	val name: String? = null,
 	val address: VatAddress? = null,
@@ -334,7 +356,7 @@ data class VatDeep(
 )
 
 @Serializable
-data class Vat(
+class Vat private constructor(
 	val vat: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -343,7 +365,7 @@ data class Vat(
 )
 
 @Serializable
-data class Iban(
+class Iban private constructor(
 	val iban: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -362,7 +384,7 @@ data class Iban(
 )
 
 @Serializable
-data class Npi(
+class Npi private constructor(
 	/** Normalized 10-digit NPI. Invalid input still echoes the fold. */
 	val npi: String? = null,
 	val valid: Boolean,
@@ -393,7 +415,7 @@ data class Npi(
 )
 
 @Serializable
-data class NpiEnrollment(
+class NpiEnrollment private constructor(
 	/** part_a, part_b, practitioner, dme, order_refer, mdpp. Null when unknown. */
 	val type: String? = null,
 	val specialty: String? = null,
@@ -401,7 +423,7 @@ data class NpiEnrollment(
 )
 
 @Serializable
-data class NpiDeep(
+class NpiDeep private constructor(
 	/** In the published Medicare FFS enrollment extract. */
 	val medicare: Boolean? = null,
 	/** On the CMS opt-out affidavit list. Matched by NPI only. */
@@ -411,7 +433,7 @@ data class NpiDeep(
 )
 
 @Serializable
-data class HtsMeasure(
+class TariffMeasure private constructor(
 	/** Chapter 99 heading, dotted (9903.01.24). */
 	val heading: String,
 	/** The measure text verbatim. */
@@ -425,17 +447,17 @@ data class HtsMeasure(
 )
 
 @Serializable
-data class HtsDeep(
+class TariffDeep private constructor(
 	/** The origin country the measures were resolved for. */
 	val origin: String? = null,
 	/** Composed ad valorem percent. Null when the components do not compose cleanly. */
 	@SerialName("effective_rate") val effectiveRate: Double? = null,
 	/** Every Chapter 99 tariff measure that applies to this code from this origin. */
-	val measures: List<HtsMeasure>? = null,
+	val measures: List<TariffMeasure>? = null,
 )
 
 @Serializable
-data class Hts(
+class Tariff private constructor(
 	/** Normalized code with dots (8471.30.01.00). */
 	val hts: String,
 	/** The schedule line verbatim. */
@@ -452,26 +474,26 @@ data class Hts(
 	val other: String? = null,
 	/** The official release that answered (2026HTSRev17). */
 	val revision: String,
-	val deep: HtsDeep? = null,
+	val deep: TariffDeep? = null,
 )
 
 @Serializable
-data class HtsSearchHit(
+class TariffSearchHit private constructor(
 	val hts: String,
 	val description: String,
 	val general: String? = null,
 )
 
 @Serializable
-data class HtsSearch(
+class TariffSearch private constructor(
 	val q: String,
 	val revision: String,
 	/** Up to 20 lines, best match first. */
-	val lines: List<HtsSearchHit> = emptyList(),
+	val lines: List<TariffSearchHit> = emptyList(),
 )
 
 @Serializable
-data class VinRecall(
+class VinRecall private constructor(
 	/** Government campaign number. */
 	val campaign: String,
 	/** Report date, ISO YYYY-MM-DD. */
@@ -482,7 +504,7 @@ data class VinRecall(
 )
 
 @Serializable
-data class VinDeep(
+class VinDeep private constructor(
 	/**
 	 * Open recall campaigns for the decoded vehicle. Empty when none,
 	 * null when the recall registry did not answer.
@@ -491,7 +513,7 @@ data class VinDeep(
 )
 
 @Serializable
-data class Vin(
+class Vin private constructor(
 	/** Normalized VIN, uppercase, no spaces. Invalid input still echoes the fold. */
 	val vin: String? = null,
 	val valid: Boolean,
@@ -525,10 +547,10 @@ data class Vin(
 
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
-class PhoneDeep
+class PhoneDeep private constructor()
 
 @Serializable
-data class Phone(
+class Phone private constructor(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -548,7 +570,7 @@ data class Phone(
 )
 
 @Serializable
-data class Carrier(
+class Carrier private constructor(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -565,7 +587,7 @@ data class Carrier(
 )
 
 @Serializable
-data class Caller(
+class Caller private constructor(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -577,7 +599,7 @@ data class Caller(
 )
 
 @Serializable
-data class Hlr(
+class Hlr private constructor(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
@@ -598,13 +620,13 @@ data class Hlr(
 )
 
 @Serializable
-data class MxRecord(
+class MxRecord private constructor(
 	val priority: Int,
 	val host: String,
 )
 
 @Serializable
-data class DomainRegistration(
+class DomainRegistration private constructor(
 	val registered: Boolean? = null,
 	val created: String? = null,
 	val updated: String? = null,
@@ -615,7 +637,7 @@ data class DomainRegistration(
 )
 
 @Serializable
-data class DomainDeep(
+class DomainDeep private constructor(
 	val a: List<String>? = null,
 	val aaaa: List<String>? = null,
 	val ns: List<String>? = null,
@@ -627,20 +649,37 @@ data class DomainDeep(
 )
 
 @Serializable
-data class Domain(
+class Domain private constructor(
 	val domain: String,
 	val available: Boolean,
 	val deep: DomainDeep? = null,
 )
 
 @Serializable
-data class Mx(
-	val domain: String,
-	val mx: List<MxRecord>,
+class Asn private constructor(
+	val asn: Long,
+	val name: String? = null,
+	val country: String? = null,
+	val countryName: String? = null,
 )
 
 @Serializable
-data class UseragentDeviceDeep(
+class Mac private constructor(
+	val mac: String,
+	val valid: Boolean,
+	val vendor: String? = null,
+	val local: Boolean? = null,
+	val multicast: Boolean? = null,
+)
+
+@Serializable
+class Mx private constructor(
+	val domain: String,
+	val mx: List<MxRecord> = emptyList(),
+)
+
+@Serializable
+class UseragentDeviceDeep private constructor(
 	val type: String? = null,
 	val brand: String? = null,
 	val model: String? = null,
@@ -649,20 +688,20 @@ data class UseragentDeviceDeep(
 )
 
 @Serializable
-data class UseragentOsDeep(
+class UseragentOsDeep private constructor(
 	val name: String? = null,
 	val version: String? = null,
 	val platform: String? = null,
 )
 
 @Serializable
-data class UseragentBrowserBrand(
+class UseragentBrowserBrand private constructor(
 	val brand: String,
 	val version: String,
 )
 
 @Serializable
-data class UseragentBrowserDeep(
+class UseragentBrowserDeep private constructor(
 	val name: String? = null,
 	val version: String? = null,
 	val type: String? = null,
@@ -670,13 +709,13 @@ data class UseragentBrowserDeep(
 )
 
 @Serializable
-data class UseragentEngineDeep(
+class UseragentEngineDeep private constructor(
 	val name: String? = null,
 	val version: String? = null,
 )
 
 @Serializable
-data class UseragentBot(
+class UseragentBot private constructor(
 	val name: String? = null,
 	val category: String? = null,
 	val vendor: String? = null,
@@ -684,7 +723,7 @@ data class UseragentBot(
 )
 
 @Serializable
-data class UseragentDeep(
+class UseragentDeep private constructor(
 	val device: UseragentDeviceDeep? = null,
 	val os: UseragentOsDeep? = null,
 	val browser: UseragentBrowserDeep? = null,
@@ -695,7 +734,7 @@ data class UseragentDeep(
 )
 
 @Serializable
-data class Useragent(
+class Useragent private constructor(
 	val useragent: String,
 	val device: String? = null,
 	val os: String? = null,
@@ -706,7 +745,7 @@ data class Useragent(
 )
 
 @Serializable
-data class Currency(
+class Currency private constructor(
 	val currency: String,
 	val numeric: Int? = null,
 	val name: String,
@@ -719,7 +758,7 @@ data class Currency(
 
 /** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). Codes are lowercase. */
 @Serializable
-data class Language(
+class Language private constructor(
 	val language: String,
 	val iso3: String? = null,
 	val name: String,
@@ -734,7 +773,7 @@ data class Language(
  * Gender comes from dictionary data and is null when the data does not decide.
  */
 @Serializable
-data class Name(
+class Name private constructor(
 	val name: String,
 	val valid: Boolean,
 	val prefix: String? = null,
@@ -747,7 +786,7 @@ data class Name(
 )
 
 @Serializable
-data class CurrencyRate(
+class CurrencyRate private constructor(
 	val base: String,
 	val quote: String,
 	val rate: Double,
@@ -758,7 +797,7 @@ data class CurrencyRate(
 )
 
 @Serializable
-data class TimezoneNextDst(
+class TimezoneNextDst private constructor(
 	val at: String,
 	val dst: Boolean,
 	val offset: String,
@@ -766,7 +805,7 @@ data class TimezoneNextDst(
 )
 
 @Serializable
-data class Timezone(
+class Timezone private constructor(
 	/** Echoed on coordinate lookups only. */
 	val latitude: Double? = null,
 	val longitude: Double? = null,
@@ -777,10 +816,36 @@ data class Timezone(
 	val offsetMinutes: Int? = null,
 	val dst: Boolean? = null,
 	val nextDst: TimezoneNextDst? = null,
+	val at: String? = null,
+	val to: TimezoneConversionTarget? = null,
+)
+
+/** Calendar facts. Invalid or ambiguous input has valid false and null calendar fields. */
+@Serializable
+class DateInfo private constructor(
+	val date: String,
+	val valid: Boolean,
+	val year: Int? = null,
+	val month: Int? = null,
+	val monthName: String? = null,
+	val day: Int? = null,
+	/** ISO weekday, Monday 1 through Sunday 7. */
+	val weekday: Int? = null,
+	val weekdayName: String? = null,
+	val week: Int? = null,
+	val weekYear: Int? = null,
+	val dayOfYear: Int? = null,
+	val quarter: Int? = null,
+	val leap: Boolean? = null,
+	val daysInMonth: Int? = null,
+	/** Unix time at midnight UTC, in seconds. */
+	val unix: Long? = null,
+	val to: String? = null,
+	val days: Int? = null,
 )
 
 @Serializable
-data class Holiday(
+class Holiday private constructor(
 	val date: String,
 	val name: String,
 	val localName: String? = null,
@@ -791,21 +856,21 @@ data class Holiday(
 )
 
 @Serializable
-data class HolidayYear(
+class HolidayYear private constructor(
 	val country: String,
 	val year: Int,
-	val holidays: List<Holiday>,
+	val holidays: List<Holiday> = emptyList(),
 )
 
 @Serializable
-data class HolidayDate(
+class HolidayDate private constructor(
 	val country: String,
 	val date: String,
 	val holiday: Holiday? = null,
 )
 
 @Serializable
-data class Elevation(
+class Elevation private constructor(
 	val latitude: Double,
 	val longitude: Double,
 	val elevation: Double? = null,
@@ -814,13 +879,13 @@ data class Elevation(
 )
 
 @Serializable
-data class PointDeep(
+class PointDeep private constructor(
 	val city: CityNearest? = null,
 	val timezone: Timezone? = null,
 )
 
 @Serializable
-data class Point(
+class Point private constructor(
 	val latitude: Double,
 	val longitude: Double,
 	val country: String? = null,
@@ -836,7 +901,7 @@ data class Point(
 )
 
 @Serializable
-data class WeatherForecastPeriod(
+class WeatherForecastPeriod private constructor(
 	val name: String,
 	val start: String? = null,
 	val end: String? = null,
@@ -853,7 +918,7 @@ data class WeatherForecastPeriod(
 )
 
 @Serializable
-data class WeatherAlert(
+class WeatherAlert private constructor(
 	val event: String,
 	val severity: String? = null,
 	val urgency: String? = null,
@@ -863,7 +928,7 @@ data class WeatherAlert(
 )
 
 @Serializable
-data class WeatherHour(
+class WeatherHour private constructor(
 	val at: String? = null,
 	val daytime: Boolean? = null,
 	val temperature: Double? = null,
@@ -876,17 +941,25 @@ data class WeatherHour(
 	val condition: String? = null,
 	val conditionName: String? = null,
 	val conditionEmoji: String? = null,
+	val feelsLike: Double? = null,
+	val feelsLikeF: Double? = null,
+	val windGust: Double? = null,
+	val windGustMph: Double? = null,
 )
 
 @Serializable
-data class WeatherDeep(
+class WeatherDeep private constructor(
 	val forecast: List<WeatherForecastPeriod>? = null,
 	val alerts: List<WeatherAlert>? = null,
 	val hours: List<WeatherHour>? = null,
+	val minutes: List<WeatherMinute>? = null,
+	val days: List<WeatherDay>? = null,
+	val air: WeatherAir? = null,
+	val history: WeatherHistory? = null,
 )
 
 @Serializable
-data class WeatherCurrent(
+class WeatherCurrent private constructor(
 	val temperature: Double? = null,
 	val temperatureF: Double? = null,
 	val feelsLike: Double? = null,
@@ -910,7 +983,7 @@ data class WeatherCurrent(
 )
 
 @Serializable
-data class WeatherStation(
+class WeatherStation private constructor(
 	val id: String,
 	val name: String? = null,
 	val distance: Double? = null,
@@ -918,13 +991,13 @@ data class WeatherStation(
 )
 
 @Serializable
-data class WeatherSource(
+class WeatherSource private constructor(
 	val id: String,
 	val name: String? = null,
 )
 
 @Serializable
-data class Weather(
+class Weather private constructor(
 	val latitude: Double,
 	val longitude: Double,
 	val current: WeatherCurrent,
@@ -934,7 +1007,7 @@ data class Weather(
 )
 
 @Serializable
-data class EmojiSkin(
+class EmojiSkin private constructor(
 	val emoji: String,
 	val tone: String,
 	val unicode: String? = null,
@@ -942,7 +1015,7 @@ data class EmojiSkin(
 )
 
 @Serializable
-data class Emoji(
+class Emoji private constructor(
 	val emoji: String,
 	val name: String,
 	val shortcodes: List<String> = emptyList(),
@@ -956,7 +1029,157 @@ data class Emoji(
 )
 
 @Serializable
-data class EmojiSearch(
+class EmojiSearch private constructor(
 	val q: String,
-	val emojis: List<Emoji>,
+	val emojis: List<Emoji> = emptyList(),
 )
+
+@Serializable
+class WeatherMinute private constructor(
+	val at: String? = null,
+	val precipitation: Double? = null,
+	val precipitationIn: Double? = null,
+	val type: String? = null,
+)
+
+@Serializable
+class WeatherDay private constructor(
+	val date: String? = null,
+	val high: Double? = null,
+	val highF: Double? = null,
+	val low: Double? = null,
+	val lowF: Double? = null,
+	val precipitationChance: Double? = null,
+	val condition: String? = null,
+	val conditionName: String? = null,
+	val conditionEmoji: String? = null,
+	val sunrise: String? = null,
+	val sunset: String? = null,
+	val moonPhase: String? = null,
+	val moonPhaseName: String? = null,
+	val moonPhaseEmoji: String? = null,
+)
+
+@Serializable
+class WeatherAir private constructor(
+	val aqi: Double? = null,
+	val aqiName: String? = null,
+	@SerialName("pm2_5") val pm25: Double? = null,
+	val pm10: Double? = null,
+)
+
+@Serializable
+class WeatherHistory private constructor(
+	val date: String? = null,
+	val high: Double? = null,
+	val highF: Double? = null,
+	val low: Double? = null,
+	val lowF: Double? = null,
+	val precipitation: Double? = null,
+	val precipitationIn: Double? = null,
+	val windMax: Double? = null,
+	val windMaxMph: Double? = null,
+	val sunrise: String? = null,
+	val sunset: String? = null,
+	val moonPhase: String? = null,
+	val moonPhaseName: String? = null,
+	val moonPhaseEmoji: String? = null,
+)
+
+@Serializable
+class TimezoneConversionTarget private constructor(
+	val timezone: String,
+	val name: String? = null,
+	val abbreviation: String? = null,
+	val offset: String,
+	val offsetMinutes: Int,
+	val dst: Boolean,
+	val at: String,
+)
+
+@Serializable
+class Address private constructor(
+	val address: String? = null,
+	val valid: Boolean,
+	val registered: Boolean? = null,
+	val number: String? = null,
+	val street: String? = null,
+	val unit: String? = null,
+	val city: String? = null,
+	val district: String? = null,
+	val districtName: String? = null,
+	val state: String? = null,
+	val stateName: String? = null,
+	val postal: String? = null,
+	val country: String? = null,
+	val countryName: String? = null,
+	val latitude: Double? = null,
+	val longitude: Double? = null,
+	val deep: AddressDeep? = null,
+)
+
+@Serializable
+class AddressSuggestion private constructor(
+	val address: String,
+	val number: String? = null,
+	val street: String? = null,
+	val unit: String? = null,
+	val city: String? = null,
+	val state: String? = null,
+	val postal: String? = null,
+	val latitude: Double? = null,
+	val longitude: Double? = null,
+)
+
+@Serializable
+class AddressSearch private constructor(
+	val q: String,
+	val postal: String? = null,
+	val city: String? = null,
+	val state: String? = null,
+	val country: String? = null,
+	val addresses: List<AddressSuggestion> = emptyList(),
+)
+
+@Serializable
+class CompanyCountry private constructor(
+	val name: String? = null,
+	val blocs: List<String> = emptyList(),
+	val tax: String? = null,
+)
+
+@Serializable
+class CompanyDeep private constructor(
+	val country: CompanyCountry? = null,
+	val postal: Postal? = null,
+	val city: City? = null,
+)
+
+@Serializable
+class Company private constructor(
+	val company: String? = null,
+	val valid: Boolean,
+	val registered: Boolean? = null,
+	val country: String? = null,
+	val type: String? = null,
+	val name: String? = null,
+	val active: Boolean? = null,
+	val activity: String? = null,
+	val address: String? = null,
+	val city: String? = null,
+	val state: String? = null,
+	val stateName: String? = null,
+	val postal: String? = null,
+	val countryName: String? = null,
+	val vat: String? = null,
+	val gst: Boolean? = null,
+	val acn: String? = null,
+	val siren: String? = null,
+	val siege: Boolean? = null,
+	val kind: String? = null,
+	val invoice: String? = null,
+	val deep: CompanyDeep? = null,
+)
+
+@Serializable
+class AddressDeep private constructor()

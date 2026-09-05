@@ -6,8 +6,10 @@ import kotlin.math.min
 import kotlin.math.pow
 import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
@@ -32,91 +34,109 @@ class ParseAPIException(
 ) : Exception(message)
 
 /** One prepared GET, handed to the transport. */
-data class ParseAPIRequest(
+class ParseAPIRequest internal constructor(
 	val url: String,
 	val headers: Map<String, String>,
 	val timeoutMs: Int,
 )
 
 /** Raw transport answer. Header names are lowercase. */
-data class ParseAPIResponse(
+class ParseAPIResponse(
 	val status: Int,
 	val body: String,
 	val headers: Map<String, String>,
 )
 
-/** Transport hook for tests and instrumentation. Blocking, the client wraps it in Dispatchers.IO. */
+/** Suspending transport hook for tests and instrumentation. Cooperates with coroutine cancellation. */
 fun interface ParseAPITransport {
-	fun execute(request: ParseAPIRequest): ParseAPIResponse
+	suspend fun execute(request: ParseAPIRequest): ParseAPIResponse
 }
 
 private object HttpURLConnectionTransport : ParseAPITransport {
-	override fun execute(request: ParseAPIRequest): ParseAPIResponse {
-		val connection = URI(request.url).toURL().openConnection() as HttpURLConnection
-		connection.connectTimeout = request.timeoutMs
-		connection.readTimeout = request.timeoutMs
-		request.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
-		val status = connection.responseCode
-		val stream = if (status >= 400) connection.errorStream else connection.inputStream
-		val body = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
-		val headers = buildMap {
-			connection.headerFields.forEach { (name, values) ->
-				if (name != null && values.isNotEmpty()) put(name.lowercase(), values[0])
+	override suspend fun execute(request: ParseAPIRequest): ParseAPIResponse =
+		kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+			val connection = URI(request.url).toURL().openConnection() as HttpURLConnection
+			connection.instanceFollowRedirects = false
+			connection.connectTimeout = request.timeoutMs
+			connection.readTimeout = request.timeoutMs
+			request.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
+			// Disconnect outside the caller's thread: some JVM implementations can
+			// block during cleanup. Cancellation still resumes the caller promptly.
+			continuation.invokeOnCancellation {
+				Dispatchers.IO.dispatch(kotlin.coroutines.EmptyCoroutineContext, Runnable { connection.disconnect() })
 			}
+			Dispatchers.IO.dispatch(continuation.context, Runnable {
+				if (!continuation.isActive) return@Runnable
+				try {
+					val status = connection.responseCode
+					val stream = if (status >= 400) connection.errorStream else connection.inputStream
+					val body = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
+					val headers = buildMap {
+						connection.headerFields.forEach { (name, values) ->
+							if (name != null && values.isNotEmpty()) put(name.lowercase(java.util.Locale.ROOT), values[0])
+						}
+					}
+					continuation.resumeWith(Result.success(ParseAPIResponse(status, body, headers)))
+				} catch (error: Exception) {
+					connection.disconnect()
+					continuation.resumeWith(Result.failure(error))
+				}
+			})
 		}
-		return ParseAPIResponse(status, body, headers)
-	}
 }
 
-/**
- * parseAPI client. One instance keeps one connection pool alive.
- *
- *     val parse = ParseAPI("parse_app_...", appId = "com.example.weather")
- *     val ip = parse.ip("8.8.8.8")
- *
- * @param key API key. Falls back to the PARSEAPI_KEY environment variable.
- * @param appId App identity sent as X-App-Id (your applicationId / package name),
- *   matched against the key's app-id list for app keys. Secret keys ignore it.
- * @param baseUrl Override https://api.parseapi.com (tests, canaries).
- *   Also read from PARSEAPI_BASE_URL.
- * @param timeoutMs Per-attempt timeout in milliseconds. Default 10000.
- * @param retries Retries after the first attempt on network errors / 429 / 5xx.
- *   Default 2, 0 disables.
- * @param transport Custom transport (tests, instrumentation).
- */
-class ParseAPI(
-	key: String? = null,
-	private val appId: String? = null,
-	baseUrl: String? = null,
-	private val timeoutMs: Int = 10_000,
-	private val retries: Int = 2,
-	private val transport: ParseAPITransport = HttpURLConnectionTransport,
-) {
-	private val key: String = key
-		?: System.getenv("PARSEAPI_KEY")?.takeIf { it.isNotEmpty() }
-		?: throw ParseAPIException(0, "missing_api_key", "ParseAPI: missing API key. Pass one or set PARSEAPI_KEY.", null, null)
+/** Reusable parseAPI client. Configure optional settings with a trailing block. */
+class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
+	constructor() : this(null, ParseAPIOptions())
+	constructor(key: String?) : this(key, ParseAPIOptions())
+	constructor(configure: ParseAPIOptions.() -> Unit) : this(null, ParseAPIOptions().apply(configure))
+	constructor(key: String?, configure: ParseAPIOptions.() -> Unit) : this(key, ParseAPIOptions().apply(configure))
 
-	private val baseUrl: String =
-		(baseUrl ?: System.getenv("PARSEAPI_BASE_URL") ?: "https://api.parseapi.com").trimEnd('/')
+	private val key: String = (key ?: System.getenv("PARSEAPI_KEY"))?.takeIf { it.isNotEmpty() }
+		?: throw ParseAPIException(0, "missing_api_key", "ParseAPI: missing API key. Pass one or set PARSEAPI_KEY.", null, null)
+	private val appId = options.appId
+	private val timeoutMs = options.timeoutMs
+	private val retries = options.retries
+	private val transport = options.transport ?: HttpURLConnectionTransport
+	private val baseUrl = (options.baseUrl ?: System.getenv("PARSEAPI_BASE_URL") ?: "https://api.parseapi.com").trimEnd('/')
+
+	init {
+		require(timeoutMs > 0) { "timeoutMs must be positive" }
+		require(retries == null || retries >= 0) { "retries must be nonnegative" }
+		val uri = try { URI(baseUrl) } catch (error: Exception) { throw IllegalArgumentException("baseUrl must be an absolute HTTP(S) URL", error) }
+		require(uri.scheme?.lowercase(java.util.Locale.ROOT) in setOf("http", "https") && !uri.host.isNullOrEmpty() && uri.rawUserInfo == null && uri.rawQuery == null && uri.rawFragment == null) {
+			"baseUrl must be an absolute HTTP(S) URL without credentials, query, or fragment"
+		}
+	}
 
 	@OptIn(ExperimentalSerializationApi::class)
-	@PublishedApi
-	internal val json: Json = Json {
+	private val json: Json = Json {
 		ignoreUnknownKeys = true
+		coerceInputValues = true
 		namingStrategy = JsonNamingStrategy.SnakeCase
 	}
 
 	// Methods mirror routes exactly, flattened like Go.
 
-	suspend fun ip(ip: String, deep: Boolean = false): Ip =
-		get("/ip/${enc(ip)}", deepQuery(deep))
+	suspend fun ip(ip: String): Ip =
+		ip(ip) {}
+
+	suspend fun ip(ip: String, configure: IpOptions.() -> Unit): Ip =
+		with(IpOptions().apply(configure)) {
+			get("/ip/${enc(ip)}", deepQuery(deep))
+		}
 
 	/**
 	 * Bare /ip: the caller's own IP record. The SDK always sends its key,
 	 * so this rides the keyed path.
 	 */
-	suspend fun ipSelf(deep: Boolean = false): Ip =
-		get("/ip", deepQuery(deep))
+	suspend fun ipSelf(): Ip =
+		ipSelf() {}
+
+	suspend fun ipSelf(configure: IpSelfOptions.() -> Unit): Ip =
+		with(IpSelfOptions().apply(configure)) {
+			get("/ip", deepQuery(deep))
+		}
 
 	suspend fun continent(code: String): Continent =
 		get("/continent/${enc(code)}")
@@ -127,49 +147,78 @@ class ParseAPI(
 	suspend fun country(code: String): Country =
 		get("/country/${enc(code)}")
 
+	suspend fun bloc(code: String): Bloc =
+		get("/bloc/${enc(code)}")
+
+	suspend fun blocCountries(code: String): BlocCountries =
+		get("/bloc/${enc(code)}/countries")
+
 	suspend fun countryStates(code: String): CountryStates =
 		get("/country/${enc(code)}/states")
 
-	suspend fun state(code: String, country: String? = null): State =
-		get("/state/${enc(code)}", listOf("country" to country))
+	suspend fun state(code: String): State =
+		state(code) {}
 
-	suspend fun stateDistricts(code: String, country: String? = null): StateDistricts =
-		get("/state/${enc(code)}/districts", listOf("country" to country))
+	suspend fun state(code: String, configure: StateOptions.() -> Unit): State =
+		with(StateOptions().apply(configure)) {
+			get("/state/${enc(code)}", listOf("country" to country))
+		}
 
-	suspend fun district(code: String, country: String? = null, state: String? = null): District =
-		get("/district/${enc(code)}", listOf("country" to country, "state" to state))
+	suspend fun stateDistricts(code: String): StateDistricts =
+		stateDistricts(code) {}
 
-	suspend fun city(name: String, country: String? = null, state: String? = null): City =
-		get("/city/${enc(name)}", listOf("country" to country, "state" to state))
+	suspend fun stateDistricts(code: String, configure: StateDistrictsOptions.() -> Unit): StateDistricts =
+		with(StateDistrictsOptions().apply(configure)) {
+			get("/state/${enc(code)}/districts", listOf("country" to country))
+		}
+
+	suspend fun district(code: String): District =
+		district(code) {}
+
+	suspend fun district(code: String, configure: DistrictOptions.() -> Unit): District =
+		with(DistrictOptions().apply(configure)) {
+			get("/district/${enc(code)}", listOf("country" to country, "state" to state))
+		}
+
+	suspend fun city(name: String): City =
+		city(name) {}
+
+	suspend fun city(name: String, configure: CityOptions.() -> Unit): City =
+		with(CityOptions().apply(configure)) {
+			get("/city/${enc(name)}", listOf("country" to country, "state" to state))
+		}
 
 	/** Pin or refetch a city by its minted id (city_ + 12 chars). */
 	suspend fun cityId(id: String): City =
 		get("/city/id/${enc(id)}")
 
-	suspend fun citySearch(q: String, country: String? = null, state: String? = null, limit: Int? = null): CitySearch =
-		get("/city", listOf("q" to q, "country" to country, "state" to state, "limit" to limit?.toString()))
+	suspend fun citySearch(query: String): CitySearch =
+		citySearch(query) {}
+
+	suspend fun citySearch(query: String, configure: CitySearchOptions.() -> Unit): CitySearch =
+		with(CitySearchOptions().apply(configure)) {
+			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()))
+		}
 
 	suspend fun cityNearest(lat: Double, lon: Double): CityNearest =
 		get("/city", listOf("lat" to num(lat), "lon" to num(lon)))
 
-	suspend fun cityNearby(
-		name: String,
-		radius: Double? = null,
-		unit: String? = null,
-		country: String? = null,
-		state: String? = null,
-		limit: Int? = null,
-	): CityNearby =
-		get(
-			"/city/${enc(name)}/nearby",
-			listOf(
-				"radius" to radius?.let(::num),
-				"unit" to unit,
-				"country" to country,
-				"state" to state,
-				"limit" to limit?.toString(),
-			),
-		)
+	suspend fun cityNearby(name: String): CityNearby =
+		cityNearby(name) {}
+
+	suspend fun cityNearby(name: String, configure: CityNearbyOptions.() -> Unit): CityNearby =
+		with(CityNearbyOptions().apply(configure)) {
+			get(
+				"/city/${enc(name)}/nearby",
+				listOf(
+					"radius" to radius?.let(::num),
+					"unit" to unit,
+					"country" to country,
+					"state" to state,
+					"limit" to limit?.toString(),
+				),
+			)
+		}
 
 	/** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). */
 	suspend fun language(code: String): Language =
@@ -179,47 +228,113 @@ class ParseAPI(
 	suspend fun name(name: String): Name =
 		get("/name/${enc(name)}")
 
-	suspend fun postal(code: String, country: String? = null): Postal =
-		get("/postal/${enc(code)}", listOf("country" to country))
+	suspend fun postal(code: String): Postal =
+		postal(code) {}
 
-	suspend fun postalNearby(code: String, country: String? = null, radius: Double? = null, unit: String? = null): PostalNearby =
-		get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit))
+	suspend fun postal(code: String, configure: PostalOptions.() -> Unit): Postal =
+		with(PostalOptions().apply(configure)) {
+			get("/postal/${enc(code)}", listOf("country" to country))
+		}
 
-	suspend fun postalDistance(from: String, to: String, country: String? = null): PostalDistance =
-		get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country))
+	suspend fun postalNearby(code: String): PostalNearby =
+		postalNearby(code) {}
 
-	suspend fun email(email: String, deep: Boolean = false): Email =
-		get("/email/${enc(email)}", deepQuery(deep))
+	suspend fun postalNearby(code: String, configure: PostalNearbyOptions.() -> Unit): PostalNearby =
+		with(PostalNearbyOptions().apply(configure)) {
+			get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit))
+		}
+
+	suspend fun postalDistance(from: String, to: String): PostalDistance =
+		postalDistance(from, to) {}
+
+	suspend fun postalDistance(from: String, to: String, configure: PostalDistanceOptions.() -> Unit): PostalDistance =
+		with(PostalDistanceOptions().apply(configure)) {
+			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country))
+		}
+
+	suspend fun email(email: String): Email =
+		email(email) {}
+
+	suspend fun email(email: String, configure: EmailOptions.() -> Unit): Email =
+		with(EmailOptions().apply(configure)) {
+			get("/email/${enc(email)}", deepQuery(deep))
+		}
 
 	/** Format and checksum on every call. Deep asks the live EU registry. */
-	suspend fun vat(number: String, country: String? = null, from: String? = null, deep: Boolean = false): Vat =
-		get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
+	suspend fun vat(number: String): Vat =
+		vat(number) {}
+
+	suspend fun vat(number: String, configure: VatOptions.() -> Unit): Vat =
+		with(VatOptions().apply(configure)) {
+			get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
+		}
 
 	/** Checksum and structure. bank and branch are codes inside the number, not names. */
-	suspend fun iban(iban: String, country: String? = null): Iban =
-		get("/iban/${enc(iban)}", listOf("country" to country))
+	suspend fun iban(iban: String): Iban =
+		iban(iban) {}
 
-	/** NPI lookup in the CMS NPPES registry of US healthcare providers. Deep adds Medicare enrollment on paid plans. */
-	suspend fun npi(npi: String, deep: Boolean = false): Npi =
-		get("/npi/${enc(npi)}", deepQuery(deep))
+	suspend fun iban(iban: String, configure: IbanOptions.() -> Unit): Iban =
+		with(IbanOptions().apply(configure)) {
+			get("/iban/${enc(iban)}", listOf("country" to country))
+		}
 
-	suspend fun phone(number: String, country: String? = null, deep: Boolean = false): Phone =
-		get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
+	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
+	suspend fun npi(npi: String): Npi =
+		npi(npi) {}
+
+	suspend fun npi(npi: String, configure: NpiOptions.() -> Unit): Npi =
+		with(NpiOptions().apply(configure)) {
+			get("/npi/${enc(npi)}", deepQuery(deep))
+		}
+
+	suspend fun phone(number: String): Phone =
+		phone(number) {}
+
+	suspend fun phone(number: String, configure: PhoneOptions.() -> Unit): Phone =
+		with(PhoneOptions().apply(configure)) {
+			get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
+		}
 
 	/** Metered core. Not available on app keys, use a secret key server-side. */
-	suspend fun carrier(number: String, country: String? = null): Carrier =
-		get("/carrier/${enc(number)}", listOf("country" to country))
+	suspend fun carrier(number: String): Carrier =
+		carrier(number) {}
+
+	suspend fun carrier(number: String, configure: CarrierOptions.() -> Unit): Carrier =
+		with(CarrierOptions().apply(configure)) {
+			get("/carrier/${enc(number)}", listOf("country" to country))
+		}
 
 	/** Metered core, NANP only. Not available on app keys. */
-	suspend fun caller(number: String, country: String? = null): Caller =
-		get("/caller/${enc(number)}", listOf("country" to country))
+	suspend fun caller(number: String): Caller =
+		caller(number) {}
+
+	suspend fun caller(number: String, configure: CallerOptions.() -> Unit): Caller =
+		with(CallerOptions().apply(configure)) {
+			get("/caller/${enc(number)}", listOf("country" to country))
+		}
 
 	/** Metered core, worldwide. Not available on app keys. */
-	suspend fun hlr(number: String, country: String? = null): Hlr =
-		get("/hlr/${enc(number)}", listOf("country" to country))
+	suspend fun hlr(number: String): Hlr =
+		hlr(number) {}
 
-	suspend fun domain(domain: String, deep: Boolean = false): Domain =
-		get("/domain/${enc(domain)}", deepQuery(deep))
+	suspend fun hlr(number: String, configure: HlrOptions.() -> Unit): Hlr =
+		with(HlrOptions().apply(configure)) {
+			get("/hlr/${enc(number)}", listOf("country" to country))
+		}
+
+	suspend fun domain(domain: String): Domain =
+		domain(domain) {}
+
+	suspend fun domain(domain: String, configure: DomainOptions.() -> Unit): Domain =
+		with(DomainOptions().apply(configure)) {
+			get("/domain/${enc(domain)}", deepQuery(deep))
+		}
+
+	suspend fun asn(asn: String): Asn =
+		get("/asn/${enc(asn)}")
+
+	suspend fun mac(mac: String): Mac =
+		get("/mac/${enc(mac)}")
 
 	suspend fun mx(domain: String): Mx =
 		get("/mx/${enc(domain)}")
@@ -228,40 +343,93 @@ class ParseAPI(
 	 * Parses the given user agent string. It is sent as the User-Agent
 	 * header for this one request.
 	 */
-	suspend fun useragent(ua: String, deep: Boolean = false): Useragent =
-		get("/useragent", deepQuery(deep), userAgent = ua)
+	suspend fun useragent(ua: String): Useragent =
+		useragent(ua) {}
+
+	suspend fun useragent(ua: String, configure: UseragentOptions.() -> Unit): Useragent =
+		with(UseragentOptions().apply(configure)) {
+			get("/useragent", deepQuery(deep), userAgent = ua)
+		}
 
 	/** Decodes a 17-character VIN. Deep adds open recall campaigns on paid plans. */
-	suspend fun vin(vin: String, deep: Boolean = false): Vin =
-		get("/vin/${enc(vin)}", deepQuery(deep))
+	suspend fun vin(vin: String): Vin =
+		vin(vin) {}
+
+	suspend fun vin(vin: String, configure: VinOptions.() -> Unit): Vin =
+		with(VinOptions().apply(configure)) {
+			get("/vin/${enc(vin)}", deepQuery(deep))
+		}
 
 	/**
 	 * Looks up US import duty for an HTS code. Deep with an origin
 	 * resolves the Chapter 99 tariff measures that apply from that country.
 	 */
-	suspend fun tariff(code: String, deep: Boolean = false, origin: String? = null): Hts =
-		get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
+	suspend fun tariff(code: String): Tariff =
+		tariff(code) {}
+
+	suspend fun tariff(code: String, configure: TariffOptions.() -> Unit): Tariff =
+		with(TariffOptions().apply(configure)) {
+			get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
+		}
 
 	/** Searches tariff schedule descriptions by product. */
-	suspend fun tariffSearch(q: String): HtsSearch =
-		get("/tariff", listOf("q" to q))
+	suspend fun tariffSearch(query: String): TariffSearch =
+		get("/tariff", listOf("q" to query))
 
 	suspend fun currency(code: String): Currency =
 		get("/currency/${enc(code)}")
 
 	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
-	suspend fun currencyRate(base: String, quote: String, date: String? = null, amount: Double? = null): CurrencyRate =
-		get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
+	suspend fun currencyRate(base: String, quote: String): CurrencyRate =
+		currencyRate(base, quote) {}
 
-	suspend fun timezone(id: String, at: String? = null): Timezone =
-		get("/timezone/${enc(id)}", listOf("at" to at))
+	suspend fun currencyRate(base: String, quote: String, configure: CurrencyRateOptions.() -> Unit): CurrencyRate =
+		with(CurrencyRateOptions().apply(configure)) {
+			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
+		}
+
+	suspend fun timezone(id: String): Timezone =
+		timezone(id) {}
+
+	suspend fun timezone(id: String, configure: TimezoneOptions.() -> Unit): Timezone =
+		with(TimezoneOptions().apply(configure)) {
+			get("/timezone/${enc(id)}", listOf("at" to at, "to" to to))
+		}
 
 	/** Coords in, zone out. */
-	suspend fun timezoneAt(lat: Double, lon: Double, at: String? = null): Timezone =
-		get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at))
+	suspend fun timezoneAt(lat: Double, lon: Double): Timezone =
+		timezoneAt(lat, lon) {}
 
-	suspend fun holiday(country: String, year: Int? = null): HolidayYear =
-		get("/holiday/${enc(country)}", listOf("year" to year?.toString()))
+	suspend fun timezoneAt(lat: Double, lon: Double, configure: TimezoneAtOptions.() -> Unit): Timezone =
+		with(TimezoneAtOptions().apply(configure)) {
+			get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at))
+		}
+
+	suspend fun holiday(country: String): HolidayYear =
+		holiday(country) {}
+
+	suspend fun holiday(country: String, configure: HolidayOptions.() -> Unit): HolidayYear =
+		with(HolidayOptions().apply(configure)) {
+			get("/holiday/${enc(country)}", listOf("year" to year?.toString()))
+		}
+
+	/** Calendar facts for a date. Use format for month-first or day-first input. */
+	suspend fun date(date: String): DateInfo =
+		date(date) {}
+
+	suspend fun date(date: String, configure: DateOptions.() -> Unit): DateInfo =
+		with(DateOptions().apply(configure)) {
+			get("/date/${enc(date)}", listOf("format" to format, "to" to to))
+		}
+
+	/** Today's calendar date in UTC. Pass to for the signed day difference. */
+	suspend fun dateToday(): DateInfo =
+		dateToday() {}
+
+	suspend fun dateToday(configure: DateTodayOptions.() -> Unit): DateInfo =
+		with(DateTodayOptions().apply(configure)) {
+			get("/date", listOf("to" to to))
+		}
 
 	/** One date. A covered date that is not a holiday answers holiday null. */
 	suspend fun holidayDate(country: String, date: String): HolidayDate =
@@ -270,17 +438,47 @@ class ParseAPI(
 	suspend fun elevation(lat: Double, lon: Double): Elevation =
 		get("/elevation", listOf("lat" to num(lat), "lon" to num(lon)))
 
-	suspend fun point(lat: Double, lon: Double, deep: Boolean = false): Point =
-		get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+	suspend fun point(lat: Double, lon: Double): Point =
+		point(lat, lon) {}
 
-	suspend fun weather(lat: Double, lon: Double, deep: Boolean = false): Weather =
-		get("/weather", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+	suspend fun point(lat: Double, lon: Double, configure: PointOptions.() -> Unit): Point =
+		with(PointOptions().apply(configure)) {
+			get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+		}
+
+	suspend fun weather(lat: Double, lon: Double): Weather =
+		weather(lat, lon) {}
+
+	suspend fun weather(lat: Double, lon: Double, configure: WeatherOptions.() -> Unit): Weather =
+		with(WeatherOptions().apply(configure)) {
+			get("/weather", listOf("lat" to num(lat), "lon" to num(lon), "date" to date) + deepQuery(deep))
+		}
 
 	suspend fun emoji(emoji: String): Emoji =
 		get("/emoji/${enc(emoji)}")
 
-	suspend fun emojiSearch(q: String, limit: Int? = null): EmojiSearch =
-		get("/emoji", listOf("q" to q, "limit" to limit?.toString()))
+	suspend fun emojiSearch(query: String): EmojiSearch =
+		emojiSearch(query) {}
+
+	suspend fun emojiSearch(query: String, configure: EmojiSearchOptions.() -> Unit): EmojiSearch =
+		with(EmojiSearchOptions().apply(configure)) {
+			get("/emoji", listOf("q" to query, "limit" to limit?.toString()))
+		}
+
+	suspend fun address(address: String): Address = address(address) {}
+	suspend fun address(address: String, configure: AddressOptions.() -> Unit): Address = with(AddressOptions().apply(configure)) {
+		get("/address/${enc(address)}", listOf("country" to country) + deepQuery(deep))
+	}
+
+	suspend fun addressSearch(query: String): AddressSearch = addressSearch(query) {}
+	suspend fun addressSearch(query: String, configure: AddressSearchOptions.() -> Unit): AddressSearch = with(AddressSearchOptions().apply(configure)) {
+		get("/address", listOf("q" to query, "country" to country, "postal" to postal, "city" to city, "state" to state, "ip" to ip))
+	}
+
+	suspend fun company(number: String): Company = company(number) {}
+	suspend fun company(number: String, configure: CompanyOptions.() -> Unit): Company = with(CompanyOptions().apply(configure)) {
+		get("/company/${enc(number)}", listOf("country" to country) + deepQuery(deep))
+	}
 
 	// Transport
 
@@ -288,17 +486,15 @@ class ParseAPI(
 		if (deep) listOf("deep" to "true") else emptyList()
 
 	private fun num(value: Double): String =
-		if (value == Math.floor(value) && !value.isInfinite()) value.toLong().toString() else value.toString()
+		if (value == Math.floor(value) && kotlin.math.abs(value) < 1e15) value.toLong().toString() else value.toString()
 
-	@PublishedApi
-	internal suspend inline fun <reified T> get(
+	private suspend inline fun <reified T> get(
 		path: String,
 		query: List<Pair<String, String?>> = emptyList(),
 		userAgent: String? = null,
 	): T = json.decodeFromString(fetch(path, query, userAgent))
 
-	@PublishedApi
-	internal suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?): String {
+	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?): String {
 		var url = baseUrl + path
 		val pairs = query.mapNotNull { (name, value) -> value?.let { "$name=${enc(it)}" } }
 		if (pairs.isNotEmpty()) url += "?" + pairs.joinToString("&")
@@ -310,13 +506,16 @@ class ParseAPI(
 		}
 		val request = ParseAPIRequest(url, headers, timeoutMs)
 
+		val retryLimit = retries ?: defaultRetries(path, query)
 		var attempt = 0
 		while (true) {
+			currentCoroutineContext().ensureActive()
 			val response = try {
-				withContext(Dispatchers.IO) { transport.execute(request) }
+				transport.execute(request)
 			} catch (error: Exception) {
-				if (error is ParseAPIException) throw error
-				if (attempt < retries) {
+				if (error is CancellationException || error is ParseAPIException) throw error
+				currentCoroutineContext().ensureActive()
+				if (attempt < retryLimit) {
 					delay(retryDelayMs(attempt, null))
 					attempt++
 					continue
@@ -326,7 +525,7 @@ class ParseAPI(
 
 			if (response.status in 200..299) return response.body
 
-			if (response.status in RETRY_STATUS && attempt < retries) {
+			if (response.status in RETRY_STATUS && attempt < retryLimit) {
 				delay(retryDelayMs(attempt, response.headers["retry-after"]))
 				attempt++
 				continue
@@ -348,15 +547,32 @@ class ParseAPI(
 		}
 	}
 
-	private fun retryDelayMs(attempt: Int, retryAfter: String?): Long {
+	internal fun retryDelayMs(attempt: Int, retryAfter: String?): Long {
 		retryAfter?.toDoubleOrNull()?.let { seconds ->
-			if (seconds >= 0) return min(seconds * 1_000, RETRY_AFTER_CAP_MS.toDouble()).toLong()
+			if (seconds.isFinite() && seconds >= 0) return min(seconds * 1_000, RETRY_AFTER_CAP_MS.toDouble()).toLong()
 		}
-		return (Random.nextDouble() * 250 * 2.0.pow(attempt)).toLong()
+		if (retryAfter != null) {
+			for (pattern in listOf("EEE, dd MMM yyyy HH:mm:ss zzz", "EEEE, dd-MMM-yy HH:mm:ss zzz", "EEE MMM d HH:mm:ss yyyy")) {
+				val format = java.text.SimpleDateFormat(pattern, java.util.Locale.US).apply {
+					timeZone = java.util.TimeZone.getTimeZone("GMT")
+					isLenient = false
+				}
+				val position = java.text.ParsePosition(0)
+				val at = format.parse(retryAfter, position)
+				if (at != null && position.index == retryAfter.length) return (at.time - System.currentTimeMillis()).coerceIn(0, RETRY_AFTER_CAP_MS)
+			}
+		}
+		return (Random.nextDouble() * min(250 * 2.0.pow(attempt), RETRY_AFTER_CAP_MS.toDouble())).toLong()
+	}
+
+	private fun defaultRetries(path: String, query: List<Pair<String, String?>>): Int {
+		val product = path.removePrefix("/").substringBefore('/')
+		return if (product in setOf("carrier", "caller", "hlr", "litigator", "reassigned") ||
+			(product in setOf("email", "vat", "address") && query.any { it.first == "deep" && it.second == "true" })) 0 else 2
 	}
 
 	companion object {
-		const val VERSION = "0.2.1"
+		const val VERSION = "0.3.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
 		private const val RETRY_AFTER_CAP_MS = 5_000L
 	}
