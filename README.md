@@ -1,5 +1,5 @@
 ```sh
-git clone --branch 0.3.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 0.3.1 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -11,7 +11,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:0.3.0")
+implementation("com.parseapi:parseapi:0.3.1")
 ```
 
 ```kotlin
