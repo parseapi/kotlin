@@ -85,7 +85,7 @@ private object HttpURLConnectionTransport : ParseAPITransport {
 		}
 }
 
-/** Reusable parseAPI client. Configure optional settings with a trailing block. */
+/** Reusable ParseAPI client. Configure optional settings with a trailing block. */
 class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	constructor() : this(null, ParseAPIOptions())
 	constructor(key: String?) : this(key, ParseAPIOptions())
