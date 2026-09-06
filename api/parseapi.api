@@ -1692,6 +1692,7 @@ public final class com/parseapi/Postal {
 	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getNeighbors ()Ljava/util/List;
 	public final fun getPopulation ()Ljava/lang/Long;
 	public final fun getPostal ()Ljava/lang/String;
@@ -1742,6 +1743,7 @@ public final class com/parseapi/PostalDistance$Companion {
 public final class com/parseapi/PostalDistanceEnd {
 	public static final field Companion Lcom/parseapi/PostalDistanceEnd$Companion;
 	public final fun getCity ()Ljava/lang/String;
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 }
 
@@ -1764,9 +1766,35 @@ public final class com/parseapi/PostalDistanceOptions {
 	public final fun setCountry (Ljava/lang/String;)V
 }
 
+public final class com/parseapi/PostalMetro {
+	public static final field Companion Lcom/parseapi/PostalMetro$Companion;
+	public final fun getBusinessShare ()Ljava/lang/Double;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOtherShare ()Ljava/lang/Double;
+	public final fun getResidentialShare ()Ljava/lang/Double;
+	public final fun getShare ()Ljava/lang/Double;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/PostalMetro$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PostalMetro$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PostalMetro;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PostalMetro;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PostalMetro$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/PostalNearby {
 	public static final field Companion Lcom/parseapi/PostalNearby$Companion;
 	public final fun getCountry ()Ljava/lang/String;
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getNearby ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getRadius ()D
@@ -1793,6 +1821,7 @@ public final class com/parseapi/PostalNearbyItem {
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getDistance ()D
 	public final fun getDistanceMi ()D
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 }

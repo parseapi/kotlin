@@ -256,6 +256,18 @@ class CityNearby private constructor(
 )
 
 @Serializable
+class PostalMetro private constructor(
+	val code: String,
+	val name: String,
+	val type: String,
+	/** Fraction of ZIP addresses; category shares are measured independently. */
+	val share: Double? = null,
+	val residentialShare: Double? = null,
+	val businessShare: Double? = null,
+	val otherShare: Double? = null,
+)
+
+@Serializable
 class Postal private constructor(
 	val postal: String,
 	val city: String? = null,
@@ -282,6 +294,8 @@ class Postal private constructor(
 	val timezone: String? = null,
 	val currency: String? = null,
 	val neighbors: List<String> = emptyList(),
+	/** Null is unknown; an empty list is observed outside all covered areas. */
+	val metros: List<PostalMetro>? = null,
 )
 
 @Serializable
@@ -292,6 +306,7 @@ class PostalNearbyItem private constructor(
 	val country: String,
 	val distance: Double,
 	val distanceMi: Double,
+	val metros: List<PostalMetro>? = null,
 )
 
 @Serializable
@@ -300,6 +315,7 @@ class PostalNearby private constructor(
 	val country: String,
 	val radius: Double,
 	val unit: String,
+	val metros: List<PostalMetro>? = null,
 	val nearby: List<PostalNearbyItem> = emptyList(),
 )
 
@@ -307,6 +323,7 @@ class PostalNearby private constructor(
 class PostalDistanceEnd private constructor(
 	val postal: String,
 	val city: String? = null,
+	val metros: List<PostalMetro>? = null,
 )
 
 @Serializable
