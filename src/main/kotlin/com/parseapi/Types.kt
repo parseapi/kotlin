@@ -793,6 +793,10 @@ class Language private constructor(
 class Name private constructor(
 	val name: String,
 	val valid: Boolean,
+	/** Name membership, independent of gender. */
+	val known: Boolean = false,
+	/** Name associations, not the person's nationality. */
+	val countries: List<String> = emptyList(),
 	val prefix: String? = null,
 	val first: String? = null,
 	val middle: String? = null,

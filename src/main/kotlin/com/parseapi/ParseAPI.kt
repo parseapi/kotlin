@@ -234,7 +234,13 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	/** Parse a person's name. Junk input returns valid false, never an error. */
 	suspend fun name(name: String): Name =
-		get("/name/${enc(name)}")
+		name(name) {}
+
+	/** Parse a name with an optional ISO2 country context for gender. */
+	suspend fun name(name: String, configure: NameOptions.() -> Unit): Name =
+		with(NameOptions().apply(configure)) {
+			get("/name/${enc(name)}", listOf("country" to country))
+		}
 
 	/**
 	 * Look up a postal area. Pass country when known. Check nullable coordinates before another

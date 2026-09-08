@@ -52,6 +52,11 @@ class CityNearbyOptions internal constructor() {
 	var limit: Int? = null
 }
 
+/** Country is an ISO2 context for gender, not a nationality claim. */
+class NameOptions internal constructor() {
+	var country: String? = null
+}
+
 class PostalOptions internal constructor() {
 	var country: String? = null
 }

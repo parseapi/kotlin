@@ -82,6 +82,7 @@ parse.currency("USD")
 parse.currencyRate("USD", "EUR")
 parse.language("en")
 parse.name("BILLY OSHALL")
+parse.name("Andrea") { country = "IT" }
 parse.timezone("America/New_York")
 parse.timezoneAt(40.7128, -74.006)
 parse.date("03/04/2026") { format = "mdy" }

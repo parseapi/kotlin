@@ -1319,8 +1319,10 @@ public final class com/parseapi/MxRecord$Companion {
 
 public final class com/parseapi/Name {
 	public static final field Companion Lcom/parseapi/Name$Companion;
+	public final fun getCountries ()Ljava/util/List;
 	public final fun getFirst ()Ljava/lang/String;
 	public final fun getGender ()Ljava/lang/String;
+	public final fun getKnown ()Z
 	public final fun getLast ()Ljava/lang/String;
 	public final fun getMiddle ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
@@ -1342,6 +1344,11 @@ public synthetic class com/parseapi/Name$$serializer : kotlinx/serialization/int
 
 public final class com/parseapi/Name$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NameOptions {
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun setCountry (Ljava/lang/String;)V
 }
 
 public final class com/parseapi/Npi {
@@ -1494,6 +1501,7 @@ public final class com/parseapi/ParseAPI {
 	public final fun mac (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun mx (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun name (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun name (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun npi (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun npi (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun phone (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
