@@ -118,21 +118,29 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	// Methods mirror routes exactly, flattened like Go.
 
+	/**
+	 * Look up an IP. Deep enrichment is included with a paid plan, without a separate check meter.
+	 */
 	suspend fun ip(ip: String): Ip =
 		ip(ip) {}
 
+	/**
+	 * Look up an IP. Deep enrichment is included with a paid plan, without a separate check meter.
+	 */
 	suspend fun ip(ip: String, configure: IpOptions.() -> Unit): Ip =
 		with(IpOptions().apply(configure)) {
 			get("/ip/${enc(ip)}", deepQuery(deep))
 		}
 
 	/**
-	 * Bare /ip: the caller's own IP record. The SDK always sends its key,
-	 * so this rides the keyed path.
+	 * Look up the public IP making this request. On a server, this is the server's IP.
 	 */
 	suspend fun ipSelf(): Ip =
 		ipSelf() {}
 
+	/**
+	 * Look up the public IP making this request. On a server, this is the server's IP.
+	 */
 	suspend fun ipSelf(configure: IpSelfOptions.() -> Unit): Ip =
 		with(IpSelfOptions().apply(configure)) {
 			get("/ip", deepQuery(deep))
@@ -228,9 +236,17 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun name(name: String): Name =
 		get("/name/${enc(name)}")
 
+	/**
+	 * Look up a postal area. Pass country when known. Check nullable coordinates before another
+	 * location lookup.
+	 */
 	suspend fun postal(code: String): Postal =
 		postal(code) {}
 
+	/**
+	 * Look up a postal area. Pass country when known. Check nullable coordinates before another
+	 * location lookup.
+	 */
 	suspend fun postal(code: String, configure: PostalOptions.() -> Unit): Postal =
 		with(PostalOptions().apply(configure)) {
 			get("/postal/${enc(code)}", listOf("country" to country))
@@ -252,18 +268,39 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country))
 		}
 
+	/**
+	 * Parse an email and check its format and domain. Deep explicitly requests a metered
+	 * deliverability check. Deep checks use one attempt by default. An explicit retry count can
+	 * repeat paid usage. Metered checks require a secret key on a server. App keys return empty
+	 * deep.
+	 */
 	suspend fun email(email: String): Email =
 		email(email) {}
 
+	/**
+	 * Parse an email and check its format and domain. Deep explicitly requests a metered
+	 * deliverability check. Deep checks use one attempt by default. An explicit retry count can
+	 * repeat paid usage. Metered checks require a secret key on a server. App keys return empty
+	 * deep.
+	 */
 	suspend fun email(email: String, configure: EmailOptions.() -> Unit): Email =
 		with(EmailOptions().apply(configure)) {
 			get("/email/${enc(email)}", deepQuery(deep))
 		}
 
-	/** Format and checksum on every call. Deep asks the live EU registry. */
+	/**
+	 * Check VAT format and checksum. Deep requests a metered registry check where supported. Deep
+	 * checks use one attempt by default. Supply your own VAT number for a consultation reference
+	 * when supported. Metered checks require a secret key on a server. App keys return empty deep.
+	 */
 	suspend fun vat(number: String): Vat =
 		vat(number) {}
 
+	/**
+	 * Check VAT format and checksum. Deep requests a metered registry check where supported. Deep
+	 * checks use one attempt by default. Supply your own VAT number for a consultation reference
+	 * when supported. Metered checks require a secret key on a server. App keys return empty deep.
+	 */
 	suspend fun vat(number: String, configure: VatOptions.() -> Unit): Vat =
 		with(VatOptions().apply(configure)) {
 			get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
@@ -287,36 +324,65 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/npi/${enc(npi)}", deepQuery(deep))
 		}
 
+	/**
+	 * Parse a phone number and its formats. Pass country for national numbers when needed. Deep
+	 * returns an empty object. Carrier, caller, and HLR are separate metered lookups.
+	 */
 	suspend fun phone(number: String): Phone =
 		phone(number) {}
 
+	/**
+	 * Parse a phone number and its formats. Pass country for national numbers when needed. Deep
+	 * returns an empty object. Carrier, caller, and HLR are separate metered lookups.
+	 */
 	suspend fun phone(number: String, configure: PhoneOptions.() -> Unit): Phone =
 		with(PhoneOptions().apply(configure)) {
 			get("/phone/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 		}
 
-	/** Metered core. Not available on app keys, use a secret key server-side. */
+	/**
+	 * Request a metered carrier lookup. No automatic retries by default. Use a secret key on a
+	 * server. App keys return a 403.
+	 */
 	suspend fun carrier(number: String): Carrier =
 		carrier(number) {}
 
+	/**
+	 * Request a metered carrier lookup. No automatic retries by default. Use a secret key on a
+	 * server. App keys return a 403.
+	 */
 	suspend fun carrier(number: String, configure: CarrierOptions.() -> Unit): Carrier =
 		with(CarrierOptions().apply(configure)) {
 			get("/carrier/${enc(number)}", listOf("country" to country))
 		}
 
-	/** Metered core, NANP only. Not available on app keys. */
+	/**
+	 * Request a metered caller-name lookup for a NANP number. No automatic retries by default. Use
+	 * a secret key on a server. App keys return a 403.
+	 */
 	suspend fun caller(number: String): Caller =
 		caller(number) {}
 
+	/**
+	 * Request a metered caller-name lookup for a NANP number. No automatic retries by default. Use
+	 * a secret key on a server. App keys return a 403.
+	 */
 	suspend fun caller(number: String, configure: CallerOptions.() -> Unit): Caller =
 		with(CallerOptions().apply(configure)) {
 			get("/caller/${enc(number)}", listOf("country" to country))
 		}
 
-	/** Metered core, worldwide. Not available on app keys. */
+	/**
+	 * Request a metered live-status lookup. Null status means unconfirmed. No automatic retries by
+	 * default. Use a secret key on a server. App keys return a 403.
+	 */
 	suspend fun hlr(number: String): Hlr =
 		hlr(number) {}
 
+	/**
+	 * Request a metered live-status lookup. Null status means unconfirmed. No automatic retries by
+	 * default. Use a secret key on a server. App keys return a 403.
+	 */
 	suspend fun hlr(number: String, configure: HlrOptions.() -> Unit): Hlr =
 		with(HlrOptions().apply(configure)) {
 			get("/hlr/${enc(number)}", listOf("country" to country))
@@ -446,9 +512,17 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
 		}
 
+	/**
+	 * Get weather for a point. Both unit systems are returned. Pass known coordinates from a
+	 * postal, city, or location result.
+	 */
 	suspend fun weather(lat: Double, lon: Double): Weather =
 		weather(lat, lon) {}
 
+	/**
+	 * Get weather for a point. Both unit systems are returned. Pass known coordinates from a
+	 * postal, city, or location result.
+	 */
 	suspend fun weather(lat: Double, lon: Double, configure: WeatherOptions.() -> Unit): Weather =
 		with(WeatherOptions().apply(configure)) {
 			get("/weather", listOf("lat" to num(lat), "lon" to num(lon), "date" to date) + deepQuery(deep))
