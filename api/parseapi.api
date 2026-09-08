@@ -804,6 +804,53 @@ public final class com/parseapi/DistrictOptions {
 	public final fun setState (Ljava/lang/String;)V
 }
 
+public final class com/parseapi/Dns {
+	public static final field Companion Lcom/parseapi/Dns$Companion;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getRecords ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/Dns$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Dns$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Dns;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Dns;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Dns$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/DnsOptions {
+	public final fun getType ()Ljava/lang/String;
+	public final fun setType (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/DnsRecord {
+	public static final field Companion Lcom/parseapi/DnsRecord$Companion;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTtl ()J
+	public final fun getType ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/DnsRecord$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/DnsRecord$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/DnsRecord;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/DnsRecord;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/DnsRecord$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/Domain {
 	public static final field Companion Lcom/parseapi/Domain$Companion;
 	public final fun getAvailable ()Z
@@ -1582,6 +1629,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun dateToday (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun district (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun district (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun dns (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun dns (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun domain (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun domain (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun elevation (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2946,3 +2995,4 @@ public synthetic class com/parseapi/WeatherStation$$serializer : kotlinx/seriali
 public final class com/parseapi/WeatherStation$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
+

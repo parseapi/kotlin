@@ -106,6 +106,11 @@ class HlrOptions internal constructor() {
 	var country: String? = null
 }
 
+/** Type selects the DNS question, including its CNAME chain. Omit for all supported types. */
+class DnsOptions internal constructor() {
+	var type: String? = null
+}
+
 class DomainOptions internal constructor() {
 	var deep: Boolean = false
 }

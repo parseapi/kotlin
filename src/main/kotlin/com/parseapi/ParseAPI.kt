@@ -426,6 +426,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 
+	/** Published DNS records with TTLs. Pooled on every plan. */
+	suspend fun dns(domain: String): Dns = dns(domain) {}
+
+	/** Omit type to check all supported types. Values retain DNS presentation syntax. */
+	suspend fun dns(domain: String, configure: DnsOptions.() -> Unit): Dns =
+		with(DnsOptions().apply(configure)) {
+			get("/dns/${enc(domain)}", listOf("type" to type))
+		}
+
 	suspend fun mx(domain: String): Mx =
 		get("/mx/${enc(domain)}")
 

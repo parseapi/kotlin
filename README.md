@@ -96,6 +96,8 @@ parse.domain("example.com")
 parse.asn("AS13335")
 parse.mac("00:1B:63:84:45:E6")
 parse.mx("example.com")
+parse.dns("example.com")
+parse.dns("_dmarc.example.com") { type = "TXT" }
 parse.useragent(uaString)
 parse.vin("1HGCM82633A004352")
 parse.tariff("8471.30.01.00")
@@ -112,6 +114,8 @@ Every response is a typed, read-only object. Nullable fields are nullable proper
 Reuse a client across calls. Each method performs its own lookup and returns data. `countryStates("US")` fetches the states directly. It does not fetch the country first.
 
 `carrier`, `caller`, and `hlr` are metered lookups for secret keys on a server. App keys answer them with a 403.
+
+DNS uses pooled requests on every plan. Omit `type` to check A, AAAA, CNAME, MX, NS, TXT, SOA, CAA, SRV and PTR. Records contain `name`, `type`, `ttl` in seconds and a DNS presentation `value`. TXT values retain quoting and chunk boundaries. A selected question can include its CNAME chain. Empty records mean no records. Lookup failures remain errors.
 
 ## Measurements
 

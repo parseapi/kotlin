@@ -689,6 +689,21 @@ class Mac private constructor(
 	val multicast: Boolean? = null,
 )
 
+/** A published DNS record. Value retains DNS presentation syntax, including TXT quoting. */
+@Serializable
+class DnsRecord private constructor(
+	val name: String,
+	val type: String,
+	val ttl: Long,
+	val value: String,
+)
+
+@Serializable
+class Dns private constructor(
+	val domain: String,
+	val records: List<DnsRecord> = emptyList(),
+)
+
 @Serializable
 class Mx private constructor(
 	val domain: String,
