@@ -1204,3 +1204,34 @@ class Company private constructor(
 
 @Serializable
 class AddressDeep private constructor()
+
+@Serializable
+class MeasureChoice private constructor(
+	val unit: String,
+	val name: String,
+)
+
+@Serializable
+class Measure private constructor(
+	val measure: String,
+	val valid: Boolean,
+	val type: String? = null,
+	/** Decimal string preserving the API's precision. */
+	val amount: String? = null,
+	val unit: String? = null,
+	val reason: String? = null,
+	val choices: List<MeasureChoice> = emptyList(),
+)
+
+@Serializable
+class MeasureUnit private constructor(
+	val unit: String,
+	val name: String,
+	val type: String,
+	val aliases: List<String> = emptyList(),
+)
+
+@Serializable
+class MeasureUnits private constructor(
+	val units: List<MeasureUnit> = emptyList(),
+)

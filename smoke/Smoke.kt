@@ -100,6 +100,8 @@ fun main(): Unit = runBlocking {
 	expectOk("domain", { parse.domain("gmail.com") }) { if (!it.available) null else "gmail available?" }
 	expectOk("asn", { parse.asn("AS13335") }) { if (it.asn == 13335L) null else "wrong ASN" }
 	expectOk("mac", { parse.mac("00:1B:63:84:45:E6") }) { if (it.valid && it.mac == "00:1B:63:84:45:E6" && it.local == false && it.multicast == false) null else "wrong MAC" }
+	expectOk("measure", { parse.measure("5 ft 11 in") { to = "cm" } }) { if (it.valid && it.amount == "180.34" && it.unit == "cm") null else "wrong conversion" }
+	expectOk("measureUnits", { parse.measureUnits { unit = "m" } }) { if (it.units.any { unit -> unit.unit == "m" }) null else "missing metre" }
 	expectOk("mx", { parse.mx("gmail.com") }) { if (it.mx.isNotEmpty()) null else "no mx" }
 	expectOk("useragent", {
 		parse.useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")

@@ -408,6 +408,24 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun mac(mac: String): Mac =
 		get("/mac/${enc(mac)}")
 
+	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
+	suspend fun measure(measure: String): Measure = measure(measure) {}
+
+	/** Locale and system (us or imperial) resolve explicit ambiguity. Invalid measurements return valid=false. */
+	suspend fun measure(measure: String, configure: MeasureOptions.() -> Unit): Measure =
+		with(MeasureOptions().apply(configure)) {
+			get("/measure/${enc(measure)}", listOf("to" to to, "locale" to locale, "system" to system))
+		}
+
+	suspend fun measureUnits(): MeasureUnits = measureUnits {}
+
+	/** Discover reviewed units. unit filters compatible conversion targets. */
+	suspend fun measureUnits(configure: MeasureUnitsOptions.() -> Unit): MeasureUnits =
+		with(MeasureUnitsOptions().apply(configure)) {
+			get("/measure/units", listOf("q" to query, "type" to type, "unit" to unit))
+		}
+
+
 	suspend fun mx(domain: String): Mx =
 		get("/mx/${enc(domain)}")
 
