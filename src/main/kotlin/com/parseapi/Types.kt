@@ -317,7 +317,7 @@ class VatDeep private constructor(
 	val name: String? = null,
 	val address: VatAddress? = null,
 	val consultation: String? = null,
-	/** Registry timestamp of this check, ISO. */
+	/** Registry-provided check time, or null when unavailable. */
 	val consultedAt: String? = null,
 )
 
@@ -1092,6 +1092,7 @@ class AddressSearch private constructor(
 class CompanyCountry private constructor(
 	val name: String? = null,
 	val blocs: List<String> = emptyList(),
+	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
 	val tax: String? = null,
 )
 
