@@ -635,14 +635,6 @@ class Mac private constructor(
 	val multicast: Boolean? = null,
 )
 
-/** A SWIFT/BIC format check and partial institution lookup. Valid means syntax only. */
-@Serializable
-class SwiftCode private constructor(
-	val swift: String,
-	val valid: Boolean,
-	val country: String? = null,
-	val name: String? = null,
-)
 
 /** A published DNS record. Value retains DNS presentation syntax, including TXT quoting. */
 @Serializable

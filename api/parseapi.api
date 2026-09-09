@@ -2214,7 +2214,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun state (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stateDistricts (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stateDistricts (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun swift (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun tariff (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun tariff (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun tariffSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2801,28 +2800,6 @@ public final class com/parseapi/StateOptions {
 	public final fun getDeep ()Z
 	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
-}
-
-public final class com/parseapi/SwiftCode {
-	public static final field Companion Lcom/parseapi/SwiftCode$Companion;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getSwift ()Ljava/lang/String;
-	public final fun getValid ()Z
-}
-
-public synthetic class com/parseapi/SwiftCode$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/SwiftCode$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/SwiftCode;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/SwiftCode;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/SwiftCode$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/Tariff {

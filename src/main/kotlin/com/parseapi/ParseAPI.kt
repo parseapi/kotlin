@@ -437,9 +437,6 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/bin/${enc(bin)}", deepQuery(deep))
 		}
 
-	/** Check SWIFT/BIC syntax and look up the institution where available. */
-	suspend fun swift(code: String): SwiftCode =
-		get("/swift/${enc(code)}")
 
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
 	suspend fun measure(measure: String): Measure = measure(measure) {}
