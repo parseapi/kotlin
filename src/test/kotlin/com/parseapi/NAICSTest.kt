@@ -25,3 +25,26 @@ class NAICSTest {
   assertEquals("https://api.parseapi.com/naics?q=coffee%20%26%20tea&limit=5", stub.requests[1].url)
  }
 }
+
+
+class NAICSEvidenceTest {
+ @Test fun exclusionsAndMatchRemainCompatible() = runBlocking {
+  val stub = StubTransport(mutableListOf(ParseAPIResponse(200, """{"q":"sofware","year":2022,"country":"US","results":[{"naics":"541511","name":"Custom Computer Programming Services","description":null,"level":6,"parent":"54151","parent_name":"Computer Systems Design and Related Services","children":[],"year":2022,"country":"US"},{"naics":"541511","name":"Custom Computer Programming Services","description":null,"level":6,"parent":"54151","parent_name":"Computer Systems Design and Related Services","children":[],"year":2022,"country":"US","exclusions":null,"match":null},{"naics":"541511","name":"Custom Computer Programming Services","description":null,"level":6,"parent":"54151","parent_name":"Computer Systems Design and Related Services","children":[],"year":2022,"country":"US","exclusions":[],"match":{"field":"future-field","text":"Future matching evidence","corrections":[],"future":true}},{"naics":"541511","name":"Custom Computer Programming Services","description":null,"level":6,"parent":"54151","parent_name":"Computer Systems Design and Related Services","children":[],"year":2022,"country":"US","exclusions":[{"description":"Designing integrated computer systems","codes":[{"naics":"541512","name":"Computer Systems Design Services"}]},{"description":"Activities classified elsewhere","codes":[]}],"match":{"field":"term","text":"Computer software programming services","corrections":[{"from":"sofware","to":"software"}]},"future":true}]}""", emptyMap())))
+  val client = ParseAPI("test_key") { transport = stub; retries = 0 }
+  val search = client.naicsSearch("sofware")
+  val results: List<NAICS> = search.results
+  assertNull(results[0].exclusions)
+  assertNull(results[0].match)
+  assertNull(results[1].exclusions)
+  assertNull(results[1].match)
+  assertTrue(results[2].exclusions!!.isEmpty())
+  assertEquals("future-field", results[2].match!!.field)
+  assertTrue(results[2].match!!.corrections.isEmpty())
+  assertEquals("541512", results[3].exclusions!![0].codes[0].naics)
+  assertEquals("Activities classified elsewhere", results[3].exclusions!![1].description)
+  assertTrue(results[3].exclusions!![1].codes.isEmpty())
+  assertEquals("Computer software programming services", results[3].match!!.text)
+  assertEquals("sofware", results[3].match!!.corrections[0].from)
+  assertEquals("software", results[3].match!!.corrections[0].to)
+ }
+}

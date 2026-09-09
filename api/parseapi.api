@@ -1473,7 +1473,9 @@ public final class com/parseapi/NAICS {
 	public final fun getChildren ()Ljava/util/List;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getDescription ()Ljava/lang/String;
+	public final fun getExclusions ()Ljava/util/List;
 	public final fun getLevel ()I
+	public final fun getMatch ()Lcom/parseapi/NAICSMatch;
 	public final fun getNaics ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getParent ()Ljava/lang/String;
@@ -1512,6 +1514,67 @@ public synthetic class com/parseapi/NAICSChild$$serializer : kotlinx/serializati
 }
 
 public final class com/parseapi/NAICSChild$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NAICSCorrection {
+	public static final field Companion Lcom/parseapi/NAICSCorrection$Companion;
+	public final fun getFrom ()Ljava/lang/String;
+	public final fun getTo ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/NAICSCorrection$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICSCorrection$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICSCorrection;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICSCorrection;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICSCorrection$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NAICSExclusion {
+	public static final field Companion Lcom/parseapi/NAICSExclusion$Companion;
+	public final fun getCodes ()Ljava/util/List;
+	public final fun getDescription ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/NAICSExclusion$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICSExclusion$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICSExclusion;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICSExclusion;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICSExclusion$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NAICSMatch {
+	public static final field Companion Lcom/parseapi/NAICSMatch$Companion;
+	public final fun getCorrections ()Ljava/util/List;
+	public final fun getField ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/NAICSMatch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICSMatch$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICSMatch;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICSMatch;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICSMatch$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

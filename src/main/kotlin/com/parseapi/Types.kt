@@ -1263,6 +1263,30 @@ class NAICSChild private constructor(
 	val name: String,
 )
 
+/** A classification exclusion. Generic exclusions can have no linked codes. */
+@Serializable
+class NAICSExclusion private constructor(
+	val description: String,
+	val codes: List<NAICSChild> = emptyList(),
+)
+
+/** A query token corrected only during typo fallback. */
+@Serializable
+class NAICSCorrection private constructor(
+	val from: String,
+	val to: String,
+)
+
+/** The actual title, activity term or code that matched a search. */
+@Serializable
+class NAICSMatch private constructor(
+	/** Currently name, term or naics. Future fields remain decodable. */
+	val field: String,
+	val text: String,
+	/** Empty for exact, plural and prefix matches. */
+	val corrections: List<NAICSCorrection> = emptyList(),
+)
+
 @Serializable
 class NAICS private constructor(
 	val naics: String,
@@ -1272,6 +1296,10 @@ class NAICS private constructor(
 	val parent: String? = null,
 	val parentName: String? = null,
 	val children: List<NAICSChild> = emptyList(),
+	/** Classification exclusions. Null for omitted/null older responses. */
+	val exclusions: List<NAICSExclusion>? = null,
+	/** Search evidence, absent on direct lookup and older responses. */
+	val match: NAICSMatch? = null,
 	val year: Int,
 	val country: String,
 )
