@@ -312,6 +312,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
 		}
 
+	/** Check SWIFT/BIC syntax and look up the institution where available. */
+	suspend fun swift(code: String): SwiftCode =
+		get("/swift/${enc(code)}")
+
 	/** Checksum and structure. bank and branch are codes inside the number, not names. */
 	suspend fun iban(iban: String): Iban =
 		iban(iban) {}

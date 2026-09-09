@@ -1328,3 +1328,12 @@ class NAICSSearch private constructor(
 	val country: String,
 	val results: List<NAICS> = emptyList(),
 )
+
+/** A SWIFT/BIC format check and partial institution lookup. Valid means syntax only. */
+@Serializable
+class SwiftCode private constructor(
+	val swift: String,
+	val valid: Boolean,
+	val country: String? = null,
+	val name: String? = null,
+)
