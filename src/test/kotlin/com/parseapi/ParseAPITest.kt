@@ -328,7 +328,7 @@ class DecodingTest {
 	fun nullRegionsArray() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"country":"US","date":"2026-12-25","holiday":{"date":"2026-12-25","name":"Christmas Day","local_name":null,"type":"public","regions":null,"substitute":false}}""",
+			"""{"country":"US","date":"2026-12-25","holiday":{"date":"2026-12-25","name":"Christmas Day","name_local":null,"type":"public","regions":null,"substitute":false}}""",
 		)
 		val result = client(stub).holidayDate("US", "2026-12-25")
 		assertNull(result.holiday?.regions)

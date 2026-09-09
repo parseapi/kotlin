@@ -346,9 +346,9 @@ public final class com/parseapi/City {
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getId ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
@@ -450,9 +450,9 @@ public final class com/parseapi/CityNearest {
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getId ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
@@ -685,8 +685,8 @@ public final class com/parseapi/Country {
 	public final fun getDeep ()Lcom/parseapi/CountryDeep;
 	public final fun getEmoji ()Ljava/lang/String;
 	public final fun getLanguages ()Ljava/util/List;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 }
 
@@ -1387,8 +1387,8 @@ public final class com/parseapi/HlrOptions {
 public final class com/parseapi/Holiday {
 	public static final field Companion Lcom/parseapi/Holiday$Companion;
 	public final fun getDate ()Ljava/lang/String;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getRegions ()Ljava/util/List;
 	public final fun getSubstitute ()Z
 	public final fun getType ()Ljava/lang/String;
@@ -1575,8 +1575,8 @@ public final class com/parseapi/Language {
 	public final fun getDeep ()Lcom/parseapi/LanguageDeep;
 	public final fun getDirection ()Ljava/lang/String;
 	public final fun getLanguage ()Ljava/lang/String;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getScript ()Ljava/lang/String;
 }
 
@@ -2367,9 +2367,9 @@ public final class com/parseapi/PointCity {
 	public final fun getDistanceMi ()Ljava/lang/Double;
 	public final fun getId ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
@@ -2674,9 +2674,9 @@ public final class com/parseapi/State {
 	public final fun getDeep ()Lcom/parseapi/StateDeep;
 	public final fun getIso31662 ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
-	public final fun getLocalName ()Ljava/lang/String;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;

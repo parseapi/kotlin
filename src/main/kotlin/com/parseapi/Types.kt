@@ -63,7 +63,7 @@ class ContinentCountries private constructor(
 class Country private constructor(
 	val country: String,
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val continent: String,
 	val currency: String? = null,
 	val currencyName: String? = null,
@@ -113,7 +113,7 @@ class CountryStates private constructor(
 class State private constructor(
 	val state: String,
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val type: String? = null,
 	val country: String,
 	val countryName: String? = null,
@@ -161,7 +161,7 @@ class District private constructor(
 @Serializable
 class City private constructor(
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val type: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
@@ -181,7 +181,7 @@ class City private constructor(
 @Serializable
 class CityNearest private constructor(
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val type: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
@@ -738,7 +738,7 @@ class Currency private constructor(
 class Language private constructor(
 	val language: String,
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val script: String? = null,
 	val direction: String,
 	val deep: LanguageDeep? = null,
@@ -812,7 +812,7 @@ class DateInfo private constructor(
 class Holiday private constructor(
 	val date: String,
 	val name: String,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	/** public for an official day off, observance for cultural days. */
 	val type: String,
 	val regions: List<String>? = null,
@@ -1464,7 +1464,7 @@ class WeatherCurrentDeep private constructor(
 @Serializable
 class PointCity private constructor(
 	val name: String? = null,
-	val localName: String? = null,
+	val nameLocal: String? = null,
 	val type: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
