@@ -199,3 +199,8 @@ class MeasureUnitsOptions internal constructor() {
 	var type: String? = null
 	var unit: String? = null
 }
+
+class NaicsSearchOptions internal constructor() {
+	/** Maximum results, 1-50. Default 10. */
+	var limit: Int? = null
+}

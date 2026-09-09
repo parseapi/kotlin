@@ -1468,6 +1468,80 @@ public final class com/parseapi/MxRecord$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/NAICS {
+	public static final field Companion Lcom/parseapi/NAICS$Companion;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLevel ()I
+	public final fun getNaics ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getParent ()Ljava/lang/String;
+	public final fun getParentName ()Ljava/lang/String;
+	public final fun getYear ()I
+}
+
+public synthetic class com/parseapi/NAICS$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICS$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICS;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICS;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICS$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NAICSChild {
+	public static final field Companion Lcom/parseapi/NAICSChild$Companion;
+	public final fun getNaics ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/NAICSChild$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICSChild$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICSChild;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICSChild;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICSChild$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NAICSSearch {
+	public static final field Companion Lcom/parseapi/NAICSSearch$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getQ ()Ljava/lang/String;
+	public final fun getResults ()Ljava/util/List;
+	public final fun getYear ()I
+}
+
+public synthetic class com/parseapi/NAICSSearch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/NAICSSearch$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NAICSSearch;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NAICSSearch;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/NAICSSearch$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/NaicsSearchOptions {
+	public final fun getLimit ()Ljava/lang/Integer;
+	public final fun setLimit (Ljava/lang/Integer;)V
+}
+
 public final class com/parseapi/Name {
 	public static final field Companion Lcom/parseapi/Name$Companion;
 	public final fun getCountries ()Ljava/util/List;
@@ -1657,6 +1731,9 @@ public final class com/parseapi/ParseAPI {
 	public final fun measureUnits (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun measureUnits (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun mx (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun naics (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun naicsSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun naicsSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun name (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun name (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun npi (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

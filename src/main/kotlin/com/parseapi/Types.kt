@@ -1250,3 +1250,30 @@ class MeasureUnit private constructor(
 class MeasureUnits private constructor(
 	val units: List<MeasureUnit> = emptyList(),
 )
+
+@Serializable
+class NAICSChild private constructor(
+	val naics: String,
+	val name: String,
+)
+
+@Serializable
+class NAICS private constructor(
+	val naics: String,
+	val name: String,
+	val description: String? = null,
+	val level: Int,
+	val parent: String? = null,
+	val parentName: String? = null,
+	val children: List<NAICSChild> = emptyList(),
+	val year: Int,
+	val country: String,
+)
+
+@Serializable
+class NAICSSearch private constructor(
+	val q: String,
+	val year: Int,
+	val country: String,
+	val results: List<NAICS> = emptyList(),
+)

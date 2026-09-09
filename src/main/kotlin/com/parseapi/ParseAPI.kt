@@ -471,6 +471,18 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
 		}
 
+	/** US NAICS 2022 definition and hierarchy. */
+	suspend fun naics(code: String): NAICS =
+		get("/naics/${enc(code)}")
+
+	/** Keyword search. Limit defaults to 10 and accepts 1-50. */
+	suspend fun naicsSearch(query: String): NAICSSearch = naicsSearch(query) {}
+
+	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch =
+		with(NaicsSearchOptions().apply(configure)) {
+			get("/naics", listOf("q" to query, "limit" to limit?.toString()))
+		}
+
 	/** Searches tariff schedule descriptions by product. */
 	suspend fun tariffSearch(query: String): TariffSearch =
 		get("/tariff", listOf("q" to query))
