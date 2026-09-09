@@ -395,15 +395,17 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/**
-	 * Request a metered live-status lookup. Null status means unconfirmed. No automatic retries by
-	 * default. Use a secret key on a server. App keys return a 403.
+	 * Look up phone status at the last check. Live means assigned and connected means reachable at
+	 * that check. Cached results may be returned. Null means unconfirmed. Deep adds network
+	 * diagnostics within the same metered lookup. No automatic retries by default. Use a secret key on your server. App keys return 403.
 	 */
 	suspend fun hlr(number: String): Hlr =
 		hlr(number) {}
 
 	/**
-	 * Request a metered live-status lookup. Null status means unconfirmed. No automatic retries by
-	 * default. Use a secret key on a server. App keys return a 403.
+	 * Look up phone status at the last check. Live means assigned and connected means reachable at
+	 * that check. Cached results may be returned. Null means unconfirmed. Deep adds network
+	 * diagnostics within the same metered lookup. No automatic retries by default. Use a secret key on your server. App keys return 403.
 	 */
 	suspend fun hlr(number: String, configure: HlrOptions.() -> Unit): Hlr =
 		with(HlrOptions().apply(configure)) {
@@ -490,12 +492,20 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/**
-	 * Looks up US import duty for an HTS code. Deep with an origin
-	 * resolves the Chapter 99 tariff measures that apply from that country.
+	 * Look up the general US duty schedule line. Paid deep adds units and the special and other
+	 * schedule columns. Add origin with deep to resolve country-specific measures. Without origin,
+	 * schedule detail remains available and origin-dependent fields are null. A null effective rate is
+	 * not a zero rate.
 	 */
 	suspend fun tariff(code: String): Tariff =
 		tariff(code) {}
 
+	/**
+	 * Look up the general US duty schedule line. Paid deep adds units and the special and other
+	 * schedule columns. Add origin with deep to resolve country-specific measures. Without origin,
+	 * schedule detail remains available and origin-dependent fields are null. A null effective rate is
+	 * not a zero rate.
+	 */
 	suspend fun tariff(code: String, configure: TariffOptions.() -> Unit): Tariff =
 		with(TariffOptions().apply(configure)) {
 			get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
@@ -602,24 +612,36 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun elevation(lat: Double, lon: Double): Elevation =
 		get("/elevation", listOf("lat" to num(lat), "lon" to num(lon)))
 
+	/**
+	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
+	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
+	 * none is within 200 km.
+	 */
 	suspend fun point(lat: Double, lon: Double): Point =
 		point(lat, lon) {}
 
+	/**
+	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
+	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
+	 * none is within 200 km.
+	 */
 	suspend fun point(lat: Double, lon: Double, configure: PointOptions.() -> Unit): Point =
 		with(PointOptions().apply(configure)) {
 			get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
 		}
 
 	/**
-	 * Get weather for a point. Both unit systems are returned. Pass known coordinates from a
-	 * postal, city, or location result.
+	 * Get current conditions in metric and imperial units. Paid deep adds specialist current
+	 * measurements, forecasts and related detail. With deep, date selects a past UTC day (YYYY-MM-DD)
+	 * in deep.history alongside current conditions. Date alone does not request history.
 	 */
 	suspend fun weather(lat: Double, lon: Double): Weather =
 		weather(lat, lon) {}
 
 	/**
-	 * Get weather for a point. Both unit systems are returned. Pass known coordinates from a
-	 * postal, city, or location result.
+	 * Get current conditions in metric and imperial units. Paid deep adds specialist current
+	 * measurements, forecasts and related detail. With deep, date selects a past UTC day (YYYY-MM-DD)
+	 * in deep.history alongside current conditions. Date alone does not request history.
 	 */
 	suspend fun weather(lat: Double, lon: Double, configure: WeatherOptions.() -> Unit): Weather =
 		with(WeatherOptions().apply(configure)) {
@@ -646,7 +668,19 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/address/${enc(address)}", listOf("country" to country) + deepQuery(deep))
 	}
 
+	/**
+	 * Find address suggestions using the context supplied. Prefer postal, or city and state, from the
+	 * form; ip is an optional end-user locality hint for server-side calls. An empty result has reason
+	 * more_input, missing_context or no_matches. Suggestions have reason null. Operational failures
+	 * are errors.
+	 */
 	suspend fun addressSearch(query: String): AddressSearch = addressSearch(query) {}
+	/**
+	 * Find address suggestions using the context supplied. Prefer postal, or city and state, from the
+	 * form; ip is an optional end-user locality hint for server-side calls. An empty result has reason
+	 * more_input, missing_context or no_matches. Suggestions have reason null. Operational failures
+	 * are errors.
+	 */
 	suspend fun addressSearch(query: String, configure: AddressSearchOptions.() -> Unit): AddressSearch = with(AddressSearchOptions().apply(configure)) {
 		get("/address", listOf("q" to query, "country" to country, "postal" to postal, "city" to city, "state" to state, "ip" to ip))
 	}

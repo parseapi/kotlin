@@ -65,6 +65,7 @@ public final class com/parseapi/AddressSearch {
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getQ ()Ljava/lang/String;
+	public final fun getReason ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 }
 
@@ -376,6 +377,7 @@ public final class com/parseapi/CityDeep {
 	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
@@ -611,6 +613,7 @@ public final class com/parseapi/Continent {
 	public final fun getEmoji ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getRegion ()Ljava/lang/String;
 	public final fun getSubregion ()Ljava/lang/String;
 }
@@ -721,6 +724,7 @@ public final class com/parseapi/CountryDeep {
 	public final fun getPlate ()Ljava/lang/String;
 	public final fun getPlugs ()Ljava/util/List;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getPostalFormat ()Ljava/lang/String;
 	public final fun getPostalRegex ()Ljava/lang/String;
 	public final fun getRegion ()Ljava/lang/String;
@@ -1003,6 +1007,8 @@ public final class com/parseapi/DistrictDeep {
 	public final fun getArea ()Ljava/lang/Double;
 	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
 	public final fun getSeat ()Ljava/lang/String;
 	public final fun getWaterArea ()Ljava/lang/Double;
 }
@@ -2454,6 +2460,8 @@ public final class com/parseapi/PostalDeep {
 	public final fun getMetros ()Ljava/util/List;
 	public final fun getNeighbors ()Ljava/util/List;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
 	public final fun getTax ()Ljava/lang/String;
 	public final fun getTaxRate ()Ljava/lang/Double;
 	public final fun getTaxRateCity ()Ljava/lang/Double;
@@ -2639,6 +2647,27 @@ public final class com/parseapi/PostalOptions {
 	public final fun setDeep (Z)V
 }
 
+public final class com/parseapi/PropertyTax {
+	public static final field Companion Lcom/parseapi/PropertyTax$Companion;
+	public final fun getAnnualMedian ()D
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getPeriod ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/PropertyTax$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PropertyTax$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PropertyTax;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PropertyTax;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PropertyTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/State {
 	public static final field Companion Lcom/parseapi/State$Companion;
 	public final fun getCountry ()Ljava/lang/String;
@@ -2676,6 +2705,7 @@ public final class com/parseapi/StateDeep {
 	public final fun getCapital ()Ljava/lang/String;
 	public final fun getFips ()Ljava/lang/String;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getTax ()Ljava/lang/String;
 	public final fun getTaxRate ()Ljava/lang/Double;
 }
@@ -2719,6 +2749,7 @@ public final class com/parseapi/StateDistrictItem$Companion {
 public final class com/parseapi/StateDistrictItemDeep {
 	public static final field Companion Lcom/parseapi/StateDistrictItemDeep$Companion;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/StateDistrictItemDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {

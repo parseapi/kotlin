@@ -142,7 +142,9 @@ class VinOptions internal constructor() {
 }
 
 class TariffOptions internal constructor() {
+	/** Add units and the special and other schedule columns on paid plans. */
 	var deep: Boolean = false
+	/** ISO 3166-1 alpha-2 origin. With paid deep, resolves country-specific measures. Optional for schedule detail. */
 	var origin: String? = null
 }
 
@@ -190,11 +192,14 @@ class DateTodayOptions internal constructor() {
 }
 
 class PointOptions internal constructor() {
+	/** Add terrain and compact nearest-city context on every plan. The timezone ID stays in core. */
 	var deep: Boolean = false
 }
 
 class WeatherOptions internal constructor() {
+	/** Add specialist current measurements, forecasts and related detail on paid plans. */
 	var deep: Boolean = false
+	/** Past UTC day (YYYY-MM-DD). Requires paid deep and adds deep.history alongside current conditions. */
 	var date: String? = null
 }
 

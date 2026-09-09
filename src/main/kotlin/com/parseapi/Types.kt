@@ -39,6 +39,8 @@ class Continent private constructor(
 	val region: String,
 	val subregion: String,
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val emoji: String,
 )
@@ -580,9 +582,9 @@ class Hlr private constructor(
 	val phone: String? = null,
 	val valid: Boolean,
 	val country: String? = null,
-	/** Assigned to a subscriber. Null when invalid. */
+	/** Assigned to a subscriber at the last check. Null means unconfirmed. */
 	val live: Boolean? = null,
-	/** Handset reachable right now. Null means unconfirmed, never no. */
+	/** Handset reachable at the last check. Null means unconfirmed, never no. */
 	val connected: Boolean? = null,
 	val deep: HlrDeep? = null,
 )
@@ -1090,6 +1092,8 @@ class AddressSearch private constructor(
 	val state: String? = null,
 	val country: String? = null,
 	val addresses: List<AddressSuggestion> = emptyList(),
+	/** Why suggestions are empty: more_input, missing_context or no_matches. Null with suggestions. Open to future values. Operational failures are errors. */
+	val reason: String? = null,
 )
 
 @Serializable
@@ -1228,6 +1232,8 @@ class CountryDeep private constructor(
 	val region: String? = null,
 	val subregion: String? = null,
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val tld: String? = null,
 	val borders: List<String>? = null,
@@ -1258,6 +1264,8 @@ class CountryDeep private constructor(
 @Serializable
 class StateDeep private constructor(
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val fips: String? = null,
 	val capital: String? = null,
@@ -1272,6 +1280,8 @@ class StateDeep private constructor(
 @Serializable
 class DistrictDeep private constructor(
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	/** Total area in km2 (land + water, or the official total). */
 	val area: Double? = null,
 	/** Land area in km2. Null when the source publishes total only. */
@@ -1279,6 +1289,8 @@ class DistrictDeep private constructor(
 	/** Water area in km2. Null when the source publishes total only. */
 	val waterArea: Double? = null,
 	val seat: String? = null,
+	/** Median annual property tax payable on owner-occupied homes in this statistical area. Null when unsupported, missing or censored. */
+	val propertyTax: PropertyTax? = null,
 )
 
 
@@ -1288,6 +1300,8 @@ class CityDeep private constructor(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
@@ -1299,6 +1313,8 @@ class PostalDeep private constructor(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
 	/** Total area in km2. Null when the source has no water split. */
 	val area: Double? = null,
 	/** Land area in km2, where the source has it. */
@@ -1321,6 +1337,8 @@ class PostalDeep private constructor(
 	val taxRateCity: Double? = null,
 	/** Special component of the ZIP reference rate, in percent. Null when unknown. */
 	val taxRateSpecial: Double? = null,
+	/** Median annual property tax payable on owner-occupied homes in this statistical area. Null when unsupported, missing or censored. */
+	val propertyTax: PropertyTax? = null,
 )
 
 
@@ -1344,12 +1362,12 @@ class CarrierDeep private constructor(
 
 @Serializable
 class HlrDeep private constructor(
-	/** The six network extras fill on live HLR dips only. Null elsewhere (NANP, failover). */
+	/** Network diagnostics available from the last check. Null when unconfirmed. */
 	val roaming: Boolean? = null,
 	val roamingNetwork: String? = null,
 	/** ISO2, uppercase. */
 	val roamingCountry: String? = null,
-	/** Current serving network name. */
+	/** Serving network name at the last check. */
 	val network: String? = null,
 	val originalNetwork: String? = null,
 	val mcc: String? = null,
@@ -1478,6 +1496,9 @@ class PostalMetroDeep private constructor(
 @Serializable
 class StateDistrictItemDeep private constructor(
 	val population: Long? = null,
+	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	val populationPeriod: String? = null,
+
 )
 
 
@@ -1499,4 +1520,15 @@ class NAICSSearchResult private constructor(
 	/** Search evidence, absent on direct lookup and older responses. */
 	val match: NAICSMatch? = null,
 	val deep: NAICSDeep? = null,
+)
+
+/** Property-tax estimate for an area, not a specific property. */
+@Serializable
+class PropertyTax private constructor(
+	/** Median annual tax payable, in currency units adjusted to the final year of period. Not a tax rate or an individual property bill. */
+	val annualMedian: Double,
+	/** ISO 4217 currency code, currently USD. */
+	val currency: String,
+	/** Reporting period, YYYY-YYYY. Monetary amounts use the final year of this period. */
+	val period: String,
 )
