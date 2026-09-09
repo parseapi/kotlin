@@ -840,6 +840,8 @@ class TimezoneNextDst private constructor(
 	val abbreviation: String,
 )
 
+typealias Time = Timezone
+
 @Serializable
 class Timezone private constructor(
 	/** Echoed on coordinate lookups only. */
@@ -849,10 +851,12 @@ class Timezone private constructor(
 	val name: String? = null,
 	val abbreviation: String? = null,
 	val offset: String? = null,
+	val offsetSeconds: Int? = null,
 	val offsetMinutes: Int? = null,
 	val dst: Boolean? = null,
 	val nextDst: TimezoneNextDst? = null,
 	val at: String? = null,
+	val unix: Long? = null,
 	val to: TimezoneConversionTarget? = null,
 )
 
@@ -1128,9 +1132,11 @@ class TimezoneConversionTarget private constructor(
 	val name: String? = null,
 	val abbreviation: String? = null,
 	val offset: String,
+	val offsetSeconds: Int? = null,
 	val offsetMinutes: Int,
 	val dst: Boolean,
 	val at: String,
+	val unix: Long? = null,
 )
 
 @Serializable

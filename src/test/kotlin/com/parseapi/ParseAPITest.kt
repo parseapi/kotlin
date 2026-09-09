@@ -363,3 +363,25 @@ class DecodingTest {
 		assertTrue(result.valid)
 	}
 }
+
+class TimeTest {
+	@Test fun clocksKeepEpochZeroAndNulls() = runBlocking {
+		val historical = client(StubTransport(200, """{"offset_seconds":-17762,"offset_minutes":-296,"at":"1880-01-01T00:00:00-04:56:02"}""")).time("America/New_York")
+		assertEquals(-17762, historical.offsetSeconds)
+		assertEquals(-296, historical.offsetMinutes)
+		val stub = StubTransport(200, """{"timezone":"UTC","at":"1970-01-01T00:00:00+00:00","unix":0,"to":{"timezone":"UTC","offset":"+00:00","offset_minutes":0,"dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0}}""")
+		val parse = client(stub)
+		val clock: Time = parse.time()
+		assertEquals("https://api.parseapi.com/time", stub.requests[0].url)
+		assertEquals(0L, clock.unix)
+		assertEquals(0L, clock.to?.unix)
+		parse.time("America/New_York") { at = "2026-09-05T15:00:00"; to = "Asia/Tokyo" }
+		assertEquals("https://api.parseapi.com/time/America%2FNew_York?at=2026-09-05T15%3A00%3A00&to=Asia%2FTokyo", stub.requests[1].url)
+		parse.timeAt(0.0, 0.0) { at = "1970-01-01T00:00:00Z"; to = "UTC" }
+		assertEquals("https://api.parseapi.com/time?lat=0&lon=0&at=1970-01-01T00%3A00%3A00Z&to=UTC", stub.requests[2].url)
+		val unknown = client(StubTransport(200, """{"timezone":null,"at":null,"unix":null,"to":null}""")).timeAt(0.0, 0.0)
+		assertNull(unknown.at)
+		assertNull(unknown.unix)
+		assertNull(unknown.to)
+	}
+}

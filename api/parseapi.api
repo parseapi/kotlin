@@ -1755,6 +1755,12 @@ public final class com/parseapi/ParseAPI {
 	public final fun tariff (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun tariff (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun tariffSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun time (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun time (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun time$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun time$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun timeAt (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun timeAt (DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timezone (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timezone (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timezoneAt (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2306,6 +2312,20 @@ public final class com/parseapi/TariffSearchHit$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/TimeAtOptions {
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getTo ()Ljava/lang/String;
+	public final fun setAt (Ljava/lang/String;)V
+	public final fun setTo (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/TimeOptions {
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getTo ()Ljava/lang/String;
+	public final fun setAt (Ljava/lang/String;)V
+	public final fun setTo (Ljava/lang/String;)V
+}
+
 public final class com/parseapi/Timezone {
 	public static final field Companion Lcom/parseapi/Timezone$Companion;
 	public final fun getAbbreviation ()Ljava/lang/String;
@@ -2317,8 +2337,10 @@ public final class com/parseapi/Timezone {
 	public final fun getNextDst ()Lcom/parseapi/TimezoneNextDst;
 	public final fun getOffset ()Ljava/lang/String;
 	public final fun getOffsetMinutes ()Ljava/lang/Integer;
+	public final fun getOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTo ()Lcom/parseapi/TimezoneConversionTarget;
+	public final fun getUnix ()Ljava/lang/Long;
 }
 
 public synthetic class com/parseapi/Timezone$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2348,7 +2370,9 @@ public final class com/parseapi/TimezoneConversionTarget {
 	public final fun getName ()Ljava/lang/String;
 	public final fun getOffset ()Ljava/lang/String;
 	public final fun getOffsetMinutes ()I
+	public final fun getOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getUnix ()Ljava/lang/Long;
 }
 
 public synthetic class com/parseapi/TimezoneConversionTarget$$serializer : kotlinx/serialization/internal/GeneratedSerializer {

@@ -133,6 +133,16 @@ class CurrencyRateOptions internal constructor() {
 	var amount: Double? = null
 }
 
+class TimeOptions internal constructor() {
+	var at: String? = null
+	var to: String? = null
+}
+
+class TimeAtOptions internal constructor() {
+	var at: String? = null
+	var to: String? = null
+}
+
 class TimezoneOptions internal constructor() {
 	var at: String? = null
 	var to: String? = null

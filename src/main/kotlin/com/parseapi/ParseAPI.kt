@@ -499,6 +499,21 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
 		}
 
+	/** Current local time, UTC by default. With to, offsetless at is source wall time. */
+	suspend fun time(timezone: String? = null): Time = time(timezone) {}
+
+	suspend fun time(timezone: String? = null, configure: TimeOptions.() -> Unit): Time =
+		with(TimeOptions().apply(configure)) {
+			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to))
+		}
+
+	suspend fun timeAt(lat: Double, lon: Double): Time = timeAt(lat, lon) {}
+
+	suspend fun timeAt(lat: Double, lon: Double, configure: TimeAtOptions.() -> Unit): Time =
+		with(TimeAtOptions().apply(configure)) {
+			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to))
+		}
+
 	suspend fun timezone(id: String): Timezone =
 		timezone(id) {}
 

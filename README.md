@@ -83,8 +83,10 @@ parse.currencyRate("USD", "EUR")
 parse.language("en")
 parse.name("BILLY OSHALL")
 parse.name("Andrea") { country = "IT" }
-parse.timezone("America/New_York")
-parse.timezoneAt(40.7128, -74.006)
+parse.time() // UTC now
+parse.time("America/New_York")
+parse.time("America/New_York") { at = "2026-09-05T15:00:00"; to = "Asia/Tokyo" }
+parse.timeAt(40.7128, -74.006)
 parse.date("03/04/2026") { format = "mdy" }
 parse.dateToday()
 parse.holiday("US") { year = 2026 }
@@ -118,6 +120,10 @@ Reuse a client across calls. Each method performs its own lookup and returns dat
 `carrier`, `caller`, and `hlr` are metered lookups for secret keys on a server. App keys answer them with a 403.
 
 DNS uses pooled requests on every plan. Omit `type` to check A, AAAA, CNAME, MX, NS, TXT, SOA, CAA, SRV and PTR. Records contain `name`, `type`, `ttl` in seconds and a DNS presentation `value`. TXT values retain quoting and chunk boundaries. A selected question can include its CNAME chain. Empty records mean no records. Lookup failures remain errors.
+
+## Time
+
+`time` returns local ISO `at` with its UTC offset and integer Unix seconds in `unix`. `offset_seconds` is the exact offset, while `offset_minutes` is whole minutes. Historical offsets and ISO times can include offset seconds. Omitted `at` means now. With `to`, an offsetless `at` is source wall time. Otherwise it is UTC. Include an offset for repeated local times around a clock change. Current time and conversion use pooled requests on every plan. Coordinate clock fields can be null when the timezone is unknown. Existing `timezone` methods remain supported.
 
 ## Measurements
 
