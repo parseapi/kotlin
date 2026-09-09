@@ -53,7 +53,7 @@ fun main(): Unit = runBlocking {
 	expectOk("ipSelf", { parse.ipSelf() }) { if (it.ip.isNotEmpty()) null else "no ip" }
 	expectOk("continent", { parse.continent("NA") }) { if (it.name == "North America") null else "wrong name" }
 	expectOk("continentCountries", { parse.continentCountries("NA") }) { if (it.countries.isNotEmpty()) null else "no countries" }
-	expectOk("country", { parse.country("US") }) { if (it.iso3 == "USA") null else "wrong iso3" }
+	expectOk("country", { parse.country("US") }) { if (it.country == "US") null else "wrong country" }
 	expectOk("countryStates", { parse.countryStates("US") }) { if (it.states.size >= 50) null else "too few states" }
 	expectOk("state", { parse.state("NC") { this.country = "US" } }) { if (it.name == "North Carolina") null else "wrong name" }
 	expectOk("stateDistricts", { parse.stateDistricts("NC") { this.country = "US" } }) { if (it.districts.isNotEmpty()) null else "no districts" }
@@ -115,8 +115,8 @@ fun main(): Unit = runBlocking {
 	expectOk("currency", { parse.currency("USD") }) { if (it.symbol == "$") null else "wrong symbol" }
 	expectOk("currencyRate", { parse.currencyRate("USD", "EUR") }) { if (it.rate > 0 && it.rate < 10) null else "rate ${it.rate}" }
 	expectOk("language", { parse.language("en") }) { if (it.language == "en" && it.name == "English") null else "wrong language" }
-	expectOk("name", { parse.name("BILLY O'SHALL") }) { if (it.name == "Billy O'Shall" && it.valid && it.gender == "male") null else "wrong name" }
-	expectOk("timezone", { parse.timezone("America/New_York") }) { if (it.offsetMinutes == -240 || it.offsetMinutes == -300) null else "offset ${it.offsetMinutes}" }
+	expectOk("name", { parse.name("BILLY O'SHALL") }) { if (it.name == "Billy O'Shall" && it.valid) null else "wrong name" }
+	expectOk("timezone", { parse.timezone("America/New_York") }) { if (it.offset == "-04:00" || it.offset == "-05:00") null else "offset ${it.offset}" }
 	expectOk("timezoneAt", { parse.timezoneAt(40.7128, -74.006) }) { if (it.timezone == "America/New_York") null else "zone ${it.timezone}" }
 	expectOk("holiday", { parse.holiday("US") }) { if (it.holidays.size > 5) null else "too few holidays" }
 	expectOk("holidayDate", { parse.holidayDate("US", "2026-12-25") }) { if (it.holiday?.name == "Christmas Day") null else "not christmas" }
@@ -140,7 +140,7 @@ fun main(): Unit = runBlocking {
 	val goodAppId = System.getenv("PARSEAPI_APP_ID")
 	if (appKey != null && goodAppId != null) {
 		val app = ParseAPI(appKey) { this.appId = goodAppId }
-		expectOk("app key good id", { app.country("US") }) { if (it.iso3 == "USA") null else "wrong iso3" }
+		expectOk("app key good id", { app.country("US") }) { if (it.country == "US") null else "wrong country" }
 		expectOk("app key wedge lookup", { app.postal("28202") { this.country = "US" } }) { if (it.city == "Charlotte") null else "wrong city" }
 
 		val noId = ParseAPI(appKey) { this.retries = 0 }

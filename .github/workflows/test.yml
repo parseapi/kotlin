@@ -22,4 +22,4 @@ jobs:
       - name: Tests, public API baseline, and smoke compilation
         run: ./gradlew check compileSmokeKotlin --no-daemon
       - name: Build and run a separate SDK consumer
-        run: ./gradlew -p compatibility/consumer run --no-daemon
+        run: ./gradlew -p compatibility/adp-consumer run --no-daemon

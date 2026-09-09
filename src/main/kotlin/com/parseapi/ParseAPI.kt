@@ -152,8 +152,12 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun continentCountries(code: String): ContinentCountries =
 		get("/continent/${enc(code)}/countries")
 
-	suspend fun country(code: String): Country =
-		get("/country/${enc(code)}")
+	suspend fun country(code: String): Country = country(code) {}
+
+	suspend fun country(code: String, configure: CountryOptions.() -> Unit): Country =
+		with(CountryOptions().apply(configure)) {
+			get("/country/${enc(code)}", deepQuery(deep))
+		}
 
 	suspend fun bloc(code: String): Bloc =
 		get("/bloc/${enc(code)}")
@@ -169,7 +173,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun state(code: String, configure: StateOptions.() -> Unit): State =
 		with(StateOptions().apply(configure)) {
-			get("/state/${enc(code)}", listOf("country" to country))
+			get("/state/${enc(code)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	suspend fun stateDistricts(code: String): StateDistricts =
@@ -177,7 +181,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun stateDistricts(code: String, configure: StateDistrictsOptions.() -> Unit): StateDistricts =
 		with(StateDistrictsOptions().apply(configure)) {
-			get("/state/${enc(code)}/districts", listOf("country" to country))
+			get("/state/${enc(code)}/districts", listOf("country" to country) + deepQuery(deep))
 		}
 
 	suspend fun district(code: String): District =
@@ -185,7 +189,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun district(code: String, configure: DistrictOptions.() -> Unit): District =
 		with(DistrictOptions().apply(configure)) {
-			get("/district/${enc(code)}", listOf("country" to country, "state" to state))
+			get("/district/${enc(code)}", listOf("country" to country, "state" to state) + deepQuery(deep))
 		}
 
 	suspend fun city(name: String): City =
@@ -193,23 +197,31 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun city(name: String, configure: CityOptions.() -> Unit): City =
 		with(CityOptions().apply(configure)) {
-			get("/city/${enc(name)}", listOf("country" to country, "state" to state))
+			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + deepQuery(deep))
 		}
 
 	/** Pin or refetch a city by its minted id (city_ + 12 chars). */
-	suspend fun cityId(id: String): City =
-		get("/city/id/${enc(id)}")
+	suspend fun cityId(id: String): City = cityId(id) {}
+
+	suspend fun cityId(id: String, configure: CityIdOptions.() -> Unit): City =
+		with(CityIdOptions().apply(configure)) {
+			get("/city/id/${enc(id)}", deepQuery(deep))
+		}
 
 	suspend fun citySearch(query: String): CitySearch =
 		citySearch(query) {}
 
 	suspend fun citySearch(query: String, configure: CitySearchOptions.() -> Unit): CitySearch =
 		with(CitySearchOptions().apply(configure)) {
-			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()))
+			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
-	suspend fun cityNearest(lat: Double, lon: Double): CityNearest =
-		get("/city", listOf("lat" to num(lat), "lon" to num(lon)))
+	suspend fun cityNearest(lat: Double, lon: Double): CityNearest = cityNearest(lat, lon) {}
+
+	suspend fun cityNearest(lat: Double, lon: Double, configure: CityNearestOptions.() -> Unit): CityNearest =
+		with(CityNearestOptions().apply(configure)) {
+			get("/city", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+		}
 
 	suspend fun cityNearby(name: String): CityNearby =
 		cityNearby(name) {}
@@ -224,13 +236,17 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 					"country" to country,
 					"state" to state,
 					"limit" to limit?.toString(),
-				),
+				) + deepQuery(deep),
 			)
 		}
 
 	/** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). */
-	suspend fun language(code: String): Language =
-		get("/language/${enc(code)}")
+	suspend fun language(code: String): Language = language(code) {}
+
+	suspend fun language(code: String, configure: LanguageOptions.() -> Unit): Language =
+		with(LanguageOptions().apply(configure)) {
+			get("/language/${enc(code)}", deepQuery(deep))
+		}
 
 	/** Parse a person's name. Junk input returns valid false, never an error. */
 	suspend fun name(name: String): Name =
@@ -239,7 +255,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	/** Parse a name with an optional ISO2 country context for gender. */
 	suspend fun name(name: String, configure: NameOptions.() -> Unit): Name =
 		with(NameOptions().apply(configure)) {
-			get("/name/${enc(name)}", listOf("country" to country))
+			get("/name/${enc(name)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	/**
@@ -255,7 +271,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun postal(code: String, configure: PostalOptions.() -> Unit): Postal =
 		with(PostalOptions().apply(configure)) {
-			get("/postal/${enc(code)}", listOf("country" to country))
+			get("/postal/${enc(code)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	suspend fun postalNearby(code: String): PostalNearby =
@@ -263,7 +279,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun postalNearby(code: String, configure: PostalNearbyOptions.() -> Unit): PostalNearby =
 		with(PostalNearbyOptions().apply(configure)) {
-			get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit))
+			get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit) + deepQuery(deep))
 		}
 
 	suspend fun postalDistance(from: String, to: String): PostalDistance =
@@ -271,7 +287,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun postalDistance(from: String, to: String, configure: PostalDistanceOptions.() -> Unit): PostalDistance =
 		with(PostalDistanceOptions().apply(configure)) {
-			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country))
+			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	/**
@@ -312,17 +328,13 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
 		}
 
-	/** Check SWIFT/BIC syntax and look up the institution where available. */
-	suspend fun swift(code: String): SwiftCode =
-		get("/swift/${enc(code)}")
-
 	/** Checksum and structure. bank and branch are codes inside the number, not names. */
 	suspend fun iban(iban: String): Iban =
 		iban(iban) {}
 
 	suspend fun iban(iban: String, configure: IbanOptions.() -> Unit): Iban =
 		with(IbanOptions().apply(configure)) {
-			get("/iban/${enc(iban)}", listOf("country" to country))
+			get("/iban/${enc(iban)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
@@ -336,14 +348,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	/**
 	 * Parse a phone number and its formats. Pass country for national numbers when needed. Deep
-	 * returns an empty object. Carrier, caller, and HLR are separate metered lookups.
+	 * reveals numbering-plan location and timezone on every plan. Carrier, caller, and HLR are separate metered lookups.
 	 */
 	suspend fun phone(number: String): Phone =
 		phone(number) {}
 
 	/**
 	 * Parse a phone number and its formats. Pass country for national numbers when needed. Deep
-	 * returns an empty object. Carrier, caller, and HLR are separate metered lookups.
+	 * reveals numbering-plan location and timezone on every plan. Carrier, caller, and HLR are separate metered lookups.
 	 */
 	suspend fun phone(number: String, configure: PhoneOptions.() -> Unit): Phone =
 		with(PhoneOptions().apply(configure)) {
@@ -363,7 +375,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun carrier(number: String, configure: CarrierOptions.() -> Unit): Carrier =
 		with(CarrierOptions().apply(configure)) {
-			get("/carrier/${enc(number)}", listOf("country" to country))
+			get("/carrier/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 		}
 
 	/**
@@ -395,12 +407,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun hlr(number: String, configure: HlrOptions.() -> Unit): Hlr =
 		with(HlrOptions().apply(configure)) {
-			get("/hlr/${enc(number)}", listOf("country" to country))
+			get("/hlr/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 		}
 
+	/** Check whether a domain is registered. */
 	suspend fun domain(domain: String): Domain =
 		domain(domain) {}
 
+	/** Check whether a domain is registered. Deep adds registration dates, registrar, status and DNSSEC on paid plans. */
 	suspend fun domain(domain: String, configure: DomainOptions.() -> Unit): Domain =
 		with(DomainOptions().apply(configure)) {
 			get("/domain/${enc(domain)}", deepQuery(deep))
@@ -419,6 +433,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		with(BinOptions().apply(configure)) {
 			get("/bin/${enc(bin)}", deepQuery(deep))
 		}
+
+	/** Check SWIFT/BIC syntax and look up the institution where available. */
+	suspend fun swift(code: String): SwiftCode =
+		get("/swift/${enc(code)}")
 
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
 	suspend fun measure(measure: String): Measure = measure(measure) {}
@@ -484,23 +502,31 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/** US NAICS 2022 definition and hierarchy. */
-	suspend fun naics(code: String): NAICS =
-		get("/naics/${enc(code)}")
+	suspend fun naics(code: String): NAICS = naics(code) {}
+
+	suspend fun naics(code: String, configure: NaicsOptions.() -> Unit): NAICS =
+		with(NaicsOptions().apply(configure)) {
+			get("/naics/${enc(code)}", deepQuery(deep))
+		}
 
 	/** Keyword search. Limit defaults to 10 and accepts 1-50. */
 	suspend fun naicsSearch(query: String): NAICSSearch = naicsSearch(query) {}
 
 	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch =
 		with(NaicsSearchOptions().apply(configure)) {
-			get("/naics", listOf("q" to query, "limit" to limit?.toString()))
+			get("/naics", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
 	/** Searches tariff schedule descriptions by product. */
 	suspend fun tariffSearch(query: String): TariffSearch =
 		get("/tariff", listOf("q" to query))
 
-	suspend fun currency(code: String): Currency =
-		get("/currency/${enc(code)}")
+	suspend fun currency(code: String): Currency = currency(code) {}
+
+	suspend fun currency(code: String, configure: CurrencyOptions.() -> Unit): Currency =
+		with(CurrencyOptions().apply(configure)) {
+			get("/currency/${enc(code)}", deepQuery(deep))
+		}
 
 	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
 	suspend fun currencyRate(base: String, quote: String): CurrencyRate =
@@ -516,14 +542,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun time(timezone: String? = null, configure: TimeOptions.() -> Unit): Time =
 		with(TimeOptions().apply(configure)) {
-			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to))
+			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to) + deepQuery(deep))
 		}
 
 	suspend fun timeAt(lat: Double, lon: Double): Time = timeAt(lat, lon) {}
 
 	suspend fun timeAt(lat: Double, lon: Double, configure: TimeAtOptions.() -> Unit): Time =
 		with(TimeAtOptions().apply(configure)) {
-			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to))
+			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to) + deepQuery(deep))
 		}
 
 	suspend fun timezone(id: String): Timezone =
@@ -531,7 +557,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun timezone(id: String, configure: TimezoneOptions.() -> Unit): Timezone =
 		with(TimezoneOptions().apply(configure)) {
-			get("/timezone/${enc(id)}", listOf("at" to at, "to" to to))
+			get("/timezone/${enc(id)}", listOf("at" to at, "to" to to) + deepQuery(deep))
 		}
 
 	/** Coords in, zone out. */
@@ -540,7 +566,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun timezoneAt(lat: Double, lon: Double, configure: TimezoneAtOptions.() -> Unit): Timezone =
 		with(TimezoneAtOptions().apply(configure)) {
-			get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at))
+			get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at) + deepQuery(deep))
 		}
 
 	suspend fun holiday(country: String): HolidayYear =
@@ -557,7 +583,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun date(date: String, configure: DateOptions.() -> Unit): DateInfo =
 		with(DateOptions().apply(configure)) {
-			get("/date/${enc(date)}", listOf("format" to format, "to" to to))
+			get("/date/${enc(date)}", listOf("format" to format, "to" to to) + deepQuery(deep))
 		}
 
 	/** Today's calendar date in UTC. Pass to for the signed day difference. */
@@ -566,7 +592,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun dateToday(configure: DateTodayOptions.() -> Unit): DateInfo =
 		with(DateTodayOptions().apply(configure)) {
-			get("/date", listOf("to" to to))
+			get("/date", listOf("to" to to) + deepQuery(deep))
 		}
 
 	/** One date. A covered date that is not a holiday answers holiday null. */
@@ -600,15 +626,19 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/weather", listOf("lat" to num(lat), "lon" to num(lon), "date" to date) + deepQuery(deep))
 		}
 
-	suspend fun emoji(emoji: String): Emoji =
-		get("/emoji/${enc(emoji)}")
+	suspend fun emoji(emoji: String): Emoji = emoji(emoji) {}
+
+	suspend fun emoji(emoji: String, configure: EmojiOptions.() -> Unit): Emoji =
+		with(EmojiOptions().apply(configure)) {
+			get("/emoji/${enc(emoji)}", deepQuery(deep))
+		}
 
 	suspend fun emojiSearch(query: String): EmojiSearch =
 		emojiSearch(query) {}
 
 	suspend fun emojiSearch(query: String, configure: EmojiSearchOptions.() -> Unit): EmojiSearch =
 		with(EmojiSearchOptions().apply(configure)) {
-			get("/emoji", listOf("q" to query, "limit" to limit?.toString()))
+			get("/emoji", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
 	suspend fun address(address: String): Address = address(address) {}

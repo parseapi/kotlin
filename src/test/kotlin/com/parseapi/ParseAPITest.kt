@@ -69,18 +69,18 @@ class UrlMappingTest {
 
 	@Test
 	fun ibanCountry() = runBlocking {
-		val stub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"country":"DE","checksum":"89","bank":"37040044","branch":null,"account":"0532013000"}""")
+		val stub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"country":"DE","bank":"37040044","deep":{"checksum":"89","branch":null,"account":"0532013000"}}""")
 		client(stub).iban("89370400440532013000") { this.country = "DE" }
 		assertEquals("https://api.parseapi.com/iban/89370400440532013000?country=DE", stub.requests[0].url)
 	}
 
 	@Test
 	fun vinDeep() = runBlocking {
-		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","plant_city":"Marysville","deep":{"recalls":[]}}""")
+		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","deep":{"recalls":[],"plant_city":"Marysville"}}""")
 		val decoded = client(stub).vin("1HGCM82633A004352") { this.deep = true }
 		assertEquals("https://api.parseapi.com/vin/1HGCM82633A004352?deep=true", stub.requests[0].url)
 		assertEquals(2003, decoded.year)
-		assertEquals("Marysville", decoded.plantCity)
+		assertEquals("Marysville", decoded.deep?.plantCity)
 		assertEquals(0, decoded.deep?.recalls?.size)
 	}
 
@@ -366,10 +366,10 @@ class DecodingTest {
 
 class TimeTest {
 	@Test fun clocksKeepEpochZeroAndNulls() = runBlocking {
-		val historical = client(StubTransport(200, """{"offset_seconds":-17762,"offset_minutes":-296,"at":"1880-01-01T00:00:00-04:56:02"}""")).time("America/New_York")
-		assertEquals(-17762, historical.offsetSeconds)
-		assertEquals(-296, historical.offsetMinutes)
-		val stub = StubTransport(200, """{"timezone":"UTC","at":"1970-01-01T00:00:00+00:00","unix":0,"to":{"timezone":"UTC","offset":"+00:00","offset_minutes":0,"dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0}}""")
+		val historical = client(StubTransport(200, """{"deep":{"offset_seconds":-17762,"offset_minutes":-296},"at":"1880-01-01T00:00:00-04:56:02"}""")).time("America/New_York")
+		assertEquals(-17762, historical.deep?.offsetSeconds)
+		assertEquals(-296, historical.deep?.offsetMinutes)
+		val stub = StubTransport(200, """{"timezone":"UTC","at":"1970-01-01T00:00:00+00:00","unix":0,"to":{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0,"deep":{"offset_minutes":0}}}""")
 		val parse = client(stub)
 		val clock: Time = parse.time()
 		assertEquals("https://api.parseapi.com/time", stub.requests[0].url)

@@ -22,26 +22,31 @@ class IpSelfOptions internal constructor() {
 
 class StateOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class StateDistrictsOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class DistrictOptions internal constructor() {
 	var country: String? = null
 	var state: String? = null
+	var deep: Boolean = false
 }
 
 class CityOptions internal constructor() {
 	var country: String? = null
 	var state: String? = null
+	var deep: Boolean = false
 }
 
 class CitySearchOptions internal constructor() {
 	var country: String? = null
 	var state: String? = null
 	var limit: Int? = null
+	var deep: Boolean = false
 }
 
 class CityNearbyOptions internal constructor() {
@@ -50,25 +55,30 @@ class CityNearbyOptions internal constructor() {
 	var country: String? = null
 	var state: String? = null
 	var limit: Int? = null
+	var deep: Boolean = false
 }
 
 /** Country is an ISO2 context for gender, not a nationality claim. */
 class NameOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class PostalOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class PostalNearbyOptions internal constructor() {
 	var country: String? = null
 	var radius: Double? = null
 	var unit: String? = null
+	var deep: Boolean = false
 }
 
 class PostalDistanceOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class EmailOptions internal constructor() {
@@ -88,6 +98,7 @@ class BinOptions internal constructor() {
 
 class IbanOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class NpiOptions internal constructor() {
@@ -101,6 +112,7 @@ class PhoneOptions internal constructor() {
 
 class CarrierOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 class CallerOptions internal constructor() {
@@ -109,6 +121,7 @@ class CallerOptions internal constructor() {
 
 class HlrOptions internal constructor() {
 	var country: String? = null
+	var deep: Boolean = false
 }
 
 /** Type selects the DNS question, including its CNAME chain. Omit for all supported types. */
@@ -141,20 +154,24 @@ class CurrencyRateOptions internal constructor() {
 class TimeOptions internal constructor() {
 	var at: String? = null
 	var to: String? = null
+	var deep: Boolean = false
 }
 
 class TimeAtOptions internal constructor() {
 	var at: String? = null
 	var to: String? = null
+	var deep: Boolean = false
 }
 
 class TimezoneOptions internal constructor() {
 	var at: String? = null
 	var to: String? = null
+	var deep: Boolean = false
 }
 
 class TimezoneAtOptions internal constructor() {
 	var at: String? = null
+	var deep: Boolean = false
 }
 
 class HolidayOptions internal constructor() {
@@ -164,10 +181,12 @@ class HolidayOptions internal constructor() {
 class DateOptions internal constructor() {
 	var format: String? = null
 	var to: String? = null
+	var deep: Boolean = false
 }
 
 class DateTodayOptions internal constructor() {
 	var to: String? = null
+	var deep: Boolean = false
 }
 
 class PointOptions internal constructor() {
@@ -181,6 +200,7 @@ class WeatherOptions internal constructor() {
 
 class EmojiSearchOptions internal constructor() {
 	var limit: Int? = null
+	var deep: Boolean = false
 }
 
 class AddressOptions internal constructor() {
@@ -218,4 +238,33 @@ class MeasureUnitsOptions internal constructor() {
 class NaicsSearchOptions internal constructor() {
 	/** Maximum results, 1-50. Default 10. */
 	var limit: Int? = null
+	var deep: Boolean = false
+}
+
+class CountryOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class CityIdOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class CityNearestOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class NaicsOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class CurrencyOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class LanguageOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+class EmojiOptions internal constructor() {
+	var deep: Boolean = false
 }

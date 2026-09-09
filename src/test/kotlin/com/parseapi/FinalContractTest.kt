@@ -83,9 +83,9 @@ class FinalContractTest {
         val hits = ParseAPI("test") { transport = search }.addressSearch("123 Main") { postal = "28202"; country = "US" }
         assertEquals("28202", hits.addresses.single().postal)
         assertTrue(search.requests.single().url.contains("q=123%20Main&country=US&postal=28202"))
-        val company = StubTransport(200, """{"company":"01234567","valid":true,"registered":true,"deep":{"country":{"name":"United Kingdom","blocs":null,"tax":"VAT"}}}""")
+        val company = StubTransport(200, """{"company":"01234567","valid":true,"registered":true,"deep":{}}""")
         val c = ParseAPI("test") { transport = company }.company("01234567") { country = "GB"; deep = true }
-        assertTrue(c.deep!!.country!!.blocs.isEmpty())
+        assertNull(c.deep!!.activity)
         assertTrue(company.requests.single().url.endsWith("/company/01234567?country=GB&deep=true"))
     }
 
@@ -98,10 +98,10 @@ class FinalContractTest {
         assertEquals(7.5, result.deep!!.air!!.pm25)
         assertEquals(80.0, result.deep!!.history!!.highF)
         assertTrue(weather.requests.single().url.contains("date=2026-09-01"))
-        val timezone = StubTransport(200, """{"timezone":"America/New_York","at":"2026-09-05T09:00:00-04:00","to":{"timezone":"Europe/London","offset":"+01:00","offset_minutes":60,"dst":true,"at":"2026-09-05T14:00:00+01:00"}}""")
+        val timezone = StubTransport(200, """{"timezone":"America/New_York","at":"2026-09-05T09:00:00-04:00","to":{"timezone":"Europe/London","offset":"+01:00","dst":true,"at":"2026-09-05T14:00:00+01:00","deep":{"offset_minutes":60}}}""")
         val zone = ParseAPI("test") { transport = timezone }.timezone("America/New_York") { at = "2026-09-05T09:00:00"; to = "Europe/London" }
         assertEquals("2026-09-05T14:00:00+01:00", zone.to!!.at)
-        assertEquals(60, zone.to!!.offsetMinutes)
+        assertEquals(60, zone.to!!.deep?.offsetMinutes)
         assertTrue(timezone.requests.single().url.endsWith("to=Europe%2FLondon"))
     }
 

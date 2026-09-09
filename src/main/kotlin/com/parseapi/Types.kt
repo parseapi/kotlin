@@ -3,8 +3,7 @@ package com.parseapi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-// Response types for the ParseAPI public API. Shapes are append-only
-// upstream, so these only ever grow. Nullable fields default to null.
+// Response types for the ParseAPI public API. Nullable fields default to null.
 // Deep objects follow the triad: null when not requested, empty when
 // requested but locked, populated when unlocked, so every field inside
 // a deep type is nullable. Unknown fields are ignored.
@@ -61,29 +60,17 @@ class ContinentCountries private constructor(
 @Serializable
 class Country private constructor(
 	val country: String,
-	val iso3: String,
-	val numeric: Int,
 	val name: String,
-	val fullName: String? = null,
 	val localName: String? = null,
-	val demonym: String? = null,
-	val capital: String? = null,
-	val capitalLat: Double? = null,
-	val capitalLon: Double? = null,
 	val continent: String,
-	val region: String? = null,
-	val subregion: String? = null,
-	val population: Long? = null,
-	val area: Double? = null,
 	val currency: String? = null,
 	val currencyName: String? = null,
 	val currencySymbol: String? = null,
-	val tld: String? = null,
 	val callingCode: String? = null,
 	val emoji: String? = null,
 	val languages: List<String> = emptyList(),
-	val borders: List<String> = emptyList(),
-	val blocs: List<String> = emptyList(),
+	val deep: CountryDeep? = null,
+	val timezones: List<String>? = null,
 )
 
 @Serializable
@@ -130,16 +117,10 @@ class State private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val population: Long? = null,
-	val area: Double? = null,
 	val timezone: String? = null,
 	val timezones: List<String> = emptyList(),
 	@SerialName("iso_3166_2") val iso31662: String? = null,
-	val fips: String? = null,
-	val capital: String? = null,
-	val areaCodes: List<String> = emptyList(),
-	val tax: String? = null,
-	val taxRate: Double? = null,
+	val deep: StateDeep? = null,
 )
 
 @Serializable
@@ -147,6 +128,7 @@ class StateDistrictItem private constructor(
 	val district: String,
 	val name: String,
 	val type: String? = null,
+	val deep: StateDistrictItemDeep? = null,
 )
 
 @Serializable
@@ -169,16 +151,9 @@ class District private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val population: Long? = null,
-	/** Total area in km2 (land + water, or the official total). */
-	val area: Double? = null,
-	/** Land area in km2. Null when the source publishes total only. */
-	val landArea: Double? = null,
-	/** Water area in km2. Null when the source publishes total only. */
-	val waterArea: Double? = null,
-	val seat: String? = null,
 	val timezone: String? = null,
 	val timezones: List<String> = emptyList(),
+	val deep: DistrictDeep? = null,
 )
 
 @Serializable
@@ -186,8 +161,6 @@ class City private constructor(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
-	/** What this city is the capital of: country, state, or null. */
-	val capitalOf: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val district: String? = null,
@@ -196,18 +169,10 @@ class City private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val elevation: Double? = null,
-	val elevationFt: Double? = null,
-	val population: Long? = null,
-	/** Total area in km2 (land + water, or the official total). */
-	val area: Double? = null,
-	/** Land area in km2. Null when the source publishes total only. */
-	val landArea: Double? = null,
-	/** Water area in km2. Null when the source publishes total only. */
-	val waterArea: Double? = null,
 	val timezone: String? = null,
 	/** Minted parse id (city_ + 12 chars). Stable pin via cityId(). */
 	val id: String,
+	val deep: CityDeep? = null,
 )
 
 /** Nearest-city lookups add the distance from the query point. */
@@ -216,7 +181,6 @@ class CityNearest private constructor(
 	val name: String,
 	val localName: String? = null,
 	val type: String? = null,
-	val capitalOf: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val district: String? = null,
@@ -225,16 +189,11 @@ class CityNearest private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val elevation: Double? = null,
-	val elevationFt: Double? = null,
-	val population: Long? = null,
-	val area: Double? = null,
-	val landArea: Double? = null,
-	val waterArea: Double? = null,
 	val timezone: String? = null,
 	val id: String,
 	val distance: Double,
 	val distanceMi: Double,
+	val deep: CityDeep? = null,
 )
 
 @Serializable
@@ -282,20 +241,8 @@ class Postal private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val elevation: Double? = null,
-	val elevationFt: Double? = null,
-	val population: Long? = null,
-	/** Total area in km2. Null when the source has no water split. */
-	val area: Double? = null,
-	/** Land area in km2, where the source has it. */
-	val landArea: Double? = null,
-	/** Water area in km2, where the source has it. */
-	val waterArea: Double? = null,
 	val timezone: String? = null,
-	val currency: String? = null,
-	val neighbors: List<String> = emptyList(),
-	/** Null is unknown; an empty list is observed outside all covered areas. */
-	val metros: List<PostalMetro>? = null,
+	val deep: PostalDeep? = null,
 )
 
 @Serializable
@@ -306,7 +253,7 @@ class PostalNearbyItem private constructor(
 	val country: String,
 	val distance: Double,
 	val distanceMi: Double,
-	val metros: List<PostalMetro>? = null,
+	val deep: PostalMetroDeep? = null,
 )
 
 @Serializable
@@ -315,15 +262,15 @@ class PostalNearby private constructor(
 	val country: String,
 	val radius: Double,
 	val unit: String,
-	val metros: List<PostalMetro>? = null,
 	val nearby: List<PostalNearbyItem> = emptyList(),
+	val deep: PostalMetroDeep? = null,
 )
 
 @Serializable
 class PostalDistanceEnd private constructor(
 	val postal: String,
 	val city: String? = null,
-	val metros: List<PostalMetro>? = null,
+	val deep: PostalMetroDeep? = null,
 )
 
 @Serializable
@@ -405,16 +352,13 @@ class Iban private constructor(
 	val country: String? = null,
 	/** Print form in groups of four, for display. Null when invalid. */
 	val formatted: String? = null,
-	val checksum: String? = null,
 	/** Bank identifier parsed from the number, not a name. */
 	val bank: String? = null,
 	/** Institution name from the national bank-code directory. Null when unsourced. */
 	val bankName: String? = null,
 	/** BIC from that same directory. Null when unsourced or missing. */
 	val bic: String? = null,
-	/** Branch identifier when that country has one. */
-	val branch: String? = null,
-	val account: String? = null,
+	val deep: IbanDeep? = null,
 )
 
 @Serializable
@@ -425,8 +369,6 @@ class Npi private constructor(
 	/** Exists in the CMS NPPES registry. */
 	val registered: Boolean? = null,
 	val active: Boolean? = null,
-	/** Date CMS deactivated the NPI, YYYY-MM-DD. Null when still active. */
-	val deactivatedAt: String? = null,
 	/** On the OIG exclusion list. */
 	val excluded: Boolean? = null,
 	/** individual or organization. */
@@ -464,6 +406,8 @@ class NpiDeep private constructor(
 	val optOut: Boolean? = null,
 	/** Enrollment rows. Empty when medicare is false. */
 	val enrollments: List<NpiEnrollment>? = null,
+	/** Date CMS deactivated the NPI, YYYY-MM-DD. Null when still active. */
+	val deactivatedAt: String? = null,
 )
 
 @Serializable
@@ -478,6 +422,7 @@ class TariffMeasure private constructor(
 	val from: String? = null,
 	/** Expires, ISO YYYY-MM-DD. Null when open-ended. */
 	val until: String? = null,
+	val conditional: Boolean? = null,
 )
 
 @Serializable
@@ -488,6 +433,12 @@ class TariffDeep private constructor(
 	@SerialName("effective_rate") val effectiveRate: Double? = null,
 	/** Every Chapter 99 tariff measure that applies to this code from this origin. */
 	val measures: List<TariffMeasure>? = null,
+	/** Units of quantity (No., kg). */
+	val units: List<String>? = null,
+	/** Column 1 special rate, verbatim. */
+	val special: String? = null,
+	/** Column 2 rate, verbatim. */
+	val other: String? = null,
 )
 
 @Serializable
@@ -498,14 +449,8 @@ class Tariff private constructor(
 	val description: String,
 	/** Parent descriptions from the schedule outline, outermost first. */
 	val lineage: List<String> = emptyList(),
-	/** Units of quantity (No., kg). */
-	val units: List<String> = emptyList(),
 	/** Column 1 general rate, verbatim. */
 	val general: String? = null,
-	/** Column 1 special rate, verbatim. */
-	val special: String? = null,
-	/** Column 2 rate, verbatim. */
-	val other: String? = null,
 	/** The official release that answered (2026HTSRev17). */
 	val revision: String,
 	val deep: TariffDeep? = null,
@@ -544,22 +489,7 @@ class VinDeep private constructor(
 	 * null when the recall registry did not answer.
 	 */
 	val recalls: List<VinRecall>? = null,
-)
-
-@Serializable
-class Vin private constructor(
-	/** Normalized VIN, uppercase, no spaces. Invalid input still echoes the fold. */
-	val vin: String? = null,
-	val valid: Boolean,
-	val year: Int? = null,
-	val make: String? = null,
-	val model: String? = null,
-	val trim: String? = null,
 	val series: String? = null,
-	/** Body style (sedan, coupe, suv, pickup). */
-	val body: String? = null,
-	/** Vehicle type (passenger car, truck, motorcycle, bus, trailer). */
-	val type: String? = null,
 	val doors: Int? = null,
 	val cylinders: Int? = null,
 	/** Engine displacement in liters. */
@@ -576,12 +506,33 @@ class Vin private constructor(
 	@SerialName("plant_country") val plantCountry: String? = null,
 	/** Gross vehicle weight rating class as filed. */
 	val gvwr: String? = null,
+)
+
+@Serializable
+class Vin private constructor(
+	/** Normalized VIN, uppercase, no spaces. Invalid input still echoes the fold. */
+	val vin: String? = null,
+	val valid: Boolean,
+	val year: Int? = null,
+	val make: String? = null,
+	val model: String? = null,
+	val trim: String? = null,
+	/** Body style (sedan, coupe, suv, pickup). */
+	val body: String? = null,
+	/** Vehicle type (passenger car, truck, motorcycle, bus, trailer). */
+	val type: String? = null,
 	val deep: VinDeep? = null,
 )
 
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
-class PhoneDeep private constructor()
+class PhoneDeep private constructor(
+	/** NPA-derived state code (US/CA). */
+	val state: String? = null,
+	val stateName: String? = null,
+	/** Numbering-plan IANA zone. Null when the prefix covers more than one zone. */
+	val timezone: String? = null,
+)
 
 @Serializable
 class Phone private constructor(
@@ -593,11 +544,6 @@ class Phone private constructor(
 	 * Never voip (that is the carrier field's word). Null when invalid.
 	 */
 	val type: String? = null,
-	/** NPA-derived state code (US/CA). */
-	val state: String? = null,
-	val stateName: String? = null,
-	/** Numbering-plan IANA zone. Null when the prefix covers more than one zone. */
-	val timezone: String? = null,
 	val national: String? = null,
 	val international: String? = null,
 	val deep: PhoneDeep? = null,
@@ -614,10 +560,7 @@ class Carrier private constructor(
 	val carrier: String? = null,
 	/** Carrier is a known burner number app. Null when carrier is unknown. */
 	val burner: Boolean? = null,
-	/** Issuing rate-center city. */
-	val city: String? = null,
-	val state: String? = null,
-	val stateName: String? = null,
+	val deep: CarrierDeep? = null,
 )
 
 @Serializable
@@ -641,16 +584,7 @@ class Hlr private constructor(
 	val live: Boolean? = null,
 	/** Handset reachable right now. Null means unconfirmed, never no. */
 	val connected: Boolean? = null,
-	/** The six network extras fill on live HLR dips only. Null elsewhere (NANP, failover). */
-	val roaming: Boolean? = null,
-	val roamingNetwork: String? = null,
-	/** ISO2, uppercase. */
-	val roamingCountry: String? = null,
-	/** Current serving network name. */
-	val network: String? = null,
-	val originalNetwork: String? = null,
-	val mcc: String? = null,
-	val mnc: String? = null,
+	val deep: HlrDeep? = null,
 )
 
 @Serializable
@@ -672,13 +606,6 @@ class DomainRegistration private constructor(
 
 @Serializable
 class DomainDeep private constructor(
-	val a: List<String>? = null,
-	val aaaa: List<String>? = null,
-	val ns: List<String>? = null,
-	val mx: List<MxRecord>? = null,
-	val txt: List<String>? = null,
-	/** The brand behind the MX (Google, Microsoft). */
-	val mailhost: String? = null,
 	val registration: DomainRegistration? = null,
 )
 
@@ -704,6 +631,15 @@ class Mac private constructor(
 	val vendor: String? = null,
 	val local: Boolean? = null,
 	val multicast: Boolean? = null,
+)
+
+/** A SWIFT/BIC format check and partial institution lookup. Valid means syntax only. */
+@Serializable
+class SwiftCode private constructor(
+	val swift: String,
+	val valid: Boolean,
+	val country: String? = null,
+	val name: String? = null,
 )
 
 /** A published DNS record. Value retains DNS presentation syntax, including TXT quoting. */
@@ -796,25 +732,22 @@ class Useragent private constructor(
 @Serializable
 class Currency private constructor(
 	val currency: String,
-	val numeric: Int? = null,
 	val name: String,
-	val namePlural: String? = null,
 	val symbol: String? = null,
 	val symbolNative: String? = null,
 	val digits: Int? = null,
-	val countries: List<String> = emptyList(),
+	val deep: CurrencyDeep? = null,
 )
 
 /** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). Codes are lowercase. */
 @Serializable
 class Language private constructor(
 	val language: String,
-	val iso3: String? = null,
 	val name: String,
 	val localName: String? = null,
 	val script: String? = null,
 	val direction: String,
-	val countries: List<String> = emptyList(),
+	val deep: LanguageDeep? = null,
 )
 
 /**
@@ -825,17 +758,12 @@ class Language private constructor(
 class Name private constructor(
 	val name: String,
 	val valid: Boolean,
-	/** Name membership, independent of gender. */
-	val known: Boolean = false,
-	/** Name associations, not the person's nationality. */
-	val countries: List<String> = emptyList(),
 	val prefix: String? = null,
 	val first: String? = null,
 	val middle: String? = null,
 	val last: String? = null,
 	val suffix: String? = null,
-	val gender: String? = null,
-	val salutation: String? = null,
+	val deep: NameDeep? = null,
 )
 
 @Serializable
@@ -865,16 +793,13 @@ class Timezone private constructor(
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	val timezone: String? = null,
-	val name: String? = null,
 	val abbreviation: String? = null,
 	val offset: String? = null,
-	val offsetSeconds: Int? = null,
-	val offsetMinutes: Int? = null,
 	val dst: Boolean? = null,
-	val nextDst: TimezoneNextDst? = null,
 	val at: String? = null,
 	val unix: Long? = null,
 	val to: TimezoneConversionTarget? = null,
+	val deep: TimezoneDeep? = null,
 )
 
 /** Calendar facts. Invalid or ambiguous input has valid false and null calendar fields. */
@@ -882,23 +807,11 @@ class Timezone private constructor(
 class DateInfo private constructor(
 	val date: String,
 	val valid: Boolean,
-	val year: Int? = null,
-	val month: Int? = null,
-	val monthName: String? = null,
-	val day: Int? = null,
-	/** ISO weekday, Monday 1 through Sunday 7. */
-	val weekday: Int? = null,
-	val weekdayName: String? = null,
-	val week: Int? = null,
-	val weekYear: Int? = null,
-	val dayOfYear: Int? = null,
-	val quarter: Int? = null,
-	val leap: Boolean? = null,
-	val daysInMonth: Int? = null,
 	/** Unix time at midnight UTC, in seconds. */
 	val unix: Long? = null,
 	val to: String? = null,
 	val days: Int? = null,
+	val deep: DateInfoDeep? = null,
 )
 
 @Serializable
@@ -937,8 +850,10 @@ class Elevation private constructor(
 
 @Serializable
 class PointDeep private constructor(
-	val city: CityNearest? = null,
-	val timezone: Timezone? = null,
+	val city: PointCity? = null,
+	val elevation: Double? = null,
+	val elevationFt: Double? = null,
+	val resolution: Double? = null,
 )
 
 @Serializable
@@ -951,10 +866,8 @@ class Point private constructor(
 	val stateName: String? = null,
 	val district: String? = null,
 	val districtName: String? = null,
-	val elevation: Double? = null,
-	val elevationFt: Double? = null,
-	val resolution: Double? = null,
 	val deep: PointDeep? = null,
+	val timezone: String? = null,
 )
 
 @Serializable
@@ -1013,6 +926,7 @@ class WeatherDeep private constructor(
 	val days: List<WeatherDay>? = null,
 	val air: WeatherAir? = null,
 	val history: WeatherHistory? = null,
+	val current: WeatherCurrentDeep? = null,
 )
 
 @Serializable
@@ -1021,18 +935,10 @@ class WeatherCurrent private constructor(
 	val temperatureF: Double? = null,
 	val feelsLike: Double? = null,
 	val feelsLikeF: Double? = null,
-	val dewpoint: Double? = null,
-	val dewpointF: Double? = null,
 	val humidity: Double? = null,
 	val windSpeed: Double? = null,
 	val windSpeedMph: Double? = null,
-	val windGust: Double? = null,
-	val windGustMph: Double? = null,
 	val windDirection: Double? = null,
-	val pressure: Double? = null,
-	val pressureInhg: Double? = null,
-	val visibility: Double? = null,
-	val visibilityMi: Double? = null,
 	val condition: String? = null,
 	val conditionName: String? = null,
 	val conditionEmoji: String? = null,
@@ -1069,13 +975,8 @@ class Emoji private constructor(
 	val emoji: String,
 	val name: String,
 	val shortcodes: List<String> = emptyList(),
-	val codepoints: List<String> = emptyList(),
-	val hex: String,
 	val category: String? = null,
-	val status: String? = null,
-	val version: String? = null,
-	val keywords: List<String> = emptyList(),
-	val skins: List<EmojiSkin> = emptyList(),
+	val deep: EmojiDeep? = null,
 )
 
 @Serializable
@@ -1139,14 +1040,12 @@ class WeatherHistory private constructor(
 @Serializable
 class TimezoneConversionTarget private constructor(
 	val timezone: String,
-	val name: String? = null,
 	val abbreviation: String? = null,
 	val offset: String,
-	val offsetSeconds: Int? = null,
-	val offsetMinutes: Int,
 	val dst: Boolean,
 	val at: String,
 	val unix: Long? = null,
+	val deep: TimezoneConversionTargetDeep? = null,
 )
 
 @Serializable
@@ -1202,9 +1101,16 @@ class CompanyCountry private constructor(
 
 @Serializable
 class CompanyDeep private constructor(
-	val country: CompanyCountry? = null,
-	val postal: Postal? = null,
-	val city: City? = null,
+	val activity: String? = null,
+	val stateName: String? = null,
+	val countryName: String? = null,
+	val vat: String? = null,
+	val gst: Boolean? = null,
+	val acn: String? = null,
+	val siren: String? = null,
+	val siege: Boolean? = null,
+	val kind: String? = null,
+	val invoice: String? = null,
 )
 
 @Serializable
@@ -1216,20 +1122,10 @@ class Company private constructor(
 	val type: String? = null,
 	val name: String? = null,
 	val active: Boolean? = null,
-	val activity: String? = null,
 	val address: String? = null,
 	val city: String? = null,
 	val state: String? = null,
-	val stateName: String? = null,
 	val postal: String? = null,
-	val countryName: String? = null,
-	val vat: String? = null,
-	val gst: Boolean? = null,
-	val acn: String? = null,
-	val siren: String? = null,
-	val siege: Boolean? = null,
-	val kind: String? = null,
-	val invoice: String? = null,
 	val deep: CompanyDeep? = null,
 )
 
@@ -1301,17 +1197,14 @@ class NAICSMatch private constructor(
 class NAICS private constructor(
 	val naics: String,
 	val name: String,
-	val description: String? = null,
 	val level: Int,
 	val parent: String? = null,
 	val parentName: String? = null,
-	val children: List<NAICSChild> = emptyList(),
-	/** Classification exclusions. Null for omitted/null older responses. */
-	val exclusions: List<NAICSExclusion>? = null,
 	/** Search evidence, absent on direct lookup and older responses. */
 	val match: NAICSMatch? = null,
 	val year: Int,
 	val country: String,
+	val deep: NAICSDeep? = null,
 )
 
 @Serializable
@@ -1319,14 +1212,291 @@ class NAICSSearch private constructor(
 	val q: String,
 	val year: Int,
 	val country: String,
-	val results: List<NAICS> = emptyList(),
+	val results: List<NAICSSearchResult> = emptyList(),
 )
 
-/** A SWIFT/BIC format check and partial institution lookup. Valid means syntax only. */
+
 @Serializable
-class SwiftCode private constructor(
-	val swift: String,
-	val valid: Boolean,
-	val country: String? = null,
+class CountryDeep private constructor(
+	val iso3: String? = null,
+	val numeric: Int? = null,
+	val fullName: String? = null,
+	val demonym: String? = null,
+	val capital: String? = null,
+	val capitalLat: Double? = null,
+	val capitalLon: Double? = null,
+	val region: String? = null,
+	val subregion: String? = null,
+	val population: Long? = null,
+	val area: Double? = null,
+	val tld: String? = null,
+	val borders: List<String>? = null,
+	val blocs: List<String>? = null,
+	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
+	val tax: String? = null,
+	/** Standard country reference rate in percent (19 means 19%). Null is unknown, zero is known zero. */
+	val taxRate: Double? = null,
+	/** Tax registration number mask (9 is a digit, A is a letter). Describes format only. */
+	val taxIdFormat: String? = null,
+	/** Anchored tax registration number format regex. A match does not establish registration. */
+	val taxIdRegex: String? = null,
+	val weekStart: String? = null,
+	val units: String? = null,
+	val drivingSide: String? = null,
+	val plugs: List<String>? = null,
+	val voltage: Int? = null,
+	val frequency: Int? = null,
+	val emergency: CountryEmergency? = null,
+	val postalFormat: String? = null,
+	val postalRegex: String? = null,
+	val ioc: String? = null,
+	val fifa: String? = null,
+	val plate: String? = null,
+)
+
+
+@Serializable
+class StateDeep private constructor(
+	val population: Long? = null,
+	val area: Double? = null,
+	val fips: String? = null,
+	val capital: String? = null,
+	val areaCodes: List<String>? = null,
+	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
+	val tax: String? = null,
+	/** State or province reference rate in percent. Country, state and postal rates are alternative references, not additive. */
+	val taxRate: Double? = null,
+)
+
+
+@Serializable
+class DistrictDeep private constructor(
+	val population: Long? = null,
+	/** Total area in km2 (land + water, or the official total). */
+	val area: Double? = null,
+	/** Land area in km2. Null when the source publishes total only. */
+	val landArea: Double? = null,
+	/** Water area in km2. Null when the source publishes total only. */
+	val waterArea: Double? = null,
+	val seat: String? = null,
+)
+
+
+@Serializable
+class CityDeep private constructor(
+	val capitalOf: String? = null,
+	val elevation: Double? = null,
+	val elevationFt: Double? = null,
+	val population: Long? = null,
+	val area: Double? = null,
+	val landArea: Double? = null,
+	val waterArea: Double? = null,
+)
+
+
+@Serializable
+class PostalDeep private constructor(
+	val elevation: Double? = null,
+	val elevationFt: Double? = null,
+	val population: Long? = null,
+	/** Total area in km2. Null when the source has no water split. */
+	val area: Double? = null,
+	/** Land area in km2, where the source has it. */
+	val landArea: Double? = null,
+	/** Water area in km2, where the source has it. */
+	val waterArea: Double? = null,
+	val currency: String? = null,
+	val neighbors: List<String>? = null,
+	/** Null is unknown; an empty list is observed outside all covered areas. */
+	val metros: List<PostalMetro>? = null,
+	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
+	val tax: String? = null,
+	/** Combined US ZIP reference rate in percent (7.9 means 7.9%). An exact address can differ. Null is unknown, zero is known zero. */
+	val taxRate: Double? = null,
+	/** State component of the ZIP reference rate, in percent. Null when unknown. */
+	val taxRateState: Double? = null,
+	/** County component of the ZIP reference rate, in percent. Null when unknown. */
+	val taxRateCounty: Double? = null,
+	/** City component of the ZIP reference rate, in percent. Null when unknown. */
+	val taxRateCity: Double? = null,
+	/** Special component of the ZIP reference rate, in percent. Null when unknown. */
+	val taxRateSpecial: Double? = null,
+)
+
+
+@Serializable
+class IbanDeep private constructor(
+	val checksum: String? = null,
+	/** Branch identifier when that country has one. */
+	val branch: String? = null,
+	val account: String? = null,
+)
+
+
+@Serializable
+class CarrierDeep private constructor(
+	/** Issuing rate-center city. */
+	val city: String? = null,
+	val state: String? = null,
+	val stateName: String? = null,
+)
+
+
+@Serializable
+class HlrDeep private constructor(
+	/** The six network extras fill on live HLR dips only. Null elsewhere (NANP, failover). */
+	val roaming: Boolean? = null,
+	val roamingNetwork: String? = null,
+	/** ISO2, uppercase. */
+	val roamingCountry: String? = null,
+	/** Current serving network name. */
+	val network: String? = null,
+	val originalNetwork: String? = null,
+	val mcc: String? = null,
+	val mnc: String? = null,
+)
+
+
+@Serializable
+class NAICSDeep private constructor(
+	val description: String? = null,
+	val children: List<NAICSChild>? = null,
+	/** Classification exclusions. Null for omitted/null older responses. */
+	val exclusions: List<NAICSExclusion>? = null,
+)
+
+
+@Serializable
+class CurrencyDeep private constructor(
+	val numeric: Int? = null,
+	val namePlural: String? = null,
+	val countries: List<String>? = null,
+)
+
+
+@Serializable
+class LanguageDeep private constructor(
+	val iso3: String? = null,
+	val countries: List<String>? = null,
+)
+
+
+@Serializable
+class NameDeep private constructor(
+	/** Name membership, independent of gender. */
+	val known: Boolean? = null,
+	/** Name associations, not the person's nationality. */
+	val countries: List<String>? = null,
+	val gender: String? = null,
+	val salutation: String? = null,
+)
+
+
+@Serializable
+class TimezoneDeep private constructor(
 	val name: String? = null,
+	val offsetSeconds: Int? = null,
+	val offsetMinutes: Int? = null,
+	val nextDst: TimezoneNextDst? = null,
+)
+
+
+@Serializable
+class TimezoneConversionTargetDeep private constructor(
+	val name: String? = null,
+	val offsetSeconds: Int? = null,
+	val offsetMinutes: Int? = null,
+)
+
+
+@Serializable
+class DateInfoDeep private constructor(
+	val year: Int? = null,
+	val month: Int? = null,
+	val monthName: String? = null,
+	val day: Int? = null,
+	/** ISO weekday, Monday 1 through Sunday 7. */
+	val weekday: Int? = null,
+	val weekdayName: String? = null,
+	val week: Int? = null,
+	val weekYear: Int? = null,
+	val dayOfYear: Int? = null,
+	val quarter: Int? = null,
+	val leap: Boolean? = null,
+	val daysInMonth: Int? = null,
+)
+
+
+@Serializable
+class EmojiDeep private constructor(
+	val codepoints: List<String>? = null,
+	val hex: String? = null,
+	val status: String? = null,
+	val version: String? = null,
+	val keywords: List<String>? = null,
+	val skins: List<EmojiSkin>? = null,
+)
+
+
+@Serializable
+class WeatherCurrentDeep private constructor(
+	val dewpoint: Double? = null,
+	val dewpointF: Double? = null,
+	val windGust: Double? = null,
+	val windGustMph: Double? = null,
+	val pressure: Double? = null,
+	val pressureInhg: Double? = null,
+	val visibility: Double? = null,
+	val visibilityMi: Double? = null,
+)
+
+
+@Serializable
+class PointCity private constructor(
+	val name: String? = null,
+	val localName: String? = null,
+	val type: String? = null,
+	val state: String? = null,
+	val stateName: String? = null,
+	val country: String? = null,
+	val countryName: String? = null,
+	val latitude: Double? = null,
+	val longitude: Double? = null,
+	/** Minted parse id (city_ + 12 chars). Stable pin via cityId(). */
+	val id: String? = null,
+	val distance: Double? = null,
+	val distanceMi: Double? = null,
+)
+
+
+@Serializable
+class PostalMetroDeep private constructor(
+	val metros: List<PostalMetro>? = null,
+)
+
+
+@Serializable
+class StateDistrictItemDeep private constructor(
+	val population: Long? = null,
+)
+
+
+@Serializable
+class CountryEmergency private constructor(
+	val police: String? = null,
+	val ambulance: String? = null,
+	val fire: String? = null,
+)
+
+
+@Serializable
+class NAICSSearchResult private constructor(
+	val naics: String,
+	val name: String,
+	val level: Int,
+	val parent: String? = null,
+	val parentName: String? = null,
+	/** Search evidence, absent on direct lookup and older responses. */
+	val match: NAICSMatch? = null,
+	val deep: NAICSDeep? = null,
 )
