@@ -408,6 +408,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun mac(mac: String): Mac =
 		get("/mac/${enc(mac)}")
 
+	/** Look up a 6-11 digit card prefix. Preserve leading zeros in the string. */
+	suspend fun bin(bin: String): Bin = bin(bin) {}
+
+	suspend fun bin(bin: String, configure: BinOptions.() -> Unit): Bin =
+		with(BinOptions().apply(configure)) {
+			get("/bin/${enc(bin)}", deepQuery(deep))
+		}
+
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
 	suspend fun measure(measure: String): Measure = measure(measure) {}
 

@@ -57,6 +57,7 @@ parse.ipSelf()
 parse.email("hello@gmail.com")
 parse.vat("DE136695976")
 parse.iban("DE89370400440532013000")
+parse.bin("424242")
 parse.npi("1881018208")
 parse.phone("+14155552671")
 parse.postal("SW1A 1AA")
@@ -205,3 +206,5 @@ Full field reference for every endpoint: [parseapi.com/docs](https://parseapi.co
 Run `./gradlew check` before a release. The checked-in `api/parseapi.api` records the public JVM API. Regenerate it with `./gradlew apiDump` only after reviewing an intentional API addition. Response properties can grow without exposing constructor or copy-method signatures. Operation options can grow without changing existing call signatures.
 
 Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/consumer`. Run that consumer locally with `./gradlew -p compatibility/consumer run`; it uses a test transport and makes no API requests.
+
+BIN lookup accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. `deep` adds an empty object on every plan.

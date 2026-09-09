@@ -81,6 +81,11 @@ class VatOptions internal constructor() {
 	var deep: Boolean = false
 }
 
+/** Deep requests an empty object on every plan. */
+class BinOptions internal constructor() {
+	var deep: Boolean = false
+}
+
 class IbanOptions internal constructor() {
 	var country: String? = null
 }

@@ -84,6 +84,9 @@ fun main(): Unit = runBlocking {
 	expectOk("postalDistance", { parse.postalDistance("28202", "10001") { this.country = "US" } }) { if (it.distance > 800 && it.distance < 1000) null else "distance ${it.distance}" }
 	expectOk("email", { parse.email("hello@gmail.com") }) { if (it.valid) null else "not valid" }
 	expectOk("vat", { parse.vat("DE136695976") }) { if (it.valid && it.country == "DE") null else "not valid DE" }
+	expectOk("bin", { parse.bin("00 0000") { deep = true } }) {
+		if (it.bin == "000000" && it.deep != null) null else "BIN echo or deep mismatch"
+	}
 	expectOk("iban", { parse.iban("DE89370400440532013000") }) {
 		if (it.valid && it.country == "DE" && it.bank == "37040044") null else "not valid DE"
 	}

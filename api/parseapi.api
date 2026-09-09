@@ -144,6 +144,55 @@ public final class com/parseapi/Asn$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/Bin {
+	public static final field Companion Lcom/parseapi/Bin$Companion;
+	public final fun getBin ()Ljava/lang/String;
+	public final fun getBrand ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/BinDeep;
+	public final fun getIssuer ()Ljava/lang/String;
+	public final fun getPrefix ()Ljava/lang/String;
+	public final fun getPrepaid ()Ljava/lang/Boolean;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/Bin$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Bin$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Bin;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Bin;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Bin$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BinDeep {
+	public static final field Companion Lcom/parseapi/BinDeep$Companion;
+}
+
+public synthetic class com/parseapi/BinDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BinDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BinDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BinDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BinDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BinOptions {
+	public final fun getDeep ()Z
+	public final fun setDeep (Z)V
+}
+
 public final class com/parseapi/Bloc {
 	public static final field Companion Lcom/parseapi/Bloc$Companion;
 	public final fun getBloc ()Ljava/lang/String;
@@ -1737,6 +1786,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun addressSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun addressSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun asn (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun bin (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun bin (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun bloc (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun blocCountries (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun caller (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
