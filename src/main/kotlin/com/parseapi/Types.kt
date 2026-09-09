@@ -1048,18 +1048,11 @@ class WeatherStation private constructor(
 )
 
 @Serializable
-class WeatherSource private constructor(
-	val id: String,
-	val name: String? = null,
-)
-
-@Serializable
 class Weather private constructor(
 	val latitude: Double,
 	val longitude: Double,
 	val current: WeatherCurrent,
 	val station: WeatherStation? = null,
-	val source: WeatherSource,
 	val deep: WeatherDeep? = null,
 )
 

@@ -2907,7 +2907,6 @@ public final class com/parseapi/Weather {
 	public final fun getDeep ()Lcom/parseapi/WeatherDeep;
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
-	public final fun getSource ()Lcom/parseapi/WeatherSource;
 	public final fun getStation ()Lcom/parseapi/WeatherStation;
 }
 
@@ -3190,26 +3189,6 @@ public final class com/parseapi/WeatherOptions {
 	public final fun getDeep ()Z
 	public final fun setDate (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
-}
-
-public final class com/parseapi/WeatherSource {
-	public static final field Companion Lcom/parseapi/WeatherSource$Companion;
-	public final fun getId ()Ljava/lang/String;
-	public final fun getName ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/WeatherSource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/WeatherSource$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/WeatherSource;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/WeatherSource;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/WeatherSource$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/WeatherStation {

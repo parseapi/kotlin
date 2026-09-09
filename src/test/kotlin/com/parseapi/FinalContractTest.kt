@@ -91,7 +91,7 @@ class FinalContractTest {
 
     @Test
     fun fullWeatherAndTimezoneFieldsAreAccessible() = runBlocking {
-        val weather = StubTransport(200, """{"latitude":40,"longitude":-74,"current":{},"source":{"id":"example","name":"Example"},"deep":{"minutes":[{"at":"2026-09-05T12:00Z","precipitation":0.2}],"hours":[{"at":"2026-09-05T12:00Z","feels_like":21,"wind_gust":30}],"days":[{"date":"2026-09-06","high":25}],"air":{"pm2_5":7.5},"history":{"date":"2026-09-01","high_f":80}}}""")
+        val weather = StubTransport(200, """{"latitude":40,"longitude":-74,"current":{},"deep":{"minutes":[{"at":"2026-09-05T12:00Z","precipitation":0.2}],"hours":[{"at":"2026-09-05T12:00Z","feels_like":21,"wind_gust":30}],"days":[{"date":"2026-09-06","high":25}],"air":{"pm2_5":7.5},"history":{"date":"2026-09-01","high_f":80}}}""")
         val result = ParseAPI("test") { transport = weather }.weather(40.0, -74.0) { deep = true; date = "2026-09-01" }
         assertEquals(21.0, result.deep!!.hours!!.single().feelsLike)
         assertEquals(30.0, result.deep!!.hours!!.single().windGust)

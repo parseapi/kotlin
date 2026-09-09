@@ -346,12 +346,12 @@ class DecodingTest {
 	fun weatherRooms() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"latitude":40.71,"longitude":-74.01,"current":{"temperature":21.7,"temperature_f":71.1,"humidity":63,"observed_at":"2026-08-28T12:51:00Z"},"station":{"id":"KNYC","name":"New York City, Central Park","distance":4.3,"distance_mi":2.7},"source":{"id":"nws","name":"US National Weather Service"}}""",
+			"""{"latitude":40.71,"longitude":-74.01,"current":{"temperature":21.7,"temperature_f":71.1,"humidity":63,"observed_at":"2026-08-28T12:51:00Z"},"station":{"id":"KNYC","name":"New York City, Central Park","distance":4.3,"distance_mi":2.7}}""",
 		)
 		val result = client(stub).weather(40.71, -74.01)
 		assertEquals(71.1, result.current.temperatureF)
 		assertEquals("KNYC", result.station?.id)
-		assertEquals("nws", result.source.id)
+		assertEquals("2026-08-28T12:51:00Z", result.current.observedAt)
 		assertNull(result.deep)
 	}
 
