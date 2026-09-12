@@ -296,7 +296,9 @@ class Email private constructor(
 	/** Suggested full address when the host is a known misspelling. Never a guess. */
 	val didyoumean: String? = null,
 	val valid: Boolean,
+	val free: Boolean = false,
 	val domain: String? = null,
+	val domainType: String? = null,
 	val domainValid: Boolean? = null,
 	val role: Boolean,
 	val disposable: Boolean,

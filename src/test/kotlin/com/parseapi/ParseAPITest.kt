@@ -55,7 +55,7 @@ class UrlMappingTest {
 
 	@Test
 	fun emailEncodesAt() = runBlocking {
-		val stub = StubTransport(200, """{"email":"a@b.com","valid":true,"role":false,"disposable":false}""")
+		val stub = StubTransport(200, """{"email":"a@b.com","valid":true,"free":false,"role":false,"disposable":false}""")
 		client(stub).email("a@b.com")
 		assertEquals("https://api.parseapi.com/email/a%40b.com", stub.requests[0].url)
 	}
