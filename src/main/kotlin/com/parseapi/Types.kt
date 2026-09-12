@@ -1396,8 +1396,6 @@ class LanguageDeep private constructor(
 class NameDeep private constructor(
 	/** Name membership, independent of gender. */
 	val known: Boolean? = null,
-	/** Name associations, not the person's nationality. */
-	val countries: List<String>? = null,
 	val gender: String? = null,
 	val salutation: String? = null,
 )
