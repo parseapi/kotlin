@@ -149,6 +149,7 @@ public final class com/parseapi/Bin {
 	public static final field Companion Lcom/parseapi/Bin$Companion;
 	public final fun getBin ()Ljava/lang/String;
 	public final fun getBrand ()Ljava/lang/String;
+	public final fun getBrandName ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getDeep ()Lcom/parseapi/BinDeep;
 	public final fun getIssuer ()Ljava/lang/String;

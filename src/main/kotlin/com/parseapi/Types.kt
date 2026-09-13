@@ -344,6 +344,7 @@ class Bin private constructor(
 	val country: String? = null,
 	val issuer: String? = null,
 	val brand: String? = null,
+	val brandName: String? = null,
 	val type: String? = null,
 	val prepaid: Boolean? = null,
 	val deep: BinDeep? = null,
