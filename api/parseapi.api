@@ -1183,8 +1183,10 @@ public final class com/parseapi/Email {
 	public final fun getDidyoumean ()Ljava/lang/String;
 	public final fun getDisposable ()Z
 	public final fun getDomain ()Ljava/lang/String;
+	public final fun getDomainType ()Ljava/lang/String;
 	public final fun getDomainValid ()Ljava/lang/Boolean;
 	public final fun getEmail ()Ljava/lang/String;
+	public final fun getFree ()Z
 	public final fun getRole ()Z
 	public final fun getValid ()Z
 }
@@ -2003,7 +2005,6 @@ public final class com/parseapi/Name$Companion {
 
 public final class com/parseapi/NameDeep {
 	public static final field Companion Lcom/parseapi/NameDeep$Companion;
-	public final fun getCountries ()Ljava/util/List;
 	public final fun getGender ()Ljava/lang/String;
 	public final fun getKnown ()Ljava/lang/Boolean;
 	public final fun getSalutation ()Ljava/lang/String;
