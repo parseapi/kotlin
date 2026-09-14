@@ -713,14 +713,19 @@ public final class com/parseapi/CountryDeep {
 	public final fun getCapital ()Ljava/lang/String;
 	public final fun getCapitalLat ()Ljava/lang/Double;
 	public final fun getCapitalLon ()Ljava/lang/Double;
+	public final fun getCoastline ()Ljava/lang/Double;
 	public final fun getDemonym ()Ljava/lang/String;
 	public final fun getDrivingSide ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
 	public final fun getEmergency ()Lcom/parseapi/CountryEmergency;
 	public final fun getFifa ()Ljava/lang/String;
 	public final fun getFrequency ()Ljava/lang/Integer;
 	public final fun getFullName ()Ljava/lang/String;
+	public final fun getHighestPoint ()Lcom/parseapi/CountryElevationPoint;
 	public final fun getIoc ()Ljava/lang/String;
 	public final fun getIso3 ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
+	public final fun getLowestPoint ()Lcom/parseapi/CountryElevationPoint;
 	public final fun getNumeric ()Ljava/lang/Integer;
 	public final fun getPlate ()Ljava/lang/String;
 	public final fun getPlugs ()Ljava/util/List;
@@ -737,6 +742,7 @@ public final class com/parseapi/CountryDeep {
 	public final fun getTld ()Ljava/lang/String;
 	public final fun getUnits ()Ljava/lang/String;
 	public final fun getVoltage ()Ljava/lang/Integer;
+	public final fun getWaterArea ()Ljava/lang/Double;
 	public final fun getWeekStart ()Ljava/lang/String;
 }
 
@@ -751,6 +757,26 @@ public synthetic class com/parseapi/CountryDeep$$serializer : kotlinx/serializat
 }
 
 public final class com/parseapi/CountryDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CountryElevationPoint {
+	public static final field Companion Lcom/parseapi/CountryElevationPoint$Companion;
+	public final fun getElevation ()D
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CountryElevationPoint$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CountryElevationPoint$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CountryElevationPoint;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CountryElevationPoint;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CountryElevationPoint$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

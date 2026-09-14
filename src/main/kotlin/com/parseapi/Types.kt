@@ -1231,6 +1231,16 @@ class CountryDeep private constructor(
 	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
 	val populationPeriod: String? = null,
 	val area: Double? = null,
+	/** Land area in km2. */
+	val landArea: Double? = null,
+	/** Water area in km2. */
+	val waterArea: Double? = null,
+	/** Coastline length in km. Zero is a known landlocked coastline. */
+	val coastline: Double? = null,
+	/** Mean elevation in metres above sea level. */
+	val elevation: Double? = null,
+	val lowestPoint: CountryElevationPoint? = null,
+	val highestPoint: CountryElevationPoint? = null,
 	val tld: String? = null,
 	val borders: List<String>? = null,
 	val blocs: List<String>? = null,
@@ -1254,6 +1264,13 @@ class CountryDeep private constructor(
 	val ioc: String? = null,
 	val fifa: String? = null,
 	val plate: String? = null,
+)
+
+@Serializable
+class CountryElevationPoint private constructor(
+	val name: String? = null,
+	/** Elevation in metres above sea level. Values below sea level are negative. */
+	val elevation: Double,
 )
 
 
