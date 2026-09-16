@@ -6,7 +6,7 @@ plugins {
 }
 
 repositories { mavenCentral() }
-dependencies { implementation("com.parseapi:parseapi:0.5.0") }
+dependencies { implementation("com.parseapi:parseapi:1.0.0") }
 kotlin { compilerOptions { jvmTarget.set(JvmTarget.JVM_11) } }
 java {
     sourceCompatibility = JavaVersion.VERSION_11
