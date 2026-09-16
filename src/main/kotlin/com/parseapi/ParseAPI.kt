@@ -130,7 +130,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun ip(ip: String, configure: IpOptions.() -> Unit): Ip =
 		with(IpOptions().apply(configure)) {
-			get("/ip/${enc(ip)}", deepQuery(deep))
+			get("/ip/${enc(ip)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**
@@ -144,20 +144,32 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun ipSelf(configure: IpSelfOptions.() -> Unit): Ip =
 		with(IpSelfOptions().apply(configure)) {
-			get("/ip", deepQuery(deep))
+			get("/ip", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun continent(code: String): Continent =
 		get("/continent/${enc(code)}")
 
+	suspend fun continent(code: String, configure: ContinentOptions.() -> Unit): Continent =
+		with(ContinentOptions().apply(configure)) {
+			get("/continent/${enc(code)}", listOf("lang" to lang))
+		}
+
+
 	suspend fun continentCountries(code: String): ContinentCountries =
 		get("/continent/${enc(code)}/countries")
+
+	suspend fun continentCountries(code: String, configure: ContinentCountriesOptions.() -> Unit): ContinentCountries =
+		with(ContinentCountriesOptions().apply(configure)) {
+			get("/continent/${enc(code)}/countries", listOf("lang" to lang))
+		}
+
 
 	suspend fun country(code: String): Country = country(code) {}
 
 	suspend fun country(code: String, configure: CountryOptions.() -> Unit): Country =
 		with(CountryOptions().apply(configure)) {
-			get("/country/${enc(code)}", deepQuery(deep))
+			get("/country/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun bloc(code: String): Bloc =
@@ -166,15 +178,27 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun blocCountries(code: String): BlocCountries =
 		get("/bloc/${enc(code)}/countries")
 
+	suspend fun blocCountries(code: String, configure: BlocCountriesOptions.() -> Unit): BlocCountries =
+		with(BlocCountriesOptions().apply(configure)) {
+			get("/bloc/${enc(code)}/countries", listOf("lang" to lang))
+		}
+
+
 	suspend fun countryStates(code: String): CountryStates =
 		get("/country/${enc(code)}/states")
+
+	suspend fun countryStates(code: String, configure: CountryStatesOptions.() -> Unit): CountryStates =
+		with(CountryStatesOptions().apply(configure)) {
+			get("/country/${enc(code)}/states", listOf("lang" to lang))
+		}
+
 
 	suspend fun state(code: String): State =
 		state(code) {}
 
 	suspend fun state(code: String, configure: StateOptions.() -> Unit): State =
 		with(StateOptions().apply(configure)) {
-			get("/state/${enc(code)}", listOf("country" to country) + deepQuery(deep))
+			get("/state/${enc(code)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun stateDistricts(code: String): StateDistricts =
@@ -182,7 +206,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun stateDistricts(code: String, configure: StateDistrictsOptions.() -> Unit): StateDistricts =
 		with(StateDistrictsOptions().apply(configure)) {
-			get("/state/${enc(code)}/districts", listOf("country" to country) + deepQuery(deep))
+			get("/state/${enc(code)}/districts", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun district(code: String): District =
@@ -190,7 +214,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun district(code: String, configure: DistrictOptions.() -> Unit): District =
 		with(DistrictOptions().apply(configure)) {
-			get("/district/${enc(code)}", listOf("country" to country, "state" to state) + deepQuery(deep))
+			get("/district/${enc(code)}", listOf("country" to country, "state" to state) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun city(name: String): City =
@@ -198,7 +222,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun city(name: String, configure: CityOptions.() -> Unit): City =
 		with(CityOptions().apply(configure)) {
-			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + deepQuery(deep))
+			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Pin or refetch a city by its minted id (city_ + 12 chars). */
@@ -206,7 +230,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun cityId(id: String, configure: CityIdOptions.() -> Unit): City =
 		with(CityIdOptions().apply(configure)) {
-			get("/city/id/${enc(id)}", deepQuery(deep))
+			get("/city/id/${enc(id)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun citySearch(query: String): CitySearch =
@@ -214,14 +238,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun citySearch(query: String, configure: CitySearchOptions.() -> Unit): CitySearch =
 		with(CitySearchOptions().apply(configure)) {
-			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()) + deepQuery(deep))
+			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun cityNearest(lat: Double, lon: Double): CityNearest = cityNearest(lat, lon) {}
 
 	suspend fun cityNearest(lat: Double, lon: Double, configure: CityNearestOptions.() -> Unit): CityNearest =
 		with(CityNearestOptions().apply(configure)) {
-			get("/city", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+			get("/city", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun cityNearby(name: String): CityNearby =
@@ -237,7 +261,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 					"country" to country,
 					"state" to state,
 					"limit" to limit?.toString(),
-				) + deepQuery(deep),
+				) + deepQuery(deep) + listOf("lang" to lang),
 			)
 		}
 
@@ -246,7 +270,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun language(code: String, configure: LanguageOptions.() -> Unit): Language =
 		with(LanguageOptions().apply(configure)) {
-			get("/language/${enc(code)}", deepQuery(deep))
+			get("/language/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Parse a person's name. Junk input returns valid false, never an error. */
@@ -272,7 +296,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun postal(code: String, configure: PostalOptions.() -> Unit): Postal =
 		with(PostalOptions().apply(configure)) {
-			get("/postal/${enc(code)}", listOf("country" to country) + deepQuery(deep))
+			get("/postal/${enc(code)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun postalNearby(code: String): PostalNearby =
@@ -280,7 +304,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun postalNearby(code: String, configure: PostalNearbyOptions.() -> Unit): PostalNearby =
 		with(PostalNearbyOptions().apply(configure)) {
-			get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit) + deepQuery(deep))
+			get("/postal/${enc(code)}/nearby", listOf("country" to country, "radius" to radius?.let(::num), "unit" to unit) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun postalDistance(from: String, to: String): PostalDistance =
@@ -288,7 +312,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun postalDistance(from: String, to: String, configure: PostalDistanceOptions.() -> Unit): PostalDistance =
 		with(PostalDistanceOptions().apply(configure)) {
-			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country) + deepQuery(deep))
+			get("/postal/${enc(from)}/distance/${enc(to)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**
@@ -344,7 +368,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun npi(npi: String, configure: NpiOptions.() -> Unit): Npi =
 		with(NpiOptions().apply(configure)) {
-			get("/npi/${enc(npi)}", deepQuery(deep))
+			get("/npi/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**
@@ -426,6 +450,12 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun asn(asn: String): Asn =
 		get("/asn/${enc(asn)}")
 
+	suspend fun asn(asn: String, configure: AsnOptions.() -> Unit): Asn =
+		with(AsnOptions().apply(configure)) {
+			get("/asn/${enc(asn)}", listOf("lang" to lang))
+		}
+
+
 	suspend fun mac(mac: String): Mac =
 		get("/mac/${enc(mac)}")
 
@@ -452,7 +482,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	/** Discover reviewed units. unit filters compatible conversion targets. */
 	suspend fun measureUnits(configure: MeasureUnitsOptions.() -> Unit): MeasureUnits =
 		with(MeasureUnitsOptions().apply(configure)) {
-			get("/measure/units", listOf("q" to query, "type" to type, "unit" to unit))
+			get("/measure/units", listOf("q" to query, "type" to type, "unit" to unit) + listOf("lang" to lang))
 		}
 
 
@@ -533,7 +563,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun currency(code: String, configure: CurrencyOptions.() -> Unit): Currency =
 		with(CurrencyOptions().apply(configure)) {
-			get("/currency/${enc(code)}", deepQuery(deep))
+			get("/currency/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
@@ -550,14 +580,14 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun time(timezone: String? = null, configure: TimeOptions.() -> Unit): Time =
 		with(TimeOptions().apply(configure)) {
-			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to) + deepQuery(deep))
+			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun timeAt(lat: Double, lon: Double): Time = timeAt(lat, lon) {}
 
 	suspend fun timeAt(lat: Double, lon: Double, configure: TimeAtOptions.() -> Unit): Time =
 		with(TimeAtOptions().apply(configure)) {
-			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to) + deepQuery(deep))
+			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun timezone(id: String): Timezone =
@@ -565,7 +595,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun timezone(id: String, configure: TimezoneOptions.() -> Unit): Timezone =
 		with(TimezoneOptions().apply(configure)) {
-			get("/timezone/${enc(id)}", listOf("at" to at, "to" to to) + deepQuery(deep))
+			get("/timezone/${enc(id)}", listOf("at" to at, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Coords in, zone out. */
@@ -574,7 +604,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun timezoneAt(lat: Double, lon: Double, configure: TimezoneAtOptions.() -> Unit): Timezone =
 		with(TimezoneAtOptions().apply(configure)) {
-			get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at) + deepQuery(deep))
+			get("/timezone", listOf("lat" to num(lat), "lon" to num(lon), "at" to at) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun holiday(country: String): HolidayYear =
@@ -591,7 +621,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun date(date: String, configure: DateOptions.() -> Unit): DateInfo =
 		with(DateOptions().apply(configure)) {
-			get("/date/${enc(date)}", listOf("format" to format, "to" to to) + deepQuery(deep))
+			get("/date/${enc(date)}", listOf("format" to format, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Today's calendar date in UTC. Pass to for the signed day difference. */
@@ -600,7 +630,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun dateToday(configure: DateTodayOptions.() -> Unit): DateInfo =
 		with(DateTodayOptions().apply(configure)) {
-			get("/date", listOf("to" to to) + deepQuery(deep))
+			get("/date", listOf("to" to to) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** One date. A covered date that is not a holiday answers holiday null. */
@@ -625,7 +655,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun point(lat: Double, lon: Double, configure: PointOptions.() -> Unit): Point =
 		with(PointOptions().apply(configure)) {
-			get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep))
+			get("/point", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**
@@ -650,7 +680,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun emoji(emoji: String, configure: EmojiOptions.() -> Unit): Emoji =
 		with(EmojiOptions().apply(configure)) {
-			get("/emoji/${enc(emoji)}", deepQuery(deep))
+			get("/emoji/${enc(emoji)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun emojiSearch(query: String): EmojiSearch =
@@ -658,7 +688,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun emojiSearch(query: String, configure: EmojiSearchOptions.() -> Unit): EmojiSearch =
 		with(EmojiSearchOptions().apply(configure)) {
-			get("/emoji", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
+			get("/emoji", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun address(address: String): Address = address(address) {}
@@ -685,7 +715,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun company(number: String): Company = company(number) {}
 	suspend fun company(number: String, configure: CompanyOptions.() -> Unit): Company = with(CompanyOptions().apply(configure)) {
-		get("/company/${enc(number)}", listOf("country" to country) + deepQuery(deep))
+		get("/company/${enc(number)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 	}
 
 	// Transport
@@ -780,7 +810,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "0.4.0"
+		const val VERSION = "0.5.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
 		private const val RETRY_AFTER_CAP_MS = 5_000L
 	}

@@ -13,36 +13,50 @@ class ParseAPIOptions internal constructor() {
 
 // Each operation owns its options, so new optional fields leave call signatures stable.
 class IpOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class IpSelfOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class StateOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
 
 class StateDistrictsOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
 
 class DistrictOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var state: String? = null
 	var deep: Boolean = false
 }
 
 class CityOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var state: String? = null
 	var deep: Boolean = false
 }
 
 class CitySearchOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var state: String? = null
 	var limit: Int? = null
@@ -50,6 +64,8 @@ class CitySearchOptions internal constructor() {
 }
 
 class CityNearbyOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var radius: Double? = null
 	var unit: String? = null
 	var country: String? = null
@@ -67,11 +83,15 @@ class NameOptions internal constructor() {
 }
 
 class PostalOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
 
 class PostalNearbyOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var radius: Double? = null
 	var unit: String? = null
@@ -79,6 +99,8 @@ class PostalNearbyOptions internal constructor() {
 }
 
 class PostalDistanceOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
@@ -104,6 +126,8 @@ class IbanOptions internal constructor() {
 }
 
 class NpiOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
@@ -156,24 +180,32 @@ class CurrencyRateOptions internal constructor() {
 }
 
 class TimeOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
 	var deep: Boolean = false
 }
 
 class TimeAtOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
 	var deep: Boolean = false
 }
 
 class TimezoneOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
 	var deep: Boolean = false
 }
 
 class TimezoneAtOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var at: String? = null
 	var deep: Boolean = false
 }
@@ -183,17 +215,23 @@ class HolidayOptions internal constructor() {
 }
 
 class DateOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var format: String? = null
 	var to: String? = null
 	var deep: Boolean = false
 }
 
 class DateTodayOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var to: String? = null
 	var deep: Boolean = false
 }
 
 class PointOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	/** Add terrain and compact nearest-city context on every plan. The timezone ID stays in core. */
 	var deep: Boolean = false
 }
@@ -206,6 +244,8 @@ class WeatherOptions internal constructor() {
 }
 
 class EmojiSearchOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var limit: Int? = null
 	var deep: Boolean = false
 }
@@ -224,6 +264,8 @@ class AddressSearchOptions internal constructor() {
 }
 
 class CompanyOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
@@ -237,6 +279,8 @@ class MeasureOptions internal constructor() {
 
 /** Filters for the reviewed unit catalog. Unit selects compatible targets. */
 class MeasureUnitsOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var query: String? = null
 	var type: String? = null
 	var unit: String? = null
@@ -249,14 +293,20 @@ class NaicsSearchOptions internal constructor() {
 }
 
 class CountryOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class CityIdOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class CityNearestOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
@@ -265,13 +315,44 @@ class NaicsOptions internal constructor() {
 }
 
 class CurrencyOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class LanguageOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
 }
 
 class EmojiOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
 	var deep: Boolean = false
+}
+
+/** Display language for this operation. */
+class ContinentOptions internal constructor() {
+	var lang: String? = null
+}
+
+/** Display language for this operation. */
+class ContinentCountriesOptions internal constructor() {
+	var lang: String? = null
+}
+
+/** Display language for this operation. */
+class BlocCountriesOptions internal constructor() {
+	var lang: String? = null
+}
+
+/** Display language for this operation. */
+class CountryStatesOptions internal constructor() {
+	var lang: String? = null
+}
+
+/** Display language for this operation. */
+class AsnOptions internal constructor() {
+	var lang: String? = null
 }
