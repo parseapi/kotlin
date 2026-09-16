@@ -62,6 +62,8 @@ class CityNearbyOptions internal constructor() {
 class NameOptions internal constructor() {
 	var country: String? = null
 	var deep: Boolean = false
+	/** CLDR formatting locale, default en. Parsing stays unchanged. */
+	var nameLocale: String? = null
 }
 
 class PostalOptions internal constructor() {

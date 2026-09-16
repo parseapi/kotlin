@@ -256,7 +256,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	/** Parse a name with an optional ISO2 country context for gender. */
 	suspend fun name(name: String, configure: NameOptions.() -> Unit): Name =
 		with(NameOptions().apply(configure)) {
-			get("/name/${enc(name)}", listOf("country" to country) + deepQuery(deep))
+			get("/name/${enc(name)}", listOf("country" to country) + deepQuery(deep) + listOf("name_locale" to nameLocale))
 		}
 
 	/**

@@ -256,7 +256,7 @@ class ADPTest {
    assertNotNull(rich0.deep)
    assertEquals(1,stub0.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
-   val stub1 = StubTransport(200, """{"name":"Andrea","valid":true,"first":"Andrea","deep":{"known":false,"gender":null}}""")
+   val stub1 = StubTransport(200, """{"name":"Andrea","valid":true,"first":"Andrea","deep":{"gender":null,"salutation":null}}""")
    val rich1 = ParseAPI("test") { transport=stub1 }.name("Andrea") { deep=true }
    assertNotNull(rich1.deep)
    assertEquals(1,stub1.requests.size)

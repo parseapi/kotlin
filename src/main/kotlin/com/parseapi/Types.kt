@@ -1414,10 +1414,11 @@ class LanguageDeep private constructor(
 
 @Serializable
 class NameDeep private constructor(
-	/** Name membership, independent of gender. */
-	val known: Boolean? = null,
 	val gender: String? = null,
 	val salutation: String? = null,
+	val short: String? = null,
+	val directory: String? = null,
+	val initials: String? = null,
 )
 
 
