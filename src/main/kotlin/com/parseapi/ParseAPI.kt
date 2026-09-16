@@ -739,6 +739,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 		val headers = buildMap {
 			put("X-API-Key", key)
+			put("Parse-Version", API_VERSION)
 			put("User-Agent", userAgent ?: "parseapi-kotlin/$VERSION")
 			appId?.let { put("X-App-Id", it) }
 		}
@@ -811,6 +812,8 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	companion object {
 		const val VERSION = "0.5.0"
+		// The response types' wire contract. Changes require a reviewed major SDK release.
+		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
 		private const val RETRY_AFTER_CAP_MS = 5_000L
 	}
