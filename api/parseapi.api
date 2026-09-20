@@ -1282,6 +1282,12 @@ public final class com/parseapi/EmailDeep {
 	public static final field Companion Lcom/parseapi/EmailDeep$Companion;
 	public final fun getCatchall ()Ljava/lang/Boolean;
 	public final fun getDeliverable ()Ljava/lang/Boolean;
+	public final fun getFirstName ()Ljava/lang/String;
+	public final fun getMailProvider ()Ljava/lang/String;
+	public final fun getNoReply ()Ljava/lang/Boolean;
+	public final fun getReason ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getTag ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/EmailDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {

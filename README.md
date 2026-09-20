@@ -1,5 +1,5 @@
 ```sh
-git clone --branch 1.0.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 1.1.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -11,7 +11,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:1.0.0")
+implementation("com.parseapi:parseapi:1.1.0")
 ```
 
 ```kotlin
@@ -25,7 +25,7 @@ Get a key at [parseapi.com](https://parseapi.com). In an app, mint an App key on
 
 ## API versions
 
-Version 1.0.0 sends `Parse-Version: 2.0.0` on every request, including retries. Its response types match API `2.0.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release.
+Version 1.1.0 sends `Parse-Version: 2.0.0` on every request, including retries. Its response types match API `2.0.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release.
 
 The team setting in [Dashboard API version](https://parseapi.com/dashboard/versions) is the default for requests without a version header. This SDK's header takes precedence without changing that saved default. Existing published packages keep their documented behavior.
 
@@ -207,7 +207,7 @@ The default call returns the common answer. Request more detail with `parse.coun
 |---|---|
 | IP | Richer IP fields included with a paid plan. No separate check meter. |
 | Domain | Registration dates, registrar, status and DNSSEC, included with a paid plan. Use `dns` for DNS records and `mx` for mail routing. |
-| Email | A metered deliverability check, using included email checks or enabled on-demand usage. |
+| Email | A metered mailbox check with deliverability, catch-all, status, reason and address hints, using included email checks or enabled on-demand usage. |
 | VAT | A metered registry check where supported, using included VAT checks or enabled on-demand usage. |
 | Country, State, City, District, Postal | Reference profiles included with a paid plan; place identity and coordinates stay core. |
 | VIN, NPI, NAICS, Company | Paid technical or registration profiles. NPI exclusion status and NAICS hierarchy stay core. |
@@ -216,6 +216,10 @@ The default call returns the common answer. Request more detail with `parse.coun
 | Phone, IBAN | Numbering-plan or bank structure detail in the same pooled request on every plan. |
 | Time, Date, Currency, Language, Emoji, Point | Optional reference detail in the same pooled request on every plan. |
 | Carrier, HLR | Available place or network detail from the same metered core unit, including Free included units. |
+
+Email deep includes mailbox status and the reason for the result, plus a suggested first name, no-reply flag, plus-address tag and mail service. The suggested name is not a verified identity. Unavailable details are null.
+
+Reasons include `accepted`, `invalid_format`, `invalid_domain`, `no_mail_server`, `mailbox_not_found`, `mailbox_disabled`, `mailbox_full`, `catchall`, `disposable`, `temporary_failure`, `rejected` and `unconfirmed`.
 
 Carrier, caller, and HLR are separate metered operations. Choose them explicitly when you need their answers. Ordinary lookups retry twice by default. Metered checks use one attempt by default. Setting retries explicitly can repeat paid usage.
 

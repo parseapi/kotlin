@@ -286,8 +286,17 @@ class PostalDistance private constructor(
 
 @Serializable
 class EmailDeep private constructor(
+	/** Suggested first name. Not a verified identity. */
+	val firstName: String? = null,
+	val noReply: Boolean? = null,
+	val tag: String? = null,
+	val mailProvider: String? = null,
 	val deliverable: Boolean? = null,
 	val catchall: Boolean? = null,
+	/** Mailbox status: deliverable, undeliverable or risky. Null when unavailable. */
+	val status: String? = null,
+	/** Why the address received this result, such as mailbox_full or mailbox_not_found. Null when unavailable. */
+	val reason: String? = null,
 )
 
 @Serializable
