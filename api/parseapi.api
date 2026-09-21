@@ -2314,6 +2314,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun postalDistance (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun postalNearby (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun postalNearby (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun stack (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun stack (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun state (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun state (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stateDistricts (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2776,6 +2778,85 @@ public synthetic class com/parseapi/PropertyTax$$serializer : kotlinx/serializat
 }
 
 public final class com/parseapi/PropertyTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/Stack {
+	public static final field Companion Lcom/parseapi/Stack$Companion;
+	public final fun getAnalytics ()Ljava/util/List;
+	public final fun getChat ()Ljava/util/List;
+	public final fun getCheckedAt ()Ljava/lang/String;
+	public final fun getCms ()Ljava/util/List;
+	public final fun getDeep ()Lcom/parseapi/StackDeep;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getEcommerce ()Ljava/util/List;
+	public final fun getFrameworks ()Ljava/util/List;
+	public final fun getHosting ()Ljava/util/List;
+	public final fun getPages ()I
+	public final fun getPartial ()Ljava/lang/Boolean;
+	public final fun getPayments ()Ljava/util/List;
+	public final fun getScope ()Ljava/lang/String;
+	public final fun getServers ()Ljava/util/List;
+	public final fun getUrl ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/Stack$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Stack$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Stack;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Stack;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Stack$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/StackDeep {
+	public static final field Companion Lcom/parseapi/StackDeep$Companion;
+}
+
+public synthetic class com/parseapi/StackDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StackDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StackDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StackDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StackDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/StackOptions {
+	public final fun getDeep ()Z
+	public final fun getPretty ()Z
+	public final fun setDeep (Z)V
+	public final fun setPretty (Z)V
+}
+
+public final class com/parseapi/StackTechnology {
+	public static final field Companion Lcom/parseapi/StackTechnology$Companion;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getTechnology ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/StackTechnology$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StackTechnology$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StackTechnology;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StackTechnology;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StackTechnology$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

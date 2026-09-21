@@ -608,6 +608,35 @@ class MxRecord private constructor(
 )
 
 @Serializable
+class StackTechnology private constructor(
+	val technology: String,
+	val name: String,
+	val version: String? = null,
+)
+
+@Serializable
+class StackDeep private constructor()
+
+@Serializable
+class Stack private constructor(
+	val domain: String,
+	val url: String,
+	val checkedAt: String? = null,
+	val scope: String,
+	val pages: Int,
+	val partial: Boolean? = null,
+	val cms: List<StackTechnology>? = null,
+	val servers: List<StackTechnology>? = null,
+	val frameworks: List<StackTechnology>? = null,
+	val ecommerce: List<StackTechnology>? = null,
+	val analytics: List<StackTechnology>? = null,
+	val chat: List<StackTechnology>? = null,
+	val payments: List<StackTechnology>? = null,
+	val hosting: List<StackTechnology>? = null,
+	val deep: StackDeep? = null,
+)
+
+@Serializable
 class DomainRegistration private constructor(
 	val registered: Boolean? = null,
 	val created: String? = null,

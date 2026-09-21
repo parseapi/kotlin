@@ -97,6 +97,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		?: throw ParseAPIException(0, "missing_api_key", "ParseAPI: missing API key. Pass one or set PARSEAPI_KEY.", null, null)
 	private val appId = options.appId
 	private val timeoutMs = options.timeoutMs
+	private val timeoutConfigured = options.timeoutConfigured
 	private val retries = options.retries
 	private val transport = options.transport ?: HttpURLConnectionTransport
 	private val baseUrl = (options.baseUrl ?: System.getenv("PARSEAPI_BASE_URL") ?: "https://api.parseapi.com").trimEnd('/')
@@ -437,6 +438,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/hlr/${enc(number)}", listOf("country" to country) + deepQuery(deep))
 		}
 
+	/** Observe technologies on a public hostname without a scheme or path. */
+	suspend fun stack(domain: String): Stack = stack(domain) {}
+
+	/** Null collections mean the check did not complete. */
+	suspend fun stack(domain: String, configure: StackOptions.() -> Unit): Stack =
+		with(StackOptions().apply(configure)) {
+			get("/stack/${enc(domain)}", deepQuery(deep) + listOf("pretty" to if (pretty) "true" else null))
+		}
+
 	/** Check whether a domain is registered. */
 	suspend fun domain(domain: String): Domain =
 		domain(domain) {}
@@ -743,7 +753,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			put("User-Agent", userAgent ?: "parseapi-kotlin/$VERSION")
 			appId?.let { put("X-App-Id", it) }
 		}
-		val request = ParseAPIRequest(url, headers, timeoutMs)
+		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs)
 
 		val retryLimit = retries ?: defaultRetries(path, query)
 		var attempt = 0

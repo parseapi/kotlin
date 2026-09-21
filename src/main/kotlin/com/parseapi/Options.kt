@@ -5,7 +5,13 @@ class ParseAPIOptions internal constructor() {
 	var appId: String? = null
 	var baseUrl: String? = null
 	/** Connection and socket-read timeout in milliseconds. */
+	internal var timeoutConfigured: Boolean = false
+		private set
 	var timeoutMs: Int = 10_000
+		set(value) {
+			field = value
+			timeoutConfigured = true
+		}
 	/** null uses endpoint defaults. An explicit count also applies to metered lookups. */
 	var retries: Int? = null
 	var transport: ParseAPITransport? = null
@@ -153,6 +159,11 @@ class HlrOptions internal constructor() {
 /** Type selects the DNS question, including its CNAME chain. Omit for all supported types. */
 class DnsOptions internal constructor() {
 	var type: String? = null
+}
+
+class StackOptions internal constructor() {
+	var deep: Boolean = false
+	var pretty: Boolean = false
 }
 
 class DomainOptions internal constructor() {

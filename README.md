@@ -125,6 +125,7 @@ parse.elevation(35.2271, -80.8431)
 parse.point(36.0726, -79.792)
 parse.weather(40.7128, -74.006)
 parse.domain("example.com")
+parse.stack("example.com")
 parse.asn("AS13335")
 parse.mac("00:1B:63:84:45:E6")
 parse.mx("example.com")
@@ -279,3 +280,17 @@ Run `./gradlew check` before a release. The checked-in `api/parseapi.api` record
 Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/consumer`. Run that consumer locally with `./gradlew -p compatibility/consumer run`; it uses a test transport and makes no API requests.
 
 BIN lookup accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. `deep` adds an empty object on every plan.
+
+## Stack
+
+```kotlin
+val result = parse.stack("example.com")
+```
+
+Pass a public hostname without a scheme, path, port or IP address. Stack returns the homepage URL and `checked_at` time, then eight technology arrays: `cms`, `servers`, `frameworks`, `ecommerce`, `analytics`, `chat`, `payments` and `hosting`. Each entry contains a `technology` code, name and nullable version. Multiple CMSs or servers remain separate entries. Empty arrays mean no matches in the checked pages. An unsuccessful check returns null arrays and a null `checked_at`.
+
+`scope` identifies `homepage` or `site` coverage. `pages` counts successfully checked HTML pages. `partial` is true for a homepage-only or incomplete bounded site check, false when the known in-scope candidates finished, and null when no check succeeded. False does not guarantee that every page on the website was discovered.
+
+The complete technology result is included in the core response. The generic `deep=true` option adds only an empty object and is unnecessary for Stack. Successful checks may be reused for up to 24 hours. `pretty` optionally formats the wire JSON. Each lookup uses one request and API version 2.0.0 selected by this client.
+
+Stack defaults to a 35-second transport timeout so a first scan has time to finish. Other lookups retain their 10-second default. An explicit client timeout takes precedence.
