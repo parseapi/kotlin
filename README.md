@@ -1,5 +1,5 @@
 ```sh
-git clone --branch 1.1.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 1.3.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -11,7 +11,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:1.1.0")
+implementation("com.parseapi:parseapi:1.3.0")
 ```
 
 ```kotlin
@@ -25,7 +25,7 @@ Get a key at [parseapi.com](https://parseapi.com). In an app, mint an App key on
 
 ## API versions
 
-Version 1.1.0 sends `Parse-Version: 2.0.0` on every request, including retries. Its response types match API `2.0.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release.
+Version 1.3.0 sends `Parse-Version: 2.0.0` on every request, including retries. Its response types match API `2.0.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release.
 
 The team setting in [Dashboard API version](https://parseapi.com/dashboard/versions) is the default for requests without a version header. This SDK's header takes precedence without changing that saved default. Existing published packages keep their documented behavior.
 
@@ -277,7 +277,7 @@ Full field reference for every endpoint: [parseapi.com/docs](https://parseapi.co
 
 Run `./gradlew check` before a release. The checked-in `api/parseapi.api` records the public JVM API. Regenerate it with `./gradlew apiDump` only after reviewing an intentional API addition. Response properties can grow without exposing constructor or copy-method signatures. Operation options can grow without changing existing call signatures.
 
-Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/consumer`. Run that consumer locally with `./gradlew -p compatibility/consumer run`; it uses a test transport and makes no API requests.
+Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/adp-consumer`. Run that consumer locally with `./gradlew -p compatibility/adp-consumer run`. It uses a test transport and makes no API requests.
 
 BIN lookup accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. `deep` adds an empty object on every plan.
 
