@@ -229,10 +229,19 @@ class PostalMetro private constructor(
 )
 
 @Serializable
+class PostalLocality private constructor(
+	val city: String,
+	val state: String,
+	val stateName: String,
+)
+
+@Serializable
 class Postal private constructor(
 	val postal: String,
 	val city: String? = null,
 	val cityLocal: String? = null,
+	/** Null is unknown. An empty list has no eligible choices. One choice does not imply city. */
+	val localities: List<PostalLocality>? = null,
 	val district: String? = null,
 	val districtName: String? = null,
 	val districtNameLocal: String? = null,

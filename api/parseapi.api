@@ -2535,6 +2535,7 @@ public final class com/parseapi/Postal {
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getDistrictNameLocal ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLocalities ()Ljava/util/List;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
@@ -2643,6 +2644,27 @@ public final class com/parseapi/PostalDistanceOptions {
 	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/PostalLocality {
+	public static final field Companion Lcom/parseapi/PostalLocality$Companion;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/PostalLocality$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PostalLocality$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PostalLocality;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PostalLocality;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PostalLocality$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/PostalMetro {
