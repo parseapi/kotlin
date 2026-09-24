@@ -179,10 +179,17 @@ class VinOptions internal constructor() {
 }
 
 class TariffOptions internal constructor() {
+	var edition: String? = null
+	var date: String? = null
 	/** Add units and the special and other schedule columns on paid plans. */
 	var deep: Boolean = false
 	/** ISO 3166-1 alpha-2 origin. With paid deep, resolves country-specific measures. Optional for schedule detail. */
 	var origin: String? = null
+}
+
+class TariffSearchOptions internal constructor() {
+	var edition: String? = null
+	var date: String? = null
 }
 
 class CurrencyRateOptions internal constructor() {

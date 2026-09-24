@@ -450,11 +450,13 @@ class TariffMeasure private constructor(
 
 @Serializable
 class TariffDeep private constructor(
+	/** Open-string explanation when effectiveRate is null. */
+	val reason: String? = null,
 	/** The origin country the measures were resolved for. */
 	val origin: String? = null,
-	/** Composed ad valorem percent. Null when the components do not compose cleanly. */
+	/** Composed ad valorem percent for matched stored measures only, not complete duty or landed cost. Null when the components do not compose cleanly. */
 	@SerialName("effective_rate") val effectiveRate: Double? = null,
-	/** Every Chapter 99 tariff measure that applies to this code from this origin. */
+	/** Matching stored Chapter 99 schedule measures for this code and goods origin. */
 	val measures: List<TariffMeasure>? = null,
 	/** Units of quantity (No., kg). */
 	val units: List<String>? = null,
@@ -466,6 +468,8 @@ class TariffDeep private constructor(
 
 @Serializable
 class Tariff private constructor(
+	val edition: String? = null,
+	val date: String? = null,
 	/** Normalized code with dots (8471.30.01.00). */
 	val hts: String,
 	/** The schedule line verbatim. */
@@ -484,10 +488,14 @@ class TariffSearchHit private constructor(
 	val hts: String,
 	val description: String,
 	val general: String? = null,
+	/** Parent descriptions, outermost first. Older responses may omit this context. */
+	val lineage: List<String>? = null,
 )
 
 @Serializable
 class TariffSearch private constructor(
+	val edition: String? = null,
+	val date: String? = null,
 	val q: String,
 	val revision: String,
 	/** Up to 20 lines, best match first. */

@@ -546,7 +546,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun tariff(code: String, configure: TariffOptions.() -> Unit): Tariff =
 		with(TariffOptions().apply(configure)) {
-			get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
+			get<Tariff>("/tariff/${enc(code)}", listOf("origin" to origin, "edition" to edition, "date" to date) + deepQuery(deep)).also { tariffSelection(edition, date, it.edition, it.date) }
 		}
 
 	/** US NAICS 2022 definition and hierarchy. */
@@ -565,9 +565,21 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/naics", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
+	private fun tariffSelection(edition: String?, date: String?, gotEdition: String?, gotDate: String?) {
+		val confirmedEdition = gotEdition != null && gotEdition.length == 64 && gotEdition.all { it in '0'..'9' || it in 'a'..'f' }
+		if ((edition != null || date != null) && (!confirmedEdition || (edition != null && gotEdition != edition) || gotDate != date)) {
+			throw ParseAPIException(0, "tariff_selection_mismatch", "Tariff response did not confirm the requested edition/date. The server may not support this selection.", null, null)
+		}
+	}
+
 	/** Searches tariff schedule descriptions by product. */
-	suspend fun tariffSearch(query: String): TariffSearch =
-		get("/tariff", listOf("q" to query))
+	suspend fun tariffSearch(query: String): TariffSearch = tariffSearch(query) {}
+
+	/** Pin an immutable edition or request a date with verified source coverage. */
+	suspend fun tariffSearch(query: String, configure: TariffSearchOptions.() -> Unit): TariffSearch =
+		with(TariffSearchOptions().apply(configure)) {
+			get<TariffSearch>("/tariff", listOf("q" to query, "edition" to edition, "date" to date)).also { tariffSelection(edition, date, it.edition, it.date) }
+		}
 
 	suspend fun currency(code: String): Currency = currency(code) {}
 
@@ -853,7 +865,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.6.0"
+		const val VERSION = "1.7.0"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
