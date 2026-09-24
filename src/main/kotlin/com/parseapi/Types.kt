@@ -382,13 +382,15 @@ class Iban private constructor(
 
 @Serializable
 class Npi private constructor(
-	/** Normalized 10-digit NPI. Invalid input still echoes the fold. */
+	/** Input with accepted separators removed; null when empty. Invalid values remain visible. */
 	val npi: String? = null,
+	/** Format and NPI checksum only; does not verify a provider or credentials. */
 	val valid: Boolean,
-	/** Exists in the CMS NPPES registry. */
+	/** Found in the stored NPPES snapshot. Null when input is invalid. */
 	val registered: Boolean? = null,
+	/** Recorded NPI activation status. Null when unknown; not licensure or practice status. */
 	val active: Boolean? = null,
-	/** On the OIG exclusion list. */
+	/** NPI-only match in the stored OIG LEIE file. False is not complete exclusion clearance. */
 	val excluded: Boolean? = null,
 	/** individual or organization. */
 	val type: String? = null,
@@ -419,13 +421,13 @@ class NpiEnrollment private constructor(
 
 @Serializable
 class NpiDeep private constructor(
-	/** In the published Medicare FFS enrollment extract. */
+	/** Present in the stored Medicare FFS enrollment extract; not payment eligibility. */
 	val medicare: Boolean? = null,
-	/** On the CMS opt-out affidavit list. Matched by NPI only. */
+	/** NPI-only match in the stored CMS opt-out affidavit list. Null when unavailable. */
 	val optOut: Boolean? = null,
-	/** Enrollment rows. Empty when medicare is false. */
+	/** Stored enrollment rows. Null when unavailable; empty when no rows are returned. */
 	val enrollments: List<NpiEnrollment>? = null,
-	/** Date CMS deactivated the NPI, YYYY-MM-DD. Null when still active. */
+	/** Recorded NPI deactivation date, YYYY-MM-DD. Null when active or unavailable. */
 	val deactivatedAt: String? = null,
 )
 
