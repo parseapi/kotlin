@@ -831,8 +831,18 @@ class TimezoneNextDst private constructor(
 
 typealias Time = Timezone
 
+/** Serving timezone IDs and their pinned rule edition. */
+@Serializable
+class TimeZones private constructor(
+	val timezoneDatabaseVersion: String,
+	val timezones: List<String>,
+	val at: String? = null,
+	val zones: List<TimeZoneEntry>? = null,
+)
+
 @Serializable
 class Timezone private constructor(
+	val location: TimeLocation? = null,
 	/** Echoed on coordinate lookups only. */
 	val latitude: Double? = null,
 	val longitude: Double? = null,
@@ -843,6 +853,7 @@ class Timezone private constructor(
 	val at: String? = null,
 	val unix: Long? = null,
 	val to: TimezoneConversionTarget? = null,
+	val targets: List<TimezoneConversionTarget>? = null,
 	val deep: TimezoneDeep? = null,
 )
 
@@ -1471,6 +1482,12 @@ class NameDeep private constructor(
 
 @Serializable
 class TimezoneDeep private constructor(
+	val standardOffset: String? = null,
+	val standardOffsetSeconds: Int? = null,
+	val dstOffsetSeconds: Int? = null,
+	val season: TimeSeason? = null,
+	val timezoneDatabaseVersion: String? = null,
+	val resolution: TimeResolution? = null,
 	val name: String? = null,
 	val offsetSeconds: Int? = null,
 	val offsetMinutes: Int? = null,
@@ -1590,4 +1607,75 @@ class PropertyTax private constructor(
 	val currency: String,
 	/** Reporting period, YYYY-YYYY. Monetary amounts use the final year of this period. */
 	val period: String,
+)
+
+@Serializable
+class TimeResolution private constructor(
+	val kind: String? = null,
+	val policy: String? = null,
+	val adjustmentSeconds: Int? = null,
+	val alternatives: List<TimeResolutionAlternative>? = null,
+)
+
+@Serializable
+class TimeResolutionAlternative private constructor(
+	val at: String? = null,
+	val unix: Long? = null,
+	val offset: String? = null,
+)
+
+@Serializable
+class TimeZoneEntry private constructor(
+	val timezone: String,
+	val countries: List<String>,
+	val area: String? = null,
+	val abbreviation: String,
+	val offset: String,
+	val offsetSeconds: Int,
+	val dst: Boolean,
+	val observesDst: Boolean,
+)
+@Serializable
+class TimeTransitionState private constructor(
+	val at: String? = null,
+	val offset: String? = null,
+	val offsetSeconds: Int? = null,
+	val abbreviation: String? = null,
+	val dst: Boolean? = null,
+)
+@Serializable
+class TimeTransition private constructor(
+	val at: String? = null,
+	val before: TimeTransitionState? = null,
+	val after: TimeTransitionState? = null,
+	val changeSeconds: Int? = null,
+)
+@Serializable
+class TimeSeason private constructor(
+	val start: TimeTransition? = null,
+	val end: TimeTransition? = null,
+)
+
+@Serializable
+class TimeLocationInput private constructor(
+	val type: String,
+	val value: String,
+)
+@Serializable
+class TimeLocationCandidate private constructor(
+	val id: String? = null,
+	val name: String? = null,
+	val country: String? = null,
+	val state: String? = null,
+	val timezone: String? = null,
+	val latitude: Double? = null,
+	val longitude: Double? = null,
+)
+@Serializable
+class TimeLocation private constructor(
+	val input: TimeLocationInput,
+	val status: String,
+	val candidates: List<TimeLocationCandidate>,
+	val truncated: Boolean,
+	val source: String,
 )

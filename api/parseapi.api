@@ -2329,6 +2329,10 @@ public final class com/parseapi/ParseAPI {
 	public static synthetic fun time$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun timeAt (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timeAt (DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun timeZones (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun timeZones (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun timeZones$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun timeZones$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun timezone (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timezone (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun timezoneAt (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3145,23 +3149,292 @@ public final class com/parseapi/TariffSearchHit$Companion {
 public final class com/parseapi/TimeAtOptions {
 	public final fun getAt ()Ljava/lang/String;
 	public final fun getDeep ()Z
+	public final fun getDisambiguation ()Ljava/lang/String;
 	public final fun getLang ()Ljava/lang/String;
+	public final fun getTargets ()Ljava/util/List;
 	public final fun getTo ()Ljava/lang/String;
 	public final fun setAt (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
+	public final fun setDisambiguation (Ljava/lang/String;)V
 	public final fun setLang (Ljava/lang/String;)V
+	public final fun setTargets (Ljava/util/List;)V
 	public final fun setTo (Ljava/lang/String;)V
 }
 
+public final class com/parseapi/TimeLocation {
+	public static final field Companion Lcom/parseapi/TimeLocation$Companion;
+	public final fun getCandidates ()Ljava/util/List;
+	public final fun getInput ()Lcom/parseapi/TimeLocationInput;
+	public final fun getSource ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getTruncated ()Z
+}
+
+public synthetic class com/parseapi/TimeLocation$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeLocation$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeLocation;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeLocation;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeLocation$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeLocationCandidate {
+	public static final field Companion Lcom/parseapi/TimeLocationCandidate$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getTimezone ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/TimeLocationCandidate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeLocationCandidate$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeLocationCandidate;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeLocationCandidate;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeLocationCandidate$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeLocationInput {
+	public static final field Companion Lcom/parseapi/TimeLocationInput$Companion;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/TimeLocationInput$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeLocationInput$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeLocationInput;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeLocationInput;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeLocationInput$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/TimeOptions {
+	public final fun getAddress ()Ljava/lang/String;
 	public final fun getAt ()Ljava/lang/String;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
 	public final fun getDeep ()Z
+	public final fun getDisambiguation ()Ljava/lang/String;
+	public final fun getIata ()Ljava/lang/String;
+	public final fun getIcao ()Ljava/lang/String;
+	public final fun getIp ()Ljava/lang/String;
 	public final fun getLang ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getTargets ()Ljava/util/List;
 	public final fun getTo ()Ljava/lang/String;
+	public final fun getUnlocode ()Ljava/lang/String;
+	public final fun setAddress (Ljava/lang/String;)V
 	public final fun setAt (Ljava/lang/String;)V
+	public final fun setCity (Ljava/lang/String;)V
+	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
+	public final fun setDisambiguation (Ljava/lang/String;)V
+	public final fun setIata (Ljava/lang/String;)V
+	public final fun setIcao (Ljava/lang/String;)V
+	public final fun setIp (Ljava/lang/String;)V
 	public final fun setLang (Ljava/lang/String;)V
+	public final fun setState (Ljava/lang/String;)V
+	public final fun setTargets (Ljava/util/List;)V
 	public final fun setTo (Ljava/lang/String;)V
+	public final fun setUnlocode (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/TimeResolution {
+	public static final field Companion Lcom/parseapi/TimeResolution$Companion;
+	public final fun getAdjustmentSeconds ()Ljava/lang/Integer;
+	public final fun getAlternatives ()Ljava/util/List;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getPolicy ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/TimeResolution$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeResolution$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeResolution;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeResolution;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeResolution$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeResolutionAlternative {
+	public static final field Companion Lcom/parseapi/TimeResolutionAlternative$Companion;
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getOffset ()Ljava/lang/String;
+	public final fun getUnix ()Ljava/lang/Long;
+}
+
+public synthetic class com/parseapi/TimeResolutionAlternative$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeResolutionAlternative$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeResolutionAlternative;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeResolutionAlternative;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeResolutionAlternative$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeSeason {
+	public static final field Companion Lcom/parseapi/TimeSeason$Companion;
+	public final fun getEnd ()Lcom/parseapi/TimeTransition;
+	public final fun getStart ()Lcom/parseapi/TimeTransition;
+}
+
+public synthetic class com/parseapi/TimeSeason$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeSeason$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeSeason;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeSeason;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeSeason$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeTransition {
+	public static final field Companion Lcom/parseapi/TimeTransition$Companion;
+	public final fun getAfter ()Lcom/parseapi/TimeTransitionState;
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getBefore ()Lcom/parseapi/TimeTransitionState;
+	public final fun getChangeSeconds ()Ljava/lang/Integer;
+}
+
+public synthetic class com/parseapi/TimeTransition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeTransition$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeTransition;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeTransition;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeTransition$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeTransitionState {
+	public static final field Companion Lcom/parseapi/TimeTransitionState$Companion;
+	public final fun getAbbreviation ()Ljava/lang/String;
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getDst ()Ljava/lang/Boolean;
+	public final fun getOffset ()Ljava/lang/String;
+	public final fun getOffsetSeconds ()Ljava/lang/Integer;
+}
+
+public synthetic class com/parseapi/TimeTransitionState$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeTransitionState$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeTransitionState;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeTransitionState;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeTransitionState$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeZoneEntry {
+	public static final field Companion Lcom/parseapi/TimeZoneEntry$Companion;
+	public final fun getAbbreviation ()Ljava/lang/String;
+	public final fun getArea ()Ljava/lang/String;
+	public final fun getCountries ()Ljava/util/List;
+	public final fun getDst ()Z
+	public final fun getObservesDst ()Z
+	public final fun getOffset ()Ljava/lang/String;
+	public final fun getOffsetSeconds ()I
+	public final fun getTimezone ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/TimeZoneEntry$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeZoneEntry$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeZoneEntry;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeZoneEntry;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeZoneEntry$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeZones {
+	public static final field Companion Lcom/parseapi/TimeZones$Companion;
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getTimezoneDatabaseVersion ()Ljava/lang/String;
+	public final fun getTimezones ()Ljava/util/List;
+	public final fun getZones ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/TimeZones$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/TimeZones$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/TimeZones;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/TimeZones;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/TimeZones$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/TimeZonesOptions {
+	public final fun getAbbreviation ()Ljava/lang/String;
+	public final fun getArea ()Ljava/lang/String;
+	public final fun getAt ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDetails ()Z
+	public final fun getDst ()Ljava/lang/Boolean;
+	public final fun getObservesDst ()Ljava/lang/Boolean;
+	public final fun getOffset ()Ljava/lang/String;
+	public final fun getSort ()Ljava/lang/String;
+	public final fun setAbbreviation (Ljava/lang/String;)V
+	public final fun setArea (Ljava/lang/String;)V
+	public final fun setAt (Ljava/lang/String;)V
+	public final fun setCountry (Ljava/lang/String;)V
+	public final fun setDetails (Z)V
+	public final fun setDst (Ljava/lang/Boolean;)V
+	public final fun setObservesDst (Ljava/lang/Boolean;)V
+	public final fun setOffset (Ljava/lang/String;)V
+	public final fun setSort (Ljava/lang/String;)V
 }
 
 public final class com/parseapi/Timezone {
@@ -3171,8 +3444,10 @@ public final class com/parseapi/Timezone {
 	public final fun getDeep ()Lcom/parseapi/TimezoneDeep;
 	public final fun getDst ()Ljava/lang/Boolean;
 	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLocation ()Lcom/parseapi/TimeLocation;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getOffset ()Ljava/lang/String;
+	public final fun getTargets ()Ljava/util/List;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTo ()Lcom/parseapi/TimezoneConversionTarget;
 	public final fun getUnix ()Ljava/lang/Long;
@@ -3249,10 +3524,16 @@ public final class com/parseapi/TimezoneConversionTargetDeep$Companion {
 
 public final class com/parseapi/TimezoneDeep {
 	public static final field Companion Lcom/parseapi/TimezoneDeep$Companion;
+	public final fun getDstOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNextDst ()Lcom/parseapi/TimezoneNextDst;
 	public final fun getOffsetMinutes ()Ljava/lang/Integer;
 	public final fun getOffsetSeconds ()Ljava/lang/Integer;
+	public final fun getResolution ()Lcom/parseapi/TimeResolution;
+	public final fun getSeason ()Lcom/parseapi/TimeSeason;
+	public final fun getStandardOffset ()Ljava/lang/String;
+	public final fun getStandardOffsetSeconds ()Ljava/lang/Integer;
+	public final fun getTimezoneDatabaseVersion ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/TimezoneDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {

@@ -191,10 +191,23 @@ class CurrencyRateOptions internal constructor() {
 }
 
 class TimeOptions internal constructor() {
+	var ip: String? = null
+	var city: String? = null
+	var country: String? = null
+	var state: String? = null
+	var iata: String? = null
+	var icao: String? = null
+	var unlocode: String? = null
+	var address: String? = null
+
 	/** Display language for this request. */
 	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
+	/** One to ten destination zones, preserving order and duplicates. Use instead of to. */
+	var targets: List<String>? = null
+	/** Offsetless conversion at clock changes: compatible (default), earlier, later, or reject. */
+	var disambiguation: String? = null
 	var deep: Boolean = false
 }
 
@@ -203,6 +216,10 @@ class TimeAtOptions internal constructor() {
 	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
+	/** One to ten destination zones, preserving order and duplicates. Use instead of to. */
+	var targets: List<String>? = null
+	/** Offsetless conversion at clock changes: compatible (default), earlier, later, or reject. */
+	var disambiguation: String? = null
 	var deep: Boolean = false
 }
 
@@ -366,4 +383,17 @@ class CountryStatesOptions internal constructor() {
 /** Display language for this operation. */
 class AsnOptions internal constructor() {
 	var lang: String? = null
+}
+
+/** Filters the serving timezone catalog at one instant. */
+class TimeZonesOptions internal constructor() {
+	var country: String? = null
+	var area: String? = null
+	var offset: String? = null
+	var abbreviation: String? = null
+	var at: String? = null
+	var sort: String? = null
+	var dst: Boolean? = null
+	var observesDst: Boolean? = null
+	var details: Boolean = false
 }
