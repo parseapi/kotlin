@@ -16,6 +16,8 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /**
  * Every non-2xx response from the API. Branch on [code], never on the message.
@@ -35,12 +37,16 @@ class ParseAPIException @JvmOverloads constructor(
 	val retryAfter: String? = null,
 ) : Exception(message)
 
-/** One prepared GET, handed to the transport. */
+/** One prepared HTTP request, handed to the transport. */
 class ParseAPIRequest internal constructor(
 	val url: String,
 	val headers: Map<String, String>,
 	val timeoutMs: Int,
-)
+	val method: String,
+	val body: String?,
+) {
+	internal constructor(url: String, headers: Map<String, String>, timeoutMs: Int) : this(url, headers, timeoutMs, "GET", null)
+}
 
 /** Raw transport answer. Header names are lowercase. */
 class ParseAPIResponse(
@@ -59,6 +65,7 @@ private object HttpURLConnectionTransport : ParseAPITransport {
 		kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
 			val connection = URI(request.url).toURL().openConnection() as HttpURLConnection
 			connection.instanceFollowRedirects = false
+			connection.requestMethod = request.method
 			connection.connectTimeout = request.timeoutMs
 			connection.readTimeout = request.timeoutMs
 			request.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
@@ -70,6 +77,12 @@ private object HttpURLConnectionTransport : ParseAPITransport {
 			Dispatchers.IO.dispatch(continuation.context, Runnable {
 				if (!continuation.isActive) return@Runnable
 				try {
+					request.body?.let { body ->
+						connection.doOutput = true
+						val bytes = body.toByteArray(Charsets.UTF_8)
+						connection.setFixedLengthStreamingMode(bytes.size)
+						connection.outputStream.use { it.write(bytes) }
+					}
 					val status = connection.responseCode
 					val stream = if (status >= 400) connection.errorStream else connection.inputStream
 					val body = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
@@ -357,13 +370,27 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/** Checksum and structure. bank and branch are codes inside the number, not names. */
-	suspend fun iban(iban: String): Iban =
-		iban(iban) {}
+	suspend fun bank(iban: String): Bank =
+		bank(iban) {}
 
-	suspend fun iban(iban: String, configure: IbanOptions.() -> Unit): Iban =
-		with(IbanOptions().apply(configure)) {
-			get("/iban/${enc(iban)}", listOf("country" to country) + deepQuery(deep))
+	suspend fun bank(iban: String, configure: BankOptions.() -> Unit): Bank =
+		with(BankOptions().apply(configure)) {
+			post("/bank", buildJsonObject {
+				put("iban", iban)
+				country?.let { put("country", it) }
+				if (deep) put("deep", true)
+			}.toString())
 		}
+
+	/** Supported US ACH format checks; not account existence or ACH eligibility. */
+	suspend fun bankUsAch(input: BankUsAchInput): BankUsAch = post("/bank", buildJsonObject {
+		put("format", "us_ach"); put("country", "US")
+		put("routing", input.routing); put("account", input.account)
+	}.toString())
+
+	/** Required collection fields; omitted format selects IBAN. */
+	suspend fun bankRequirements(country: String, format: String? = null): BankRequirements =
+		get("/bank/requirements", listOf("country" to country, "format" to format))
 
 	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
 	suspend fun npi(npi: String): Npi =
@@ -743,18 +770,22 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		userAgent: String? = null,
 	): T = json.decodeFromString(fetch(path, query, userAgent))
 
-	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?): String {
+	private suspend inline fun <reified T> post(path: String, body: String): T =
+		json.decodeFromString(fetch(path, emptyList(), null, body))
+
+	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?, body: String? = null): String {
 		var url = baseUrl + path
 		val pairs = query.mapNotNull { (name, value) -> value?.let { "$name=${enc(it)}" } }
 		if (pairs.isNotEmpty()) url += "?" + pairs.joinToString("&")
 
 		val headers = buildMap {
+			if (body != null) put("Content-Type", "application/json")
 			put("X-API-Key", key)
 			put("Parse-Version", API_VERSION)
 			put("User-Agent", userAgent ?: "parseapi-kotlin/$VERSION")
 			appId?.let { put("X-App-Id", it) }
 		}
-		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs)
+		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs, if (body == null) "GET" else "POST", body)
 
 		val retryLimit = retries ?: defaultRetries(path, query)
 		var attempt = 0

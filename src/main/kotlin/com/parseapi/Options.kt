@@ -121,7 +121,7 @@ class VatOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class IbanOptions internal constructor() {
+class BankOptions internal constructor() {
 	var country: String? = null
 	var deep: Boolean = false
 }

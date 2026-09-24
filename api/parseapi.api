@@ -150,6 +150,236 @@ public final class com/parseapi/AsnOptions {
 	public final fun setLang (Ljava/lang/String;)V
 }
 
+public final class com/parseapi/Bank {
+	public static final field Companion Lcom/parseapi/Bank$Companion;
+	public final fun getBank ()Ljava/lang/String;
+	public final fun getBankName ()Ljava/lang/String;
+	public final fun getBic ()Ljava/lang/String;
+	public final fun getChecks ()Lcom/parseapi/BankChecks;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/BankDeep;
+	public final fun getFormatted ()Ljava/lang/String;
+	public final fun getIban ()Ljava/lang/String;
+	public final fun getIssues ()Ljava/util/List;
+	public final fun getValid ()Z
+}
+
+public synthetic class com/parseapi/Bank$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Bank$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Bank;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Bank;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Bank$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankChecks {
+	public static final field Companion Lcom/parseapi/BankChecks$Companion;
+	public final fun getChecksum ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getInput ()Ljava/lang/String;
+	public final fun getLength ()Ljava/lang/String;
+	public final fun getNational ()Ljava/lang/String;
+	public final fun getStructure ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/BankChecks$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankChecks$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankChecks;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankChecks;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankChecks$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankDeep {
+	public static final field Companion Lcom/parseapi/BankDeep$Companion;
+	public final fun getAccount ()Ljava/lang/String;
+	public final fun getBranch ()Ljava/lang/String;
+	public final fun getChecksum ()Ljava/lang/String;
+	public final fun getDirectory ()Lcom/parseapi/BankDirectory;
+}
+
+public synthetic class com/parseapi/BankDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankDirectory {
+	public static final field Companion Lcom/parseapi/BankDirectory$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getEdition ()Ljava/lang/String;
+	public final fun getMatch ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/BankDirectory$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankDirectory$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankDirectory;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankDirectory;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankDirectory$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankIssue {
+	public static final field Companion Lcom/parseapi/BankIssue$Companion;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getField ()Ljava/lang/String;
+	public final fun getMessage ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/BankIssue$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankIssue$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankIssue;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankIssue;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankIssue$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankOptions {
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Z
+	public final fun setCountry (Ljava/lang/String;)V
+	public final fun setDeep (Z)V
+}
+
+public final class com/parseapi/BankRequirementField {
+	public static final field Companion Lcom/parseapi/BankRequirementField$Companion;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getLength ()Ljava/lang/Integer;
+	public final fun getLengthUnit ()Ljava/lang/String;
+	public final fun getMaxInputLength ()Ljava/lang/Integer;
+	public final fun getMaxLength ()Ljava/lang/Integer;
+	public final fun getMinLength ()Ljava/lang/Integer;
+	public final fun getNormalization ()Ljava/lang/String;
+	public final fun getPattern ()Ljava/lang/String;
+	public final fun getRequired ()Z
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/BankRequirementField$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankRequirementField$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankRequirementField;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankRequirementField;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankRequirementField$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankRequirements {
+	public static final field Companion Lcom/parseapi/BankRequirements$Companion;
+	public final fun getChecks ()Ljava/util/Map;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getFields ()Ljava/util/List;
+	public final fun getFormat ()Ljava/lang/String;
+	public final fun getLimitations ()Ljava/util/List;
+	public final fun getSupported ()Z
+}
+
+public synthetic class com/parseapi/BankRequirements$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankRequirements$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankRequirements;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankRequirements;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankRequirements$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankUsAch {
+	public static final field Companion Lcom/parseapi/BankUsAch$Companion;
+	public final fun getAccount ()Ljava/lang/String;
+	public final fun getBankName ()Ljava/lang/String;
+	public final fun getChecks ()Lcom/parseapi/BankUsAchChecks;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getFormat ()Ljava/lang/String;
+	public final fun getIssues ()Ljava/util/List;
+	public final fun getRouting ()Ljava/lang/String;
+	public final fun getValid ()Z
+}
+
+public synthetic class com/parseapi/BankUsAch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankUsAch$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankUsAch;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankUsAch;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankUsAch$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankUsAchChecks {
+	public static final field Companion Lcom/parseapi/BankUsAchChecks$Companion;
+	public final fun getAccountChecksum ()Ljava/lang/String;
+	public final fun getAccountFormat ()Ljava/lang/String;
+	public final fun getRoutingChecksum ()Ljava/lang/String;
+	public final fun getRoutingFormat ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/BankUsAchChecks$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/BankUsAchChecks$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BankUsAchChecks;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BankUsAchChecks;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/BankUsAchChecks$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/BankUsAchInput {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getAccount ()Ljava/lang/String;
+	public final fun getRouting ()Ljava/lang/String;
+}
+
 public final class com/parseapi/Bloc {
 	public static final field Companion Lcom/parseapi/Bloc$Companion;
 	public final fun getBloc ()Ljava/lang/String;
@@ -1517,60 +1747,6 @@ public final class com/parseapi/HolidayYear$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class com/parseapi/Iban {
-	public static final field Companion Lcom/parseapi/Iban$Companion;
-	public final fun getBank ()Ljava/lang/String;
-	public final fun getBankName ()Ljava/lang/String;
-	public final fun getBic ()Ljava/lang/String;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/IbanDeep;
-	public final fun getFormatted ()Ljava/lang/String;
-	public final fun getIban ()Ljava/lang/String;
-	public final fun getValid ()Z
-}
-
-public synthetic class com/parseapi/Iban$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Iban$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Iban;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Iban;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Iban$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/IbanDeep {
-	public static final field Companion Lcom/parseapi/IbanDeep$Companion;
-	public final fun getAccount ()Ljava/lang/String;
-	public final fun getBranch ()Ljava/lang/String;
-	public final fun getChecksum ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/IbanDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/IbanDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/IbanDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/IbanDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/IbanDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/IbanOptions {
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Z
-	public final fun setCountry (Ljava/lang/String;)V
-	public final fun setDeep (Z)V
-}
-
 public final class com/parseapi/Ip {
 	public static final field Companion Lcom/parseapi/Ip$Companion;
 	public final fun getAsn ()Ljava/lang/String;
@@ -2203,6 +2379,11 @@ public final class com/parseapi/ParseAPI {
 	public final fun addressSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun asn (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun asn (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun bank (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun bank (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun bankRequirements (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun bankRequirements$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun bankUsAch (Lcom/parseapi/BankUsAchInput;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun bloc (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun blocCountries (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun blocCountries (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2257,8 +2438,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun holiday (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun holiday (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun holidayDate (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun iban (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun iban (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun ip (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun ip (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun ipSelf (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2346,7 +2525,9 @@ public final class com/parseapi/ParseAPIOptions {
 }
 
 public final class com/parseapi/ParseAPIRequest {
+	public final fun getBody ()Ljava/lang/String;
 	public final fun getHeaders ()Ljava/util/Map;
+	public final fun getMethod ()Ljava/lang/String;
 	public final fun getTimeoutMs ()I
 	public final fun getUrl ()Ljava/lang/String;
 }

@@ -1,5 +1,6 @@
 package com.parseapi
 import kotlin.test.Test
+import kotlin.test.assertTrue
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertNotNull
@@ -84,18 +85,20 @@ class ADPTest {
   }
   run {
    val plainStub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true}""")
-   val plain = ParseAPI("test") { transport = plainStub }.iban("DE89370400440532013000")
+   val plain = ParseAPI("test") { transport = plainStub }.bank("DE89370400440532013000")
    assertNull(plain.deep)
    val stub0 = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.iban("DE89370400440532013000") { deep=true }
+   val rich0 = ParseAPI("test") { transport=stub0 }.bank("DE89370400440532013000") { deep=true }
    assertNotNull(rich0.deep)
    assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
+   assertEquals(plainStub.requests.single().url,stub0.requests.single().url)
+   assertTrue(stub0.requests.single().body!!.contains("\"deep\":true"))
    val stub1 = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"deep":{"checksum":"89","branch":null,"account":"0532013000"}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.iban("DE89370400440532013000") { deep=true }
+   val rich1 = ParseAPI("test") { transport=stub1 }.bank("DE89370400440532013000") { deep=true }
    assertNotNull(rich1.deep)
    assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
+   assertEquals(plainStub.requests.single().url,stub1.requests.single().url)
+   assertTrue(stub1.requests.single().body!!.contains("\"deep\":true"))
   }
   run {
    val plainStub = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota"}""")

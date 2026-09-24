@@ -84,7 +84,7 @@ parse.ip("8.8.8.8")
 parse.ipSelf()
 parse.email("hello@gmail.com")
 parse.vat("DE136695976")
-parse.iban("DE89370400440532013000")
+parse.bank("DE89370400440532013000")
 parse.card("424242")
 parse.npi("1881018208")
 parse.phone("+14155552671")
@@ -230,7 +230,7 @@ The default call returns the common answer. Request more detail with `parse.coun
 | VIN, NAICS, Company | Paid technical or registration profiles. NPI exclusion status and NAICS hierarchy stay core. |
 | Tariff | Paid schedule columns and units; add origin for applicable measures. |
 | Name, Weather | Paid name context or weather detail; parsing and current conditions stay core. |
-| Phone, IBAN | Numbering-plan or bank structure detail in the same pooled request on every plan. |
+| Phone, Bank | Numbering-plan or bank structure detail in the same pooled request on every plan. |
 | Time, Date, Currency, Language, Emoji, Point | Optional reference detail in the same pooled request on every plan. |
 | Carrier, HLR | Available place or network detail from the same metered core unit, including Free included units. |
 
@@ -250,6 +250,20 @@ if (ip.deep?.datacenter == true) {
     // datacenter IP
 }
 ```
+
+## Bank validation
+
+Bank results include nullable `checks` and `issues` (`BankChecks` and `BankIssue`). Check statuses and issue codes are open strings; handle unknown future values. `not_supported` means the national check did not run, not that it passed. `issues: []` means no applicable check failed; a missing/null value supports older responses. These findings do not establish account existence or ownership. `deep.account` remains a string so leading zeros are preserved.
+
+
+Bank lookups send raw input in a JSON body (`POST /bank`), preserving leading zeros, separators and forbidden characters for server validation. `bank` keeps its existing call signature and IBAN result. Optional `deep.directory` identifies the directory edition, country and open-string match grain; absent data remains unknown.
+
+```kotlin
+val requirements = parse.bankRequirements("US", "us_ach")
+val result = parse.bankUsAch(BankUsAchInput("021000021", "000123456789"))
+```
+
+US ACH checks the routing checksum and supported account format, not account existence, ownership or ACH eligibility. Account checksum status stays `not_supported`; bank names are nullable partial-directory references. Account text is preserved, including letter case, spaces and hyphens. Requirements describe this validation workflow; they are not every field needed to initiate a payment. Unsupported country/format combinations return `supported: false`. Omit the format argument for IBAN requirements. The sample is synthetic, not an account to pay.
 
 ## Errors
 

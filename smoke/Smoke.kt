@@ -87,10 +87,10 @@ fun main(): Unit = runBlocking {
 	expectOk("card", { parse.card("00 0000") }) {
 		if (it.bin == "000000") null else "BIN echo mismatch"
 	}
-	expectOk("iban", { parse.iban("DE89370400440532013000") }) {
+	expectOk("bank", { parse.bank("DE89370400440532013000") }) {
 		if (it.valid && it.country == "DE" && it.bank == "37040044") null else "not valid DE"
 	}
-	expectOk("iban junk", { parse.iban("hello") }) { if (!it.valid) null else "expected invalid" }
+	expectOk("bank junk", { parse.bank("hello") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("npi", { parse.npi("1881018208") }) {
 		if (it.valid && it.registered == true) null else "not registered"
 	}
