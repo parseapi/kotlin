@@ -350,12 +350,9 @@ class Vat private constructor(
 	val deep: VatDeep? = null,
 )
 
-@Serializable
-class BinDeep private constructor()
-
 /** Card-prefix reference data. Null means unknown. */
 @Serializable
-class Bin private constructor(
+class Card private constructor(
 	val bin: String,
 	/** Actual longest matched prefix, which may be shorter than the input. */
 	val prefix: String? = null,
@@ -365,7 +362,6 @@ class Bin private constructor(
 	val brandName: String? = null,
 	val type: String? = null,
 	val prepaid: Boolean? = null,
-	val deep: BinDeep? = null,
 )
 
 @Serializable

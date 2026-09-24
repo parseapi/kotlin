@@ -59,8 +59,8 @@ class FinalContractTest {
         assertEquals(0, parse.retryDelayMs(0, "Sunday, 06-Nov-94 08:49:37 GMT"))
         assertEquals(0, parse.retryDelayMs(0, "Sun Nov 6 08:49:37 1994"))
         val future = java.text.SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", java.util.Locale.US).format(java.util.Date(System.currentTimeMillis() + 60_000))
-        assertEquals(5000, parse.retryDelayMs(0, future))
-        assertTrue(parse.retryDelayMs(999, "NaN") in 0..5000)
+        assertNull(parse.retryDelayMs(0, future))
+        assertTrue(parse.retryDelayMs(999, "NaN")!! in 0..5000)
     }
 
     @Test

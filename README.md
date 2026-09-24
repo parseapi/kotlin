@@ -85,7 +85,7 @@ parse.ipSelf()
 parse.email("hello@gmail.com")
 parse.vat("DE136695976")
 parse.iban("DE89370400440532013000")
-parse.bin("424242")
+parse.card("424242")
 parse.npi("1881018208")
 parse.phone("+14155552671")
 parse.postal("SW1A 1AA")
@@ -239,7 +239,7 @@ if (ip.deep?.datacenter == true) {
 
 ## Errors
 
-Every non-2xx response throws a `ParseAPIException` with `status`, `code`, `docs`, and `requestId`. Branch on `code`.
+Every non-2xx response throws a `ParseAPIException` with `status`, `code`, `docs`, and `requestId`, plus nullable `retryAfter` header metadata. Branch on `code`.
 
 ```kotlin
 try {
@@ -267,6 +267,8 @@ val places = parse.postalNearby("28202") {
 
 Ordinary lookups retry up to twice on network failures, 429, 500, 502, 503, and 504. Carrier, caller, HLR, and email/VAT deep lookups do not retry automatically. Address deep also uses zero retries, reserved for future verification. Setting `retries` in the client configuration explicitly applies that count to every lookup, including metered requests. A retry may count as another lookup.
 
+Automatic retries honor numeric and HTTP-date `Retry-After` values up to five seconds. A longer server wait returns the original API error immediately, with the raw header in `retryAfter`, so the application can schedule a later attempt. Missing or invalid headers use ordinary backoff.
+
 Cancellation stops waiting for the response and closes the default connection. Redirects are returned as errors. Your custom transport should cooperate with coroutine cancellation.
 
 The source build uses Kotlin 2.1.20 and targets JVM 11 bytecode for JVM and Android apps. Dependencies: kotlinx-coroutines and kotlinx-serialization only.
@@ -281,7 +283,26 @@ Run `./gradlew check` before a release. The checked-in `api/parseapi.api` record
 
 Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/adp-consumer`. Run that consumer locally with `./gradlew -p compatibility/adp-consumer run`. It uses a test transport and makes no API requests.
 
-BIN lookup accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. `deep` adds an empty object on every plan.
+## Card
+
+Card looks up issuer, network and type from a BIN/IIN. It accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. Invalid prefixes and full card numbers are rejected locally before a request is sent. Accepted input is sent unchanged.
+
+Compare `prefix` with the normalized response `bin`. A matched row can still have all metadata unknown. Keep unknown prepaid status separate from true and false. Run it in your existing suspend function.
+
+```kotlin
+val card = parse.card("4242 42-99")
+val match = when (card.prefix) {
+    null -> "No reference match"
+    card.bin -> "Exact prefix match"
+    else -> "Broader prefix match"
+}
+val prepaid = when (card.prepaid) {
+    null -> "Unknown prepaid status"
+    true -> "Prepaid"
+    false -> "Not prepaid"
+}
+println("$match, $prepaid")
+```
 
 ## Stack
 

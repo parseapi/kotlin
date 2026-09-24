@@ -24,13 +24,15 @@ import kotlinx.serialization.json.contentOrNull
  * @property code Machine-readable error code, e.g. not_found, invalid_api_key, rate_limited.
  * @property docs Link to the docs section for this error.
  * @property requestId Send this if you contact support.
+ * @property retryAfter Raw Retry-After response header, when supplied.
  */
-class ParseAPIException(
+class ParseAPIException @JvmOverloads constructor(
 	val status: Int,
 	val code: String,
 	message: String,
 	val docs: String?,
 	val requestId: String?,
+	val retryAfter: String? = null,
 ) : Exception(message)
 
 /** One prepared GET, handed to the transport. */
@@ -470,13 +472,12 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/mac/${enc(mac)}")
 
 	/** Look up a 6-11 digit card prefix. Preserve leading zeros in the string. */
-	suspend fun bin(bin: String): Bin = bin(bin) {}
-
-	suspend fun bin(bin: String, configure: BinOptions.() -> Unit): Bin =
-		with(BinOptions().apply(configure)) {
-			get("/bin/${enc(bin)}", deepQuery(deep))
+	suspend fun card(bin: String): Card {
+		require(bin.length <= 64 && Regex("[0-9]{6,11}").matches(bin.filterNot { it in " \t\r\n-" })) {
+			"Card requires a 6-11 digit prefix string."
 		}
-
+		return get("/card/${enc(bin)}")
+	}
 
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
 	suspend fun measure(measure: String): Measure = measure(measure) {}
@@ -765,7 +766,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				if (error is CancellationException || error is ParseAPIException) throw error
 				currentCoroutineContext().ensureActive()
 				if (attempt < retryLimit) {
-					delay(retryDelayMs(attempt, null))
+					delay(checkNotNull(retryDelayMs(attempt, null)))
 					attempt++
 					continue
 				}
@@ -774,8 +775,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 			if (response.status in 200..299) return response.body
 
-			if (response.status in RETRY_STATUS && attempt < retryLimit) {
-				delay(retryDelayMs(attempt, response.headers["retry-after"]))
+			val retryAfter = response.headers["retry-after"]
+			val wait = retryDelayMs(attempt, retryAfter)
+			if (response.status in RETRY_STATUS && attempt < retryLimit && wait != null) {
+				delay(wait)
 				attempt++
 				continue
 			}
@@ -792,13 +795,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				field("message") ?: "Request failed with status ${response.status}",
 				field("docs"),
 				field("request_id"),
+				retryAfter,
 			)
 		}
 	}
 
-	internal fun retryDelayMs(attempt: Int, retryAfter: String?): Long {
-		retryAfter?.toDoubleOrNull()?.let { seconds ->
-			if (seconds.isFinite() && seconds >= 0) return min(seconds * 1_000, RETRY_AFTER_CAP_MS.toDouble()).toLong()
+	internal fun retryDelayMs(attempt: Int, retryAfter: String?): Long? {
+		if (retryAfter != null && Regex("[0-9]+(?:\\.[0-9]+)?").matches(retryAfter.trim())) {
+			val seconds = retryAfter.trim().toDoubleOrNull()
+			return if (seconds == null || !seconds.isFinite() || seconds > 5.0) null else kotlin.math.ceil(seconds * 1_000).toLong()
 		}
 		if (retryAfter != null) {
 			for (pattern in listOf("EEE, dd MMM yyyy HH:mm:ss zzz", "EEEE, dd-MMM-yy HH:mm:ss zzz", "EEE MMM d HH:mm:ss yyyy")) {
@@ -808,7 +813,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				}
 				val position = java.text.ParsePosition(0)
 				val at = format.parse(retryAfter, position)
-				if (at != null && position.index == retryAfter.length) return (at.time - System.currentTimeMillis()).coerceIn(0, RETRY_AFTER_CAP_MS)
+				if (at != null && position.index == retryAfter.length) {
+					val now = System.currentTimeMillis()
+					return if (at.time > now + RETRY_AFTER_CAP_MS) null else (at.time - now).coerceAtLeast(0)
+				}
 			}
 		}
 		return (Random.nextDouble() * min(250 * 2.0.pow(attempt), RETRY_AFTER_CAP_MS.toDouble())).toLong()
