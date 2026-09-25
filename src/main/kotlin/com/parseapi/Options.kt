@@ -370,3 +370,6 @@ class AsnOptions internal constructor() {
 
 typealias IndustryOptions = NaicsOptions
 typealias IndustrySearchOptions = NaicsSearchOptions
+
+/** Options for a Vehicle lookup by VIN. */
+typealias VehicleOptions = VinOptions

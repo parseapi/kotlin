@@ -552,7 +552,16 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/useragent", deepQuery(deep), userAgent = ua)
 		}
 
-	/** Decodes a 17-character VIN. Deep adds open recall campaigns on paid plans. */
+	/** Decodes a 17-character VIN. Deep adds model-level recall campaigns on paid plans. */
+	suspend fun vehicle(vin: String): Vehicle =
+		vehicle(vin) {}
+
+	suspend fun vehicle(vin: String, configure: VehicleOptions.() -> Unit): Vehicle =
+		with(VehicleOptions().apply(configure)) {
+			get("/vehicle/${enc(vin)}", deepQuery(deep))
+		}
+
+	/** Compatibility entry for VIN callers. */
 	suspend fun vin(vin: String): Vin =
 		vin(vin) {}
 

@@ -618,7 +618,7 @@ class VinRecall private constructor(
 @Serializable
 class VinDeep private constructor(
 	/**
-	 * Open recall campaigns for the decoded vehicle. Empty when none,
+	 * Recall campaigns for the decoded year, make and model. Empty when none,
 	 * null when the recall registry did not answer.
 	 */
 	val recalls: List<VinRecall>? = null,
@@ -1713,3 +1713,7 @@ typealias IndustryExclusion = NAICSExclusion
 typealias IndustryMatch = NAICSMatch
 typealias IndustrySearch = NAICSSearch
 typealias IndustrySearchResult = NAICSSearchResult
+
+typealias Vehicle = Vin
+typealias VehicleDeep = VinDeep
+typealias VehicleRecall = VinRecall
