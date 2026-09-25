@@ -102,15 +102,15 @@ class ADPTest {
   }
   run {
    val plainStub = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.npi("1881018208")
+   val plain = ParseAPI("test") { transport = plainStub }.provider("1881018208")
    assertNull(plain.deep)
    val stub0 = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.npi("1881018208") { deep=true }
+   val rich0 = ParseAPI("test") { transport=stub0 }.provider("1881018208") { deep=true }
    assertNotNull(rich0.deep)
    assertEquals(1,stub0.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
    val stub1 = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota","deep":{"deactivated_at":"2026-09-01","enrollments":[]}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.npi("1881018208") { deep=true }
+   val rich1 = ParseAPI("test") { transport=stub1 }.provider("1881018208") { deep=true }
    assertNotNull(rich1.deep)
    assertEquals(1,stub1.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)

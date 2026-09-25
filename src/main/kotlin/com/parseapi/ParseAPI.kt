@@ -393,12 +393,12 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/bank/requirements", listOf("country" to country, "format" to format))
 
 	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
-	suspend fun npi(npi: String): Npi =
-		npi(npi) {}
+	suspend fun provider(npi: String): Provider =
+		provider(npi) {}
 
-	suspend fun npi(npi: String, configure: NpiOptions.() -> Unit): Npi =
-		with(NpiOptions().apply(configure)) {
-			get("/npi/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
+	suspend fun provider(npi: String, configure: ProviderOptions.() -> Unit): Provider =
+		with(ProviderOptions().apply(configure)) {
+			get("/provider/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**

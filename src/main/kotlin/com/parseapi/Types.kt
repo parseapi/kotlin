@@ -463,7 +463,33 @@ class BankRequirementField private constructor(
 )
 
 @Serializable
-class Npi private constructor(
+class ProviderTaxonomy private constructor(
+	val taxonomy: String? = null,
+	val specialty: String? = null,
+	val primary: Boolean? = null,
+	val license: String? = null,
+	val state: String? = null,
+)
+
+@Serializable
+class ProviderSource private constructor(
+	val edition: String? = null,
+	val publishedAt: String? = null,
+	val through: String? = null,
+	val importedAt: String? = null,
+)
+
+@Serializable
+class ProviderSources private constructor(
+	val nppes: ProviderSource? = null,
+	val leie: ProviderSource? = null,
+	val pecos: ProviderSource? = null,
+	val optout: ProviderSource? = null,
+)
+
+@Serializable
+class Provider private constructor(
+	val sources: ProviderSources? = null,
 	/** Input with accepted separators removed; null when empty. Invalid values remain visible. */
 	val npi: String? = null,
 	/** Format and NPI checksum only; does not verify a provider or credentials. */
@@ -490,11 +516,11 @@ class Npi private constructor(
 	val postal: String? = null,
 	val country: String? = null,
 	val phone: String? = null,
-	val deep: NpiDeep? = null,
+	val deep: ProviderDeep? = null,
 )
 
 @Serializable
-class NpiEnrollment private constructor(
+class ProviderEnrollment private constructor(
 	/** part_a, part_b, practitioner, dme, order_refer, mdpp. Null when unknown. */
 	val type: String? = null,
 	val specialty: String? = null,
@@ -502,13 +528,17 @@ class NpiEnrollment private constructor(
 )
 
 @Serializable
-class NpiDeep private constructor(
+class ProviderDeep private constructor(
+	val enumeratedAt: String? = null,
+	val updatedAt: String? = null,
+	val reactivatedAt: String? = null,
+	val taxonomies: List<ProviderTaxonomy>? = null,
 	/** Present in the stored Medicare FFS enrollment extract; not payment eligibility. */
 	val medicare: Boolean? = null,
 	/** NPI-only match in the stored CMS opt-out affidavit list. Null when unavailable. */
 	val optOut: Boolean? = null,
 	/** Stored enrollment rows. Null when unavailable; empty when no rows are returned. */
-	val enrollments: List<NpiEnrollment>? = null,
+	val enrollments: List<ProviderEnrollment>? = null,
 	/** Recorded NPI deactivation date, YYYY-MM-DD. Null when active or unavailable. */
 	val deactivatedAt: String? = null,
 )

@@ -85,10 +85,10 @@ class UrlMappingTest {
 	}
 
 	@Test
-	fun npi() = runBlocking {
+	fun provider() = runBlocking {
 		val stub = StubTransport(200, """{"npi":"1881018208","valid":true,"registered":true,"type":"organization","name":"Mayo Clinic"}""")
-		val record = client(stub).npi("1881018208")
-		assertEquals("https://api.parseapi.com/npi/1881018208", stub.requests[0].url)
+		val record = client(stub).provider("1881018208")
+		assertEquals("https://api.parseapi.com/provider/1881018208", stub.requests[0].url)
 		assertEquals(true, record.registered)
 	}
 

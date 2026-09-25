@@ -2303,94 +2303,6 @@ public final class com/parseapi/NameOptions {
 	public final fun setNameLocale (Ljava/lang/String;)V
 }
 
-public final class com/parseapi/Npi {
-	public static final field Companion Lcom/parseapi/Npi$Companion;
-	public final fun getActive ()Ljava/lang/Boolean;
-	public final fun getAddress ()Ljava/lang/String;
-	public final fun getCity ()Ljava/lang/String;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getCredential ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/NpiDeep;
-	public final fun getExcluded ()Ljava/lang/Boolean;
-	public final fun getFirst ()Ljava/lang/String;
-	public final fun getLast ()Ljava/lang/String;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getNpi ()Ljava/lang/String;
-	public final fun getPhone ()Ljava/lang/String;
-	public final fun getPostal ()Ljava/lang/String;
-	public final fun getRegistered ()Ljava/lang/Boolean;
-	public final fun getSpecialty ()Ljava/lang/String;
-	public final fun getState ()Ljava/lang/String;
-	public final fun getStateName ()Ljava/lang/String;
-	public final fun getTaxonomy ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-	public final fun getValid ()Z
-}
-
-public synthetic class com/parseapi/Npi$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Npi$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Npi;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Npi;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Npi$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/NpiDeep {
-	public static final field Companion Lcom/parseapi/NpiDeep$Companion;
-	public final fun getDeactivatedAt ()Ljava/lang/String;
-	public final fun getEnrollments ()Ljava/util/List;
-	public final fun getMedicare ()Ljava/lang/Boolean;
-	public final fun getOptOut ()Ljava/lang/Boolean;
-}
-
-public synthetic class com/parseapi/NpiDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/NpiDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NpiDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NpiDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/NpiDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/NpiEnrollment {
-	public static final field Companion Lcom/parseapi/NpiEnrollment$Companion;
-	public final fun getSpecialty ()Ljava/lang/String;
-	public final fun getState ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/NpiEnrollment$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/NpiEnrollment$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/NpiEnrollment;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/NpiEnrollment;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/NpiEnrollment$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/NpiOptions {
-	public final fun getDeep ()Z
-	public final fun getLang ()Ljava/lang/String;
-	public final fun setDeep (Z)V
-	public final fun setLang (Ljava/lang/String;)V
-}
-
 public final class com/parseapi/ParseAPI {
 	public static final field Companion Lcom/parseapi/ParseAPI$Companion;
 	public static final field VERSION Ljava/lang/String;
@@ -2482,8 +2394,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun naicsSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun name (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun name (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun npi (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun npi (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun phone (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun phone (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun point (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2494,6 +2404,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun postalDistance (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun postalNearby (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun postalNearby (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun provider (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun provider (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stack (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stack (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun state (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -2985,6 +2897,166 @@ public synthetic class com/parseapi/PropertyTax$$serializer : kotlinx/serializat
 }
 
 public final class com/parseapi/PropertyTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/Provider {
+	public static final field Companion Lcom/parseapi/Provider$Companion;
+	public final fun getActive ()Ljava/lang/Boolean;
+	public final fun getAddress ()Ljava/lang/String;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getCredential ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/ProviderDeep;
+	public final fun getExcluded ()Ljava/lang/Boolean;
+	public final fun getFirst ()Ljava/lang/String;
+	public final fun getLast ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNpi ()Ljava/lang/String;
+	public final fun getPhone ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
+	public final fun getRegistered ()Ljava/lang/Boolean;
+	public final fun getSources ()Lcom/parseapi/ProviderSources;
+	public final fun getSpecialty ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+	public final fun getTaxonomy ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getValid ()Z
+}
+
+public synthetic class com/parseapi/Provider$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Provider$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Provider;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Provider;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Provider$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/ProviderDeep {
+	public static final field Companion Lcom/parseapi/ProviderDeep$Companion;
+	public final fun getDeactivatedAt ()Ljava/lang/String;
+	public final fun getEnrollments ()Ljava/util/List;
+	public final fun getEnumeratedAt ()Ljava/lang/String;
+	public final fun getMedicare ()Ljava/lang/Boolean;
+	public final fun getOptOut ()Ljava/lang/Boolean;
+	public final fun getReactivatedAt ()Ljava/lang/String;
+	public final fun getTaxonomies ()Ljava/util/List;
+	public final fun getUpdatedAt ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/ProviderDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/ProviderDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/ProviderDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/ProviderDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/ProviderDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/ProviderEnrollment {
+	public static final field Companion Lcom/parseapi/ProviderEnrollment$Companion;
+	public final fun getSpecialty ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/ProviderEnrollment$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/ProviderEnrollment$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/ProviderEnrollment;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/ProviderEnrollment;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/ProviderEnrollment$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/ProviderOptions {
+	public final fun getDeep ()Z
+	public final fun getLang ()Ljava/lang/String;
+	public final fun setDeep (Z)V
+	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/ProviderSource {
+	public static final field Companion Lcom/parseapi/ProviderSource$Companion;
+	public final fun getEdition ()Ljava/lang/String;
+	public final fun getImportedAt ()Ljava/lang/String;
+	public final fun getPublishedAt ()Ljava/lang/String;
+	public final fun getThrough ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/ProviderSource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/ProviderSource$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/ProviderSource;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/ProviderSource;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/ProviderSource$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/ProviderSources {
+	public static final field Companion Lcom/parseapi/ProviderSources$Companion;
+	public final fun getLeie ()Lcom/parseapi/ProviderSource;
+	public final fun getNppes ()Lcom/parseapi/ProviderSource;
+	public final fun getOptout ()Lcom/parseapi/ProviderSource;
+	public final fun getPecos ()Lcom/parseapi/ProviderSource;
+}
+
+public synthetic class com/parseapi/ProviderSources$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/ProviderSources$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/ProviderSources;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/ProviderSources;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/ProviderSources$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/ProviderTaxonomy {
+	public static final field Companion Lcom/parseapi/ProviderTaxonomy$Companion;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getPrimary ()Ljava/lang/Boolean;
+	public final fun getSpecialty ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getTaxonomy ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/ProviderTaxonomy$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/ProviderTaxonomy$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/ProviderTaxonomy;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/ProviderTaxonomy;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/ProviderTaxonomy$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

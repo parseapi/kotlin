@@ -131,7 +131,7 @@ class BankOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class NpiOptions internal constructor() {
+class ProviderOptions internal constructor() {
 	/** Display language for this request. */
 	var lang: String? = null
 	var deep: Boolean = false
