@@ -192,15 +192,15 @@ class ADPTest {
   }
   run {
    val plainStub = StubTransport(200, """{"naics":"541511","name":"Programming","level":6,"parent":"54151","year":2022,"country":"US"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.naics("541511")
+   val plain = ParseAPI("test") { transport = plainStub }.industry("541511")
    assertNull(plain.deep)
    val stub0 = StubTransport(200, """{"naics":"541511","name":"Programming","level":6,"parent":"54151","year":2022,"country":"US","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.naics("541511") { deep=true }
+   val rich0 = ParseAPI("test") { transport=stub0 }.industry("541511") { deep=true }
    assertNotNull(rich0.deep)
    assertEquals(1,stub0.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
    val stub1 = StubTransport(200, """{"naics":"541511","name":"Programming","level":6,"parent":"54151","year":2022,"country":"US","deep":{"description":"Definition","children":[],"exclusions":[]}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.naics("541511") { deep=true }
+   val rich1 = ParseAPI("test") { transport=stub1 }.industry("541511") { deep=true }
    assertNotNull(rich1.deep)
    assertEquals(1,stub1.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
@@ -368,8 +368,8 @@ class ADPTest {
   assertNull(endpoints.to.deep?.metros)
   assertEquals("https://api.parseapi.com/postal/28202/distance/10001?deep=true",distance.requests.single().url)
   val naics = StubTransport(200,"""{"q":"software","country":"US","year":2022,"results":[{"naics":"541511","name":"Programming","level":6,"deep":{"children":[]}}]}""")
-  assertEquals(0,ParseAPI("test") { transport=naics }.naicsSearch("software") { deep=true }.results.single().deep?.children?.size)
-  assertEquals("https://api.parseapi.com/naics?q=software&deep=true",naics.requests.single().url)
+  assertEquals(0,ParseAPI("test") { transport=naics }.industrySearch("software") { deep=true }.results.single().deep?.children?.size)
+  assertEquals("https://api.parseapi.com/industry?q=software&deep=true",naics.requests.single().url)
   val emoji = StubTransport(200,"""{"q":"smile","emojis":[{"emoji":"😀","name":"grinning face","deep":{"hex":"1F600"}}]}""")
   assertEquals("1F600",ParseAPI("test") { transport=emoji }.emojiSearch("smile") { deep=true }.emojis.single().deep?.hex)
   assertEquals("https://api.parseapi.com/emoji?q=smile&deep=true",emoji.requests.single().url)

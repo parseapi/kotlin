@@ -582,19 +582,24 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/** US NAICS 2022 definition and hierarchy. */
-	suspend fun naics(code: String): NAICS = naics(code) {}
+	suspend fun naics(code: String): NAICS = industry(code)
+	suspend fun naics(code: String, configure: NaicsOptions.() -> Unit): NAICS = industry(code, configure)
+	suspend fun naicsSearch(query: String): NAICSSearch = industrySearch(query)
+	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch = industrySearch(query, configure)
 
-	suspend fun naics(code: String, configure: NaicsOptions.() -> Unit): NAICS =
-		with(NaicsOptions().apply(configure)) {
-			get("/naics/${enc(code)}", deepQuery(deep))
+	suspend fun industry(code: String): Industry = industry(code) {}
+
+	suspend fun industry(code: String, configure: IndustryOptions.() -> Unit): Industry =
+		with(IndustryOptions().apply(configure)) {
+			get("/industry/${enc(code)}", deepQuery(deep))
 		}
 
 	/** Keyword search. Limit defaults to 10 and accepts 1-50. */
-	suspend fun naicsSearch(query: String): NAICSSearch = naicsSearch(query) {}
+	suspend fun industrySearch(query: String): IndustrySearch = industrySearch(query) {}
 
-	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch =
-		with(NaicsSearchOptions().apply(configure)) {
-			get("/naics", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
+	suspend fun industrySearch(query: String, configure: IndustrySearchOptions.() -> Unit): IndustrySearch =
+		with(IndustrySearchOptions().apply(configure)) {
+			get("/industry", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
 	/** Searches tariff schedule descriptions by product. */

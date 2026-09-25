@@ -1703,3 +1703,13 @@ class PropertyTax private constructor(
 	/** Reporting period, YYYY-YYYY. Monetary amounts use the final year of this period. */
 	val period: String,
 )
+
+// Industry names for the existing US NAICS response contract.
+typealias Industry = NAICS
+typealias IndustryChild = NAICSChild
+typealias IndustryCorrection = NAICSCorrection
+typealias IndustryDeep = NAICSDeep
+typealias IndustryExclusion = NAICSExclusion
+typealias IndustryMatch = NAICSMatch
+typealias IndustrySearch = NAICSSearch
+typealias IndustrySearchResult = NAICSSearchResult

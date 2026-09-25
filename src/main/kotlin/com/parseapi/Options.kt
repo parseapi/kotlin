@@ -367,3 +367,6 @@ class CountryStatesOptions internal constructor() {
 class AsnOptions internal constructor() {
 	var lang: String? = null
 }
+
+typealias IndustryOptions = NaicsOptions
+typealias IndustrySearchOptions = NaicsSearchOptions
