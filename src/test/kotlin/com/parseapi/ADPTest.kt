@@ -1,7 +1,7 @@
 package com.parseapi
 import kotlin.test.Test
-import kotlin.test.assertTrue
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 import kotlin.test.assertNull
 import kotlin.test.assertNotNull
 import kotlinx.coroutines.runBlocking

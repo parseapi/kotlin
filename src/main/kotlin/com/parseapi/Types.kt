@@ -560,11 +560,13 @@ class TariffMeasure private constructor(
 
 @Serializable
 class TariffDeep private constructor(
+	/** Open-string explanation when effectiveRate is null. */
+	val reason: String? = null,
 	/** The origin country the measures were resolved for. */
 	val origin: String? = null,
-	/** Composed ad valorem percent. Null when the components do not compose cleanly. */
+	/** Composed ad valorem percent for matched stored measures only, not complete duty or landed cost. Null when the components do not compose cleanly. */
 	@SerialName("effective_rate") val effectiveRate: Double? = null,
-	/** Every Chapter 99 tariff measure that applies to this code from this origin. */
+	/** Matching stored Chapter 99 schedule measures for this code and goods origin. */
 	val measures: List<TariffMeasure>? = null,
 	/** Units of quantity (No., kg). */
 	val units: List<String>? = null,
@@ -576,6 +578,8 @@ class TariffDeep private constructor(
 
 @Serializable
 class Tariff private constructor(
+	val edition: String? = null,
+	val date: String? = null,
 	/** Normalized code with dots (8471.30.01.00). */
 	val hts: String,
 	/** The schedule line verbatim. */
@@ -594,10 +598,14 @@ class TariffSearchHit private constructor(
 	val hts: String,
 	val description: String,
 	val general: String? = null,
+	/** Parent descriptions, outermost first. Older responses may omit this context. */
+	val lineage: List<String>? = null,
 )
 
 @Serializable
 class TariffSearch private constructor(
+	val edition: String? = null,
+	val date: String? = null,
 	val q: String,
 	val revision: String,
 	/** Up to 20 lines, best match first. */
@@ -941,8 +949,18 @@ class TimezoneNextDst private constructor(
 
 typealias Time = Timezone
 
+/** Serving timezone IDs and their pinned rule edition. */
+@Serializable
+class TimeZones private constructor(
+	val timezoneDatabaseVersion: String,
+	val timezones: List<String>,
+	val at: String? = null,
+	val zones: List<TimeZoneEntry>? = null,
+)
+
 @Serializable
 class Timezone private constructor(
+	val location: TimeLocation? = null,
 	/** Echoed on coordinate lookups only. */
 	val latitude: Double? = null,
 	val longitude: Double? = null,
@@ -953,6 +971,7 @@ class Timezone private constructor(
 	val at: String? = null,
 	val unix: Long? = null,
 	val to: TimezoneConversionTarget? = null,
+	val targets: List<TimezoneConversionTarget>? = null,
 	val deep: TimezoneDeep? = null,
 )
 
@@ -1583,6 +1602,12 @@ class NameDeep private constructor(
 
 @Serializable
 class TimezoneDeep private constructor(
+	val standardOffset: String? = null,
+	val standardOffsetSeconds: Int? = null,
+	val dstOffsetSeconds: Int? = null,
+	val season: TimeSeason? = null,
+	val timezoneDatabaseVersion: String? = null,
+	val resolution: TimeResolution? = null,
 	val name: String? = null,
 	val offsetSeconds: Int? = null,
 	val offsetMinutes: Int? = null,
@@ -1702,6 +1727,77 @@ class PropertyTax private constructor(
 	val currency: String,
 	/** Reporting period, YYYY-YYYY. Monetary amounts use the final year of this period. */
 	val period: String,
+)
+
+@Serializable
+class TimeResolution private constructor(
+	val kind: String? = null,
+	val policy: String? = null,
+	val adjustmentSeconds: Int? = null,
+	val alternatives: List<TimeResolutionAlternative>? = null,
+)
+
+@Serializable
+class TimeResolutionAlternative private constructor(
+	val at: String? = null,
+	val unix: Long? = null,
+	val offset: String? = null,
+)
+
+@Serializable
+class TimeZoneEntry private constructor(
+	val timezone: String,
+	val countries: List<String>,
+	val area: String? = null,
+	val abbreviation: String,
+	val offset: String,
+	val offsetSeconds: Int,
+	val dst: Boolean,
+	val observesDst: Boolean,
+)
+@Serializable
+class TimeTransitionState private constructor(
+	val at: String? = null,
+	val offset: String? = null,
+	val offsetSeconds: Int? = null,
+	val abbreviation: String? = null,
+	val dst: Boolean? = null,
+)
+@Serializable
+class TimeTransition private constructor(
+	val at: String? = null,
+	val before: TimeTransitionState? = null,
+	val after: TimeTransitionState? = null,
+	val changeSeconds: Int? = null,
+)
+@Serializable
+class TimeSeason private constructor(
+	val start: TimeTransition? = null,
+	val end: TimeTransition? = null,
+)
+
+@Serializable
+class TimeLocationInput private constructor(
+	val type: String,
+	val value: String,
+)
+@Serializable
+class TimeLocationCandidate private constructor(
+	val id: String? = null,
+	val name: String? = null,
+	val country: String? = null,
+	val state: String? = null,
+	val timezone: String? = null,
+	val latitude: Double? = null,
+	val longitude: Double? = null,
+)
+@Serializable
+class TimeLocation private constructor(
+	val input: TimeLocationInput,
+	val status: String,
+	val candidates: List<TimeLocationCandidate>,
+	val truncated: Boolean,
+	val source: String,
 )
 
 // Industry names for the existing US NAICS response contract.

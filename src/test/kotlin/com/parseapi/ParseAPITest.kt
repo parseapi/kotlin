@@ -375,6 +375,40 @@ class DecodingTest {
 }
 
 class TimeTest {
+	@Test fun targetListsAndDiscoveryKeepTheirShapes() = runBlocking {
+		val stub = StubTransport(200, """{"targets":[{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0},{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0}]}""")
+		val parse = client(stub)
+		for (targets in listOf(emptyList(), listOf(""), listOf("UTC,UTC"), List(11) { "UTC" })) {
+			assertFailsWith<IllegalArgumentException> { parse.time("UTC") { this.targets = targets } }
+			assertFailsWith<IllegalArgumentException> { parse.timeAt(0.0, 0.0) { this.targets = targets } }
+		}
+		assertFailsWith<IllegalArgumentException> { parse.time("UTC") { targets = listOf("UTC"); to = "UTC" } }
+		assertTrue(stub.requests.isEmpty())
+		val result = parse.time("UTC") { targets = listOf("UTC", "Asia/Tokyo", "UTC") }
+		assertEquals("https://api.parseapi.com/time/UTC?targets=UTC%2CAsia%2FTokyo%2CUTC", stub.requests.last().url)
+		assertEquals(2, result.targets?.size)
+		assertEquals(0L, result.targets?.last()?.unix)
+		parse.timeAt(0.0, 0.0) { targets = listOf("UTC", "Asia/Tokyo", "UTC") }
+		assertEquals("https://api.parseapi.com/time?lat=0&lon=0&targets=UTC%2CAsia%2FTokyo%2CUTC", stub.requests.last().url)
+		for (body in listOf("{}", """{"targets":null}""")) assertNull(client(StubTransport(200, body)).time("UTC").targets)
+		assertEquals(emptyList(), client(StubTransport(200, """{"targets":[]}""")).time("UTC").targets)
+		val zonesStub = StubTransport(200, """{"timezone_database_version":"2026c","timezones":[]}""")
+		val zonesClient = client(zonesStub)
+		assertEquals("2026c", zonesClient.timeZones().timezoneDatabaseVersion)
+		assertEquals("https://api.parseapi.com/time/zones", zonesStub.requests.last().url)
+		assertEquals(emptyList(), zonesClient.timeZones("Europe").timezones)
+		assertEquals("https://api.parseapi.com/time/zones?q=Europe", zonesStub.requests.last().url)
+	}
+	@Test fun conversionPolicyIsOptionalAndForwarded() = runBlocking {
+		val stub = StubTransport(200, "{}")
+		val parse = client(stub)
+		for (mode in listOf("compatible", "earlier", "later", "reject")) {
+			parse.time("America/New_York") { at = "2026-11-01T01:30:00"; to = "UTC"; disambiguation = mode }
+			assertEquals("https://api.parseapi.com/time/America%2FNew_York?at=2026-11-01T01%3A30%3A00&to=UTC&disambiguation=$mode", stub.requests.last().url)
+			parse.timeAt(40.71, -74.01) { at = "2026-11-01T01:30:00"; to = "UTC"; disambiguation = mode }
+			assertEquals("https://api.parseapi.com/time?lat=40.71&lon=-74.01&at=2026-11-01T01%3A30%3A00&to=UTC&disambiguation=$mode", stub.requests.last().url)
+		}
+	}
 	@Test fun clocksKeepEpochZeroAndNulls() = runBlocking {
 		val historical = client(StubTransport(200, """{"deep":{"offset_seconds":-17762,"offset_minutes":-296},"at":"1880-01-01T00:00:00-04:56:02"}""")).time("America/New_York")
 		assertEquals(-17762, historical.deep?.offsetSeconds)
@@ -394,4 +428,46 @@ class TimeTest {
 		assertNull(unknown.unix)
 		assertNull(unknown.to)
 	}
+}
+
+class TimeExcellenceTest {
+ @Test fun resolutionAndReservedSourceRoutes() = runBlocking {
+  val stub = StubTransport(200, """{"deep":{"timezone_database_version":"2026c","resolution":{"kind":"gap","policy":"earlier","adjustment_seconds":-1800,"alternatives":[{"at":"1970-01-01T00:00:00.123+00:00","unix":0,"offset":"+00:00"},{"at":"1970-01-01T00:30:00.123+00:00","unix":1800,"offset":"+00:00"}],"future":true}}}""")
+  val parse = client(stub)
+  for (zone in listOf("zones", "help", " ZONES ", "Help")) assertFailsWith<IllegalArgumentException> { parse.time(zone) }
+  assertTrue(stub.requests.isEmpty())
+  val result = parse.time("UTC") { deep = true }
+  assertEquals("2026c", result.deep?.timezoneDatabaseVersion)
+  assertEquals(-1800, result.deep?.resolution?.adjustmentSeconds)
+  assertEquals(0L, result.deep?.resolution?.alternatives?.first()?.unix)
+  for (body in listOf("""{"deep":{}}""", """{"deep":{"resolution":null}}""")) {
+   assertNull(client(StubTransport(200, body)).time("UTC").deep?.resolution)
+  }
+  val unique = client(StubTransport(200, """{"deep":{"resolution":{"kind":"unique","alternatives":[]}}}""")).time("UTC")
+  assertEquals(emptyList(), unique.deep?.resolution?.alternatives)
+ }
+}
+
+class TimeGapsTest {
+ @Test fun explicitSourceCatalogAndSeasonalEvidence() = runBlocking {
+  val catalog=StubTransport(200,"""{"timezone_database_version": "2026c", "timezones": ["UTC"], "at": "1970-01-01T00:00:00.000Z", "zones": [{"timezone": "UTC", "countries": [], "area": null, "abbreviation": "UTC", "offset": "+00:00", "offset_seconds": 0, "dst": false, "observes_dst": false}]}""")
+  val zones=client(catalog).timeZones { country="US"; area="America"; offset="+00:00"; abbreviation="UTC"; dst=false; observesDst=false; at="1970-01-01T00:00:00Z"; details=true; sort="offset" }
+  assertTrue(catalog.requests[0].url.contains("dst=false"))
+  assertTrue(catalog.requests[0].url.contains("observes_dst=false"))
+  assertEquals(0,zones.zones!!.first().offsetSeconds)
+  assertFalse(zones.zones!!.first().dst)
+  val stub=StubTransport(200,"""{"timezone": null, "targets": null, "location": {"input": {"type": "city", "value": "Springfield"}, "status": "ambiguous", "candidates": [{"id": "city_a", "name": "Springfield", "country": "US", "state": "IL", "timezone": "America/Chicago", "latitude": 0, "longitude": 0}], "truncated": false, "source": "city_reference"}, "deep": {"standard_offset": "+01:00", "standard_offset_seconds": 3600, "dst_offset_seconds": -3600, "season": {"start": {"at": "2026-10-25T01:00:00Z", "before": {"offset_seconds": 3600, "dst": false}, "after": {"offset_seconds": 0, "dst": true}, "change_seconds": -3600}, "end": null}}}""")
+  val parse=client(stub)
+  val result=parse.time { city="Springfield"; country="US"; state="IL"; targets=listOf("UTC"); deep=true }
+  assertNull(result.timezone); assertEquals("ambiguous",result.location!!.status)
+  assertEquals(0.0,result.location!!.candidates.first().latitude)
+  assertEquals(-3600,result.deep!!.dstOffsetSeconds)
+  assertEquals(-3600,result.deep!!.season!!.start!!.changeSeconds)
+  assertEquals(false,result.deep!!.season!!.start!!.before!!.dst)
+  for (source in listOf<TimeOptions.()->Unit>({ip="2001:db8::1"},{country="US"},{iata="JFK"},{icao="KJFK"},{unlocode="US NYC"},{address="1 Main Street";country="US";state="NY"})) parse.time(configure=source)
+  val count=stub.requests.size
+  for (source in listOf<TimeOptions.()->Unit>({ip="8.8.8.8";city="Paris"},{ip="8.8.8.8";country="US"},{state="NY"},{city="Paris";state="IDF"},{address="a"},{ip=""})) assertFailsWith<IllegalArgumentException>{parse.time(configure=source)}
+  assertFailsWith<IllegalArgumentException>{parse.time("UTC"){city="Paris"}}
+  assertEquals(count,stub.requests.size)
+ }
 }

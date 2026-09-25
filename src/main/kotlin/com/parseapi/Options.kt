@@ -179,10 +179,17 @@ class VinOptions internal constructor() {
 }
 
 class TariffOptions internal constructor() {
+	var edition: String? = null
+	var date: String? = null
 	/** Add units and the special and other schedule columns on paid plans. */
 	var deep: Boolean = false
 	/** ISO 3166-1 alpha-2 origin. With paid deep, resolves country-specific measures. Optional for schedule detail. */
 	var origin: String? = null
+}
+
+class TariffSearchOptions internal constructor() {
+	var edition: String? = null
+	var date: String? = null
 }
 
 class CurrencyRateOptions internal constructor() {
@@ -191,10 +198,23 @@ class CurrencyRateOptions internal constructor() {
 }
 
 class TimeOptions internal constructor() {
+	var ip: String? = null
+	var city: String? = null
+	var country: String? = null
+	var state: String? = null
+	var iata: String? = null
+	var icao: String? = null
+	var unlocode: String? = null
+	var address: String? = null
+
 	/** Display language for this request. */
 	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
+	/** One to ten destination zones, preserving order and duplicates. Use instead of to. */
+	var targets: List<String>? = null
+	/** Offsetless conversion at clock changes: compatible (default), earlier, later, or reject. */
+	var disambiguation: String? = null
 	var deep: Boolean = false
 }
 
@@ -203,6 +223,10 @@ class TimeAtOptions internal constructor() {
 	var lang: String? = null
 	var at: String? = null
 	var to: String? = null
+	/** One to ten destination zones, preserving order and duplicates. Use instead of to. */
+	var targets: List<String>? = null
+	/** Offsetless conversion at clock changes: compatible (default), earlier, later, or reject. */
+	var disambiguation: String? = null
 	var deep: Boolean = false
 }
 
@@ -366,6 +390,46 @@ class CountryStatesOptions internal constructor() {
 /** Display language for this operation. */
 class AsnOptions internal constructor() {
 	var lang: String? = null
+}
+
+/** Directory detail in the same pooled request on every plan. */
+class CompanyIdOptions internal constructor() { var deep: Boolean = false }
+
+/** Use at most one selector, or discover by country, industry or selected registration; reuse cursor with the same filters and limit. */
+class CompanySearchOptions internal constructor() {
+	var query: String? = null
+	var domain: String? = null
+	var ticker: String? = null
+	var identifier: String? = null
+	var country: String? = null
+	/** Exact four-digit SIC string; pair with industryType. */
+	var industry: String? = null
+	/** Open namespace string, currently sic. */
+	var industryType: String? = null
+	/** Selected registration authority; exact form/status filters require this. */
+	var registrationAuthority: String? = null
+	/** Exact source legal-form code, not ownership or tax-exempt status. */
+	var registrationForm: String? = null
+	/** Exact source administrative status, not operating activity. */
+	var registrationStatus: String? = null
+	var exchange: String? = null
+	var authority: String? = null
+	var limit: Int? = null
+	var cursor: String? = null
+	var deep: Boolean = false
+}
+
+/** Filters the serving timezone catalog at one instant. */
+class TimeZonesOptions internal constructor() {
+	var country: String? = null
+	var area: String? = null
+	var offset: String? = null
+	var abbreviation: String? = null
+	var at: String? = null
+	var sort: String? = null
+	var dst: Boolean? = null
+	var observesDst: Boolean? = null
+	var details: Boolean = false
 }
 
 typealias IndustryOptions = NaicsOptions

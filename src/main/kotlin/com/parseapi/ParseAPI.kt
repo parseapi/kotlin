@@ -587,7 +587,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	suspend fun tariff(code: String, configure: TariffOptions.() -> Unit): Tariff =
 		with(TariffOptions().apply(configure)) {
-			get("/tariff/${enc(code)}", listOf("origin" to origin) + deepQuery(deep))
+			get<Tariff>("/tariff/${enc(code)}", listOf("origin" to origin, "edition" to edition, "date" to date) + deepQuery(deep)).also { tariffSelection(edition, date, it.edition, it.date) }
 		}
 
 	/** US NAICS 2022 definition and hierarchy. */
@@ -611,9 +611,21 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/industry", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
+	private fun tariffSelection(edition: String?, date: String?, gotEdition: String?, gotDate: String?) {
+		val confirmedEdition = gotEdition != null && gotEdition.length == 64 && gotEdition.all { it in '0'..'9' || it in 'a'..'f' }
+		if ((edition != null || date != null) && (!confirmedEdition || (edition != null && gotEdition != edition) || gotDate != date)) {
+			throw ParseAPIException(0, "tariff_selection_mismatch", "Tariff response did not confirm the requested edition/date. The server may not support this selection.", null, null)
+		}
+	}
+
 	/** Searches tariff schedule descriptions by product. */
-	suspend fun tariffSearch(query: String): TariffSearch =
-		get("/tariff", listOf("q" to query))
+	suspend fun tariffSearch(query: String): TariffSearch = tariffSearch(query) {}
+
+	/** Pin an immutable edition or request a date with verified source coverage. */
+	suspend fun tariffSearch(query: String, configure: TariffSearchOptions.() -> Unit): TariffSearch =
+		with(TariffSearchOptions().apply(configure)) {
+			get<TariffSearch>("/tariff", listOf("q" to query, "edition" to edition, "date" to date)).also { tariffSelection(edition, date, it.edition, it.date) }
+		}
 
 	suspend fun currency(code: String): Currency = currency(code) {}
 
@@ -631,20 +643,52 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
 		}
 
-	/** Current local time, UTC by default. With to, offsetless at is source wall time. */
+	/** Current local time, UTC by default. With to or targets, offsetless at is source wall time. */
 	suspend fun time(timezone: String? = null): Time = time(timezone) {}
 
 	suspend fun time(timezone: String? = null, configure: TimeOptions.() -> Unit): Time =
 		with(TimeOptions().apply(configure)) {
-			get(timezone?.let { "/time/${enc(it)}" } ?: "/time", listOf("at" to at, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
+			val source = timeSource(timezone, this)
+			get(timePath(timezone), source + listOf("at" to at, "to" to to, "targets" to timeTargets(targets, to), "disambiguation" to disambiguation) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun timeAt(lat: Double, lon: Double): Time = timeAt(lat, lon) {}
 
 	suspend fun timeAt(lat: Double, lon: Double, configure: TimeAtOptions.() -> Unit): Time =
 		with(TimeAtOptions().apply(configure)) {
-			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to) + deepQuery(deep) + listOf("lang" to lang))
+			get("/time", listOf("lat" to num(lat), "lon" to num(lon), "at" to at, "to" to to, "targets" to timeTargets(targets, to), "disambiguation" to disambiguation) + deepQuery(deep) + listOf("lang" to lang))
 		}
+
+	/** Search serving timezone IDs. Omit query to list all. */
+	suspend fun timeZones(query: String? = null): TimeZones = timeZones(query) {}
+
+	suspend fun timeZones(query: String? = null, configure: TimeZonesOptions.() -> Unit): TimeZones =
+		with(TimeZonesOptions().apply(configure)) {
+			get("/time/zones", listOf("q" to query, "country" to country, "area" to area, "offset" to offset, "abbreviation" to abbreviation, "dst" to dst?.toString(), "observes_dst" to observesDst?.toString(), "at" to at, "details" to if (details) "true" else null, "sort" to sort))
+		}
+
+	private fun timeSource(timezone: String?, options: TimeOptions): List<Pair<String, String?>> = with(options) {
+		val values = listOf("ip" to ip, "city" to city, "country" to country, "state" to state, "iata" to iata, "icao" to icao, "unlocode" to unlocode, "address" to address)
+		val primary = listOf(ip, city, iata, icao, unlocode, address).count { it != null }
+		require(values.none { it.second?.isBlank() == true } && !(timezone != null && values.any { it.second != null }) && primary <= 1 &&
+			!(country != null && primary > 0 && city == null && address == null) && !(state != null && ((city == null && address == null) || country == null)) && !(address != null && country == null)) {
+			"Pass one Time source, using country only with city or address and state only with city or address and country."
+		}
+		values
+	}
+
+	private fun timePath(timezone: String?): String {
+		require(timezone?.trim()?.lowercase() !in setOf("zones", "help")) { "Time source must be an IANA timezone ID. Use timezone discovery to list IDs." }
+		return timezone?.let { "/time/${enc(it)}" } ?: "/time"
+	}
+
+	private fun timeTargets(targets: List<String>?, to: String?): String? {
+		if (targets == null) return null
+		require(to == null && targets.size in 1..10 && targets.all { it.isNotBlank() && ',' !in it }) {
+			"Time targets requires 1 to 10 timezone IDs and cannot be combined with to."
+		}
+		return targets.joinToString(",")
+	}
 
 	suspend fun timezone(id: String): Timezone =
 		timezone(id) {}
@@ -773,6 +817,27 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun company(number: String, configure: CompanyOptions.() -> Unit): Company = with(CompanyOptions().apply(configure)) {
 		get("/company/${enc(number)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 	}
+
+	/** Directory profile by stable co_ ID; national company-number validation remains company. */
+	suspend fun companyId(id: String): CompanyProfile = companyId(id) {}
+	/** Deep adds detail in the same pooled request, with no hidden lookup. */
+	suspend fun companyId(id: String, configure: CompanyIdOptions.() -> Unit): CompanyProfile = with(CompanyIdOptions().apply(configure)) {
+		get("/company/id/${enc(id)}", deepQuery(deep))
+	}
+
+	/** Use at most one selector, or discover by country or exact industry. The API validates combinations. */
+	suspend fun companySearch(): CompanySearch = companySearch {}
+	/** One bounded page. Exchange narrows ticker; authority narrows identifier.
+	 * Reuse cursor with the same selector, filters and limit. Deep belongs to each profile. */
+	suspend fun companySearch(configure: CompanySearchOptions.() -> Unit): CompanySearch = with(CompanySearchOptions().apply(configure)) {
+		get("/company", listOf("q" to query, "domain" to domain, "ticker" to ticker,
+			"identifier" to identifier, "country" to country, "industry" to industry, "industry_type" to industryType,
+			"registration_authority" to registrationAuthority, "registration_form" to registrationForm, "registration_status" to registrationStatus, "exchange" to exchange,
+			"authority" to authority, "limit" to limit?.toString(), "cursor" to cursor) + deepQuery(deep))
+	}
+
+	/** Counts for this directory edition, not complete country or worldwide coverage. */
+	suspend fun companyCoverage(): CompanyCoverage = get("/company/directory/coverage")
 
 	// Transport
 
