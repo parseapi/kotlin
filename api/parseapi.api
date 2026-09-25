@@ -1004,6 +1004,7 @@ public final class com/parseapi/CompanyProfileDeep {
 	public final fun getLegalName ()Ljava/lang/String;
 	public final fun getLogo ()Ljava/lang/String;
 	public final fun getParent ()Ljava/lang/String;
+	public final fun getRegistrations ()Ljava/util/List;
 	public final fun getSocials ()Ljava/util/List;
 	public final fun getSources ()Ljava/util/List;
 	public final fun getStatus ()Ljava/lang/String;
@@ -1149,6 +1150,77 @@ public final class com/parseapi/CompanyProfileListing$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/CompanyProfileRegistration {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistration$Companion;
+	public final fun getAddress ()Lcom/parseapi/CompanyProfileRegistrationAddress;
+	public final fun getAuthority ()Ljava/lang/String;
+	public final fun getFormationDate ()Ljava/lang/String;
+	public final fun getJurisdiction ()Lcom/parseapi/CompanyProfileJurisdiction;
+	public final fun getLegalForm ()Lcom/parseapi/CompanyProfileRegistrationLegalForm;
+	public final fun getNumber ()Ljava/lang/String;
+	public final fun getRole ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistration$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistration$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistration;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistration;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistration$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileRegistrationAddress {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistrationAddress$Companion;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getCountryRaw ()Ljava/lang/String;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getLine1 ()Ljava/lang/String;
+	public final fun getLine2 ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistrationAddress$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistrationAddress$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistrationAddress;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistrationAddress;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistrationAddress$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileRegistrationLegalForm {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistrationLegalForm$Companion;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistrationLegalForm$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistrationLegalForm$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistrationLegalForm;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistrationLegalForm;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistrationLegalForm$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/CompanyProfileSource {
 	public static final field Companion Lcom/parseapi/CompanyProfileSource$Companion;
 	public final fun getFields ()Ljava/util/List;
@@ -1224,6 +1296,9 @@ public final class com/parseapi/CompanySearchOptions {
 	public final fun getIndustryType ()Ljava/lang/String;
 	public final fun getLimit ()Ljava/lang/Integer;
 	public final fun getQuery ()Ljava/lang/String;
+	public final fun getRegistrationAuthority ()Ljava/lang/String;
+	public final fun getRegistrationForm ()Ljava/lang/String;
+	public final fun getRegistrationStatus ()Ljava/lang/String;
 	public final fun getTicker ()Ljava/lang/String;
 	public final fun setAuthority (Ljava/lang/String;)V
 	public final fun setCountry (Ljava/lang/String;)V
@@ -1236,6 +1311,9 @@ public final class com/parseapi/CompanySearchOptions {
 	public final fun setIndustryType (Ljava/lang/String;)V
 	public final fun setLimit (Ljava/lang/Integer;)V
 	public final fun setQuery (Ljava/lang/String;)V
+	public final fun setRegistrationAuthority (Ljava/lang/String;)V
+	public final fun setRegistrationForm (Ljava/lang/String;)V
+	public final fun setRegistrationStatus (Ljava/lang/String;)V
 	public final fun setTicker (Ljava/lang/String;)V
 }
 
