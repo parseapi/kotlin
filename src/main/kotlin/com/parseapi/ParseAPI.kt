@@ -498,12 +498,16 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun mac(mac: String): Mac =
 		get("/mac/${enc(mac)}")
 
-	/** Look up a 6-11 digit card prefix. Preserve leading zeros in the string. */
-	suspend fun card(bin: String): Card {
-		require(bin.length <= 64 && Regex("[0-9]{6,11}").matches(bin.filterNot { it in " \t\r\n-" })) {
-			"Card requires a 6-11 digit prefix string."
+	/** Look up a 2-11 digit card prefix. Preserve leading zeros in the string. */
+	suspend fun card(bin: String): Card = card(bin) {}
+
+	/** Optional recorded issuer details, included on every plan. */
+	suspend fun card(bin: String, configure: CardOptions.() -> Unit): Card {
+		val options = CardOptions().apply(configure)
+		require(bin.length <= 64 && Regex("[0-9]{2,11}").matches(bin.filterNot { it in " \t\r\n-" })) {
+			"Card requires a 2-11 digit prefix string."
 		}
-		return get("/card/${enc(bin)}")
+		return get("/card/${enc(bin)}", deepQuery(options.deep))
 	}
 
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */

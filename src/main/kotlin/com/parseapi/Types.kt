@@ -350,16 +350,22 @@ class Vat private constructor(
 	val deep: VatDeep? = null,
 )
 
-/** Card-prefix reference data. Null means unknown. */
+/** Network identity. Null brand means unknown or ambiguous. */
 @Serializable
 class Card private constructor(
 	val bin: String,
-	/** Actual longest matched prefix, which may be shorter than the input. */
-	val prefix: String? = null,
-	val country: String? = null,
-	val issuer: String? = null,
 	val brand: String? = null,
 	val brandName: String? = null,
+	val logo: String,
+	val deep: CardDeep? = null,
+)
+
+/** Optional recorded issuer details; null fields mean unknown. */
+@Serializable
+class CardDeep private constructor(
+	val prefix: String? = null,
+	val issuer: String? = null,
+	val country: String? = null,
 	val type: String? = null,
 	val prepaid: Boolean? = null,
 )

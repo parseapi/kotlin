@@ -17,6 +17,11 @@ class ParseAPIOptions internal constructor() {
 	var transport: ParseAPITransport? = null
 }
 
+/** Optional recorded issuer details for Card. */
+class CardOptions internal constructor() {
+	var deep: Boolean = false
+}
+
 // Each operation owns its options, so new optional fields leave call signatures stable.
 class IpOptions internal constructor() {
 	/** Display language for this request. */
