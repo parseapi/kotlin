@@ -70,8 +70,8 @@ class UrlMappingTest {
 	@Test
 	fun ibanCountry() = runBlocking {
 		val stub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"country":"DE","bank":"37040044","deep":{"checksum":"89","branch":null,"account":"0532013000"}}""")
-		client(stub).iban("89370400440532013000") { this.country = "DE" }
-		assertEquals("https://api.parseapi.com/iban/89370400440532013000?country=DE", stub.requests[0].url)
+		client(stub).bank("89370400440532013000") { this.country = "DE" }
+		assertEquals("https://api.parseapi.com/bank", stub.requests[0].url)
 	}
 
 	@Test
@@ -85,10 +85,20 @@ class UrlMappingTest {
 	}
 
 	@Test
-	fun npi() = runBlocking {
+	fun vehicleDeep() = runBlocking {
+		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","deep":{"recalls":[],"plant_city":"Marysville"}}""")
+		val decoded = client(stub).vehicle("1HGCM82633A004352") { this.deep = true }
+		assertEquals("https://api.parseapi.com/vehicle/1HGCM82633A004352?deep=true", stub.requests[0].url)
+		assertEquals(2003, decoded.year)
+		assertEquals("Marysville", decoded.deep?.plantCity)
+		assertEquals(0, decoded.deep?.recalls?.size)
+	}
+
+	@Test
+	fun provider() = runBlocking {
 		val stub = StubTransport(200, """{"npi":"1881018208","valid":true,"registered":true,"type":"organization","name":"Mayo Clinic"}""")
-		val record = client(stub).npi("1881018208")
-		assertEquals("https://api.parseapi.com/npi/1881018208", stub.requests[0].url)
+		val record = client(stub).provider("1881018208")
+		assertEquals("https://api.parseapi.com/provider/1881018208", stub.requests[0].url)
 		assertEquals(true, record.registered)
 	}
 

@@ -17,6 +17,11 @@ class ParseAPIOptions internal constructor() {
 	var transport: ParseAPITransport? = null
 }
 
+/** Optional recorded issuer details for Card. */
+class CardOptions internal constructor() {
+	var deep: Boolean = false
+}
+
 // Each operation owns its options, so new optional fields leave call signatures stable.
 class IpOptions internal constructor() {
 	/** Display language for this request. */
@@ -121,17 +126,12 @@ class VatOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-/** Deep requests an empty object on every plan. */
-class BinOptions internal constructor() {
-	var deep: Boolean = false
-}
-
-class IbanOptions internal constructor() {
+class BankOptions internal constructor() {
 	var country: String? = null
 	var deep: Boolean = false
 }
 
-class NpiOptions internal constructor() {
+class ProviderOptions internal constructor() {
 	/** Display language for this request. */
 	var lang: String? = null
 	var deep: Boolean = false
@@ -403,4 +403,27 @@ class TimeZonesOptions internal constructor() {
 	var dst: Boolean? = null
 	var observesDst: Boolean? = null
 	var details: Boolean = false
+}
+
+typealias IndustryOptions = NaicsOptions
+typealias IndustrySearchOptions = NaicsSearchOptions
+
+/** Options for a Vehicle lookup by VIN. */
+typealias VehicleOptions = VinOptions
+
+class BinOptions internal constructor() {
+	var deep: Boolean = false
+}
+
+
+class IbanOptions internal constructor() {
+	var country: String? = null
+	var deep: Boolean = false
+}
+
+
+class NpiOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
+	var deep: Boolean = false
 }

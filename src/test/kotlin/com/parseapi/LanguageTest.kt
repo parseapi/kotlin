@@ -45,7 +45,7 @@ class LanguageTest {
    Operation("PostalNearby", "/postal/28202/nearby", "country=US&radius=8") { parse, language -> parse.postalNearby("28202") { this.country = "US"; this.radius = 8.0; this.lang = language } },
    Operation("PostalDistance", "/postal/28202/distance/10001", "country=US") { parse, language -> parse.postalDistance("28202", "10001") { this.country = "US"; this.lang = language } },
    Operation("Company", "/company/732829320", "country=FR&deep=true") { parse, language -> parse.company("732829320") { this.country = "FR"; this.deep = true; this.lang = language } },
-   Operation("NPI", "/npi/1881018208", "deep=true") { parse, language -> parse.npi("1881018208") { this.deep = true; this.lang = language } },
+   Operation("NPI", "/provider/1881018208", "deep=true") { parse, language -> parse.provider("1881018208") { this.deep = true; this.lang = language } },
    Operation("ASN", "/asn/AS13335", "") { parse, language -> parse.asn("AS13335") { this.lang = language } },
    Operation("Currency", "/currency/USD", "deep=true") { parse, language -> parse.currency("USD") { this.deep = true; this.lang = language } },
    Operation("Language", "/language/ja", "") { parse, language -> parse.language("ja") { this.lang = language } },

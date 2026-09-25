@@ -16,6 +16,8 @@ import kotlinx.serialization.json.JsonNamingStrategy
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /**
  * Every non-2xx response from the API. Branch on [code], never on the message.
@@ -24,21 +26,27 @@ import kotlinx.serialization.json.contentOrNull
  * @property code Machine-readable error code, e.g. not_found, invalid_api_key, rate_limited.
  * @property docs Link to the docs section for this error.
  * @property requestId Send this if you contact support.
+ * @property retryAfter Raw Retry-After response header, when supplied.
  */
-class ParseAPIException(
+class ParseAPIException @JvmOverloads constructor(
 	val status: Int,
 	val code: String,
 	message: String,
 	val docs: String?,
 	val requestId: String?,
+	val retryAfter: String? = null,
 ) : Exception(message)
 
-/** One prepared GET, handed to the transport. */
+/** One prepared HTTP request, handed to the transport. */
 class ParseAPIRequest internal constructor(
 	val url: String,
 	val headers: Map<String, String>,
 	val timeoutMs: Int,
-)
+	val method: String,
+	val body: String?,
+) {
+	internal constructor(url: String, headers: Map<String, String>, timeoutMs: Int) : this(url, headers, timeoutMs, "GET", null)
+}
 
 /** Raw transport answer. Header names are lowercase. */
 class ParseAPIResponse(
@@ -57,6 +65,7 @@ private object HttpURLConnectionTransport : ParseAPITransport {
 		kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
 			val connection = URI(request.url).toURL().openConnection() as HttpURLConnection
 			connection.instanceFollowRedirects = false
+			connection.requestMethod = request.method
 			connection.connectTimeout = request.timeoutMs
 			connection.readTimeout = request.timeoutMs
 			request.headers.forEach { (name, value) -> connection.setRequestProperty(name, value) }
@@ -68,6 +77,12 @@ private object HttpURLConnectionTransport : ParseAPITransport {
 			Dispatchers.IO.dispatch(continuation.context, Runnable {
 				if (!continuation.isActive) return@Runnable
 				try {
+					request.body?.let { body ->
+						connection.doOutput = true
+						val bytes = body.toByteArray(Charsets.UTF_8)
+						connection.setFixedLengthStreamingMode(bytes.size)
+						connection.outputStream.use { it.write(bytes) }
+					}
 					val status = connection.responseCode
 					val stream = if (status >= 400) connection.errorStream else connection.inputStream
 					val body = stream?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
@@ -363,13 +378,50 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/iban/${enc(iban)}", listOf("country" to country) + deepQuery(deep))
 		}
 
-	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
 	suspend fun npi(npi: String): Npi =
 		npi(npi) {}
 
 	suspend fun npi(npi: String, configure: NpiOptions.() -> Unit): Npi =
 		with(NpiOptions().apply(configure)) {
 			get("/npi/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
+		}
+
+	suspend fun bin(bin: String): Bin = bin(bin) {}
+
+	suspend fun bin(bin: String, configure: BinOptions.() -> Unit): Bin =
+		with(BinOptions().apply(configure)) {
+			get("/bin/${enc(bin)}", deepQuery(deep))
+		}
+
+	suspend fun bank(iban: String): Bank =
+		bank(iban) {}
+
+	suspend fun bank(iban: String, configure: BankOptions.() -> Unit): Bank =
+		with(BankOptions().apply(configure)) {
+			post("/bank", buildJsonObject {
+				put("iban", iban)
+				country?.let { put("country", it) }
+				if (deep) put("deep", true)
+			}.toString())
+		}
+
+	/** Supported US ACH format checks; not account existence or ACH eligibility. */
+	suspend fun bankUsAch(input: BankUsAchInput): BankUsAch = post("/bank", buildJsonObject {
+		put("format", "us_ach"); put("country", "US")
+		put("routing", input.routing); put("account", input.account)
+	}.toString())
+
+	/** Required collection fields; omitted format selects IBAN. */
+	suspend fun bankRequirements(country: String, format: String? = null): BankRequirements =
+		get("/bank/requirements", listOf("country" to country, "format" to format))
+
+	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
+	suspend fun provider(npi: String): Provider =
+		provider(npi) {}
+
+	suspend fun provider(npi: String, configure: ProviderOptions.() -> Unit): Provider =
+		with(ProviderOptions().apply(configure)) {
+			get("/provider/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/**
@@ -469,14 +521,17 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun mac(mac: String): Mac =
 		get("/mac/${enc(mac)}")
 
-	/** Look up a 6-11 digit card prefix. Preserve leading zeros in the string. */
-	suspend fun bin(bin: String): Bin = bin(bin) {}
+	/** Look up a 2-11 digit card prefix. Preserve leading zeros in the string. */
+	suspend fun card(bin: String): Card = card(bin) {}
 
-	suspend fun bin(bin: String, configure: BinOptions.() -> Unit): Bin =
-		with(BinOptions().apply(configure)) {
-			get("/bin/${enc(bin)}", deepQuery(deep))
+	/** Optional recorded issuer details, included on every plan. */
+	suspend fun card(bin: String, configure: CardOptions.() -> Unit): Card {
+		val options = CardOptions().apply(configure)
+		require(bin.length <= 64 && Regex("[0-9]{2,11}").matches(bin.filterNot { it in " \t\r\n-" })) {
+			"Card requires a 2-11 digit prefix string."
 		}
-
+		return get("/card/${enc(bin)}", deepQuery(options.deep))
+	}
 
 	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
 	suspend fun measure(measure: String): Measure = measure(measure) {}
@@ -520,7 +575,16 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/useragent", deepQuery(deep), userAgent = ua)
 		}
 
-	/** Decodes a 17-character VIN. Deep adds open recall campaigns on paid plans. */
+	/** Decodes a 17-character VIN. Deep adds model-level recall campaigns on paid plans. */
+	suspend fun vehicle(vin: String): Vehicle =
+		vehicle(vin) {}
+
+	suspend fun vehicle(vin: String, configure: VehicleOptions.() -> Unit): Vehicle =
+		with(VehicleOptions().apply(configure)) {
+			get("/vehicle/${enc(vin)}", deepQuery(deep))
+		}
+
+	/** Compatibility entry for VIN callers. */
 	suspend fun vin(vin: String): Vin =
 		vin(vin) {}
 
@@ -550,19 +614,24 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 	/** US NAICS 2022 definition and hierarchy. */
-	suspend fun naics(code: String): NAICS = naics(code) {}
+	suspend fun naics(code: String): NAICS = industry(code)
+	suspend fun naics(code: String, configure: NaicsOptions.() -> Unit): NAICS = industry(code, configure)
+	suspend fun naicsSearch(query: String): NAICSSearch = industrySearch(query)
+	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch = industrySearch(query, configure)
 
-	suspend fun naics(code: String, configure: NaicsOptions.() -> Unit): NAICS =
-		with(NaicsOptions().apply(configure)) {
-			get("/naics/${enc(code)}", deepQuery(deep))
+	suspend fun industry(code: String): Industry = industry(code) {}
+
+	suspend fun industry(code: String, configure: IndustryOptions.() -> Unit): Industry =
+		with(IndustryOptions().apply(configure)) {
+			get("/industry/${enc(code)}", deepQuery(deep))
 		}
 
 	/** Keyword search. Limit defaults to 10 and accepts 1-50. */
-	suspend fun naicsSearch(query: String): NAICSSearch = naicsSearch(query) {}
+	suspend fun industrySearch(query: String): IndustrySearch = industrySearch(query) {}
 
-	suspend fun naicsSearch(query: String, configure: NaicsSearchOptions.() -> Unit): NAICSSearch =
-		with(NaicsSearchOptions().apply(configure)) {
-			get("/naics", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
+	suspend fun industrySearch(query: String, configure: IndustrySearchOptions.() -> Unit): IndustrySearch =
+		with(IndustrySearchOptions().apply(configure)) {
+			get("/industry", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
 	private fun tariffSelection(edition: String?, date: String?, gotEdition: String?, gotDate: String?) {
@@ -786,18 +855,22 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		userAgent: String? = null,
 	): T = json.decodeFromString(fetch(path, query, userAgent))
 
-	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?): String {
+	private suspend inline fun <reified T> post(path: String, body: String): T =
+		json.decodeFromString(fetch(path, emptyList(), null, body))
+
+	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?, body: String? = null): String {
 		var url = baseUrl + path
 		val pairs = query.mapNotNull { (name, value) -> value?.let { "$name=${enc(it)}" } }
 		if (pairs.isNotEmpty()) url += "?" + pairs.joinToString("&")
 
 		val headers = buildMap {
+			if (body != null) put("Content-Type", "application/json")
 			put("X-API-Key", key)
 			put("Parse-Version", API_VERSION)
 			put("User-Agent", userAgent ?: "parseapi-kotlin/$VERSION")
 			appId?.let { put("X-App-Id", it) }
 		}
-		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs)
+		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs, if (body == null) "GET" else "POST", body)
 
 		val retryLimit = retries ?: defaultRetries(path, query)
 		var attempt = 0
@@ -809,7 +882,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				if (error is CancellationException || error is ParseAPIException) throw error
 				currentCoroutineContext().ensureActive()
 				if (attempt < retryLimit) {
-					delay(retryDelayMs(attempt, null))
+					delay(checkNotNull(retryDelayMs(attempt, null)))
 					attempt++
 					continue
 				}
@@ -818,8 +891,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 			if (response.status in 200..299) return response.body
 
-			if (response.status in RETRY_STATUS && attempt < retryLimit) {
-				delay(retryDelayMs(attempt, response.headers["retry-after"]))
+			val retryAfter = response.headers["retry-after"]
+			val wait = retryDelayMs(attempt, retryAfter)
+			if (response.status in RETRY_STATUS && attempt < retryLimit && wait != null) {
+				delay(wait)
 				attempt++
 				continue
 			}
@@ -836,13 +911,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				field("message") ?: "Request failed with status ${response.status}",
 				field("docs"),
 				field("request_id"),
+				retryAfter,
 			)
 		}
 	}
 
-	internal fun retryDelayMs(attempt: Int, retryAfter: String?): Long {
-		retryAfter?.toDoubleOrNull()?.let { seconds ->
-			if (seconds.isFinite() && seconds >= 0) return min(seconds * 1_000, RETRY_AFTER_CAP_MS.toDouble()).toLong()
+	internal fun retryDelayMs(attempt: Int, retryAfter: String?): Long? {
+		if (retryAfter != null && Regex("[0-9]+(?:\\.[0-9]+)?").matches(retryAfter.trim())) {
+			val seconds = retryAfter.trim().toDoubleOrNull()
+			return if (seconds == null || !seconds.isFinite() || seconds > 5.0) null else kotlin.math.ceil(seconds * 1_000).toLong()
 		}
 		if (retryAfter != null) {
 			for (pattern in listOf("EEE, dd MMM yyyy HH:mm:ss zzz", "EEEE, dd-MMM-yy HH:mm:ss zzz", "EEE MMM d HH:mm:ss yyyy")) {
@@ -852,7 +929,10 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				}
 				val position = java.text.ParsePosition(0)
 				val at = format.parse(retryAfter, position)
-				if (at != null && position.index == retryAfter.length) return (at.time - System.currentTimeMillis()).coerceIn(0, RETRY_AFTER_CAP_MS)
+				if (at != null && position.index == retryAfter.length) {
+					val now = System.currentTimeMillis()
+					return if (at.time > now + RETRY_AFTER_CAP_MS) null else (at.time - now).coerceAtLeast(0)
+				}
 			}
 		}
 		return (Random.nextDouble() * min(250 * 2.0.pow(attempt), RETRY_AFTER_CAP_MS.toDouble())).toLong()
@@ -865,7 +945,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.7.0"
+		const val VERSION = "1.8.0"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

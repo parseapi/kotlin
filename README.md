@@ -84,9 +84,9 @@ parse.ip("8.8.8.8")
 parse.ipSelf()
 parse.email("hello@gmail.com")
 parse.vat("DE136695976")
-parse.iban("DE89370400440532013000")
-parse.bin("424242")
-parse.npi("1881018208")
+parse.bank("DE89370400440532013000")
+parse.card("424242")
+parse.provider("1881018208")
 parse.phone("+14155552671")
 parse.postal("SW1A 1AA")
 parse.postal("28202") { country = "US" }
@@ -132,9 +132,9 @@ parse.mx("example.com")
 parse.dns("example.com")
 parse.dns("_dmarc.example.com") { type = "TXT" }
 parse.useragent(uaString)
-parse.vin("1HGCM82633A004352")
-parse.naics("541511")
-parse.naicsSearch("coffee shop") { limit = 5 }
+parse.vehicle("1HGCM82633A004352")
+parse.industry("541511")
+parse.industrySearch("coffee shop") { limit = 5 }
 parse.tariff("8471.30.01.00")
 parse.tariffSearch("sunglasses")
 parse.emoji("rocket")
@@ -144,7 +144,7 @@ parse.addressSearch("123 Main") { postal = "28202"; country = "US" }
 parse.company("01234567") { country = "GB" }
 ```
 
-Paid NAICS `deep` includes full definitions, child categories and classification `exclusions`, each with a description and linked codes. Generic exclusions can have no linked codes. Omitted or null exclusions in older responses remain unknown. Search results keep `country` and `year` on the envelope and optional depth on each result. They also include core `match`: the matched `field` (`name`, `term` or `naics`) and `text`, plus `corrections` with `from` and `to` tokens for typo fallback. Corrections are empty for exact, plural and prefix matches. Direct code lookups omit `match`. Older responses may omit it.
+Paid Industry `deep` includes full definitions, child categories and classification `exclusions`, each with a description and linked codes. Generic exclusions can have no linked codes. Omitted or null exclusions in older responses remain unknown. Search results keep `country` and `year` on the envelope and optional depth on each result. They also include core `match`: the matched `field` (`name`, `term` or `naics`) and `text`, plus `corrections` with `from` and `to` tokens for typo fallback. Corrections are empty for exact, plural and prefix matches. Direct code lookups omit `match`. Older responses may omit it.
 
 Every response is a typed, read-only object. Nullable fields are nullable properties. Unknown response fields are ignored.
 
@@ -256,6 +256,21 @@ Address search uses context from the form: prefer postal, or city and state. An 
 
 HLR reports status at the last check. `live` means assigned and `connected` means reachable at that check. Cached results may be returned. Null means unconfirmed. Deep diagnostics stay within the same metered lookup.
 
+## Provider lookup
+
+```kotlin
+val provider = parse.provider("1881018208")
+val profile = parse.provider("1881018208") { deep = true }
+```
+
+Pass the original NPI as a string. `valid` checks its format and checksum; `registered` means a match in the stored NPPES snapshot. `active` reflects recorded NPI deactivation, not licensure. `excluded` is an NPI-only OIG LEIE match; `false` is not a complete exclusion clearance. These directory facts do not verify credentials, current practice contact or payment eligibility.
+
+Invalid input returns `valid: false` with unknown provider fields. A checksum-valid number missing from the snapshot returns `registered: false`; unavailable storage remains an API error. Preserve `null` as unknown.
+
+The default pooled lookup includes provider identity, specialty and practice contact where held. Paid `deep` adds `deactivated_at`, `medicare`, `opt_out` and `enrollments` from stored source files, with no separate check meter or live verification. `enrollments: null` means unavailable; `[]` means no enrollment rows are returned. The API omits unrequested `deep` and returns `{}` when requested on Free.
+
+Paid Deep also returns `taxonomies` in published order, with taxonomy code, specialty label, primary flag and provider-reported license number/state, plus `enumerated_at`, `updated_at` and `reactivated_at` record dates. Reported licenses are not verified licenses. Null lists mean unavailable; empty lists mean the edition contains no entries. Core `sources` is available on every plan: NPPES, LEIE, PECOS and opt-out each have nullable edition metadata (`edition`, `published_at`, `through`, `imported_at`). Provider record dates are separate from source publication and completed import dates. Older responses may omit these additions. Edition details remain null until a verified source is served.
+
 ## Deep
 
 The default call returns the common answer. Request more detail with `parse.country("US") { deep = true }`. Read those fields from the optional deep member; this does not change the core answer.
@@ -267,10 +282,11 @@ The default call returns the common answer. Request more detail with `parse.coun
 | Email | A metered mailbox check with deliverability, catch-all, status, reason and address hints, using included email checks or enabled on-demand usage. |
 | VAT | A metered registry check where supported, using included VAT checks or enabled on-demand usage. |
 | Country, State, City, District, Postal | Reference profiles included with a paid plan; place identity and coordinates stay core. |
-| VIN, NPI, NAICS, Company | Paid technical or registration profiles. NPI exclusion status and NAICS hierarchy stay core. |
+| NPI | Deactivation date, Medicare enrollment, opt-out and enrollment rows from stored sources on paid plans. Exclusion evidence stays core. |
+| VIN, Industry, Company | Paid technical or registration profiles. NPI exclusion status and Industry hierarchy stay core. |
 | Tariff | Paid schedule columns and units; add origin for applicable measures. |
 | Name, Weather | Paid name context or weather detail; parsing and current conditions stay core. |
-| Phone, IBAN | Numbering-plan or bank structure detail in the same pooled request on every plan. |
+| Phone, Bank | Numbering-plan or bank structure detail in the same pooled request on every plan. |
 | Time, Date, Currency, Language, Emoji, Point | Optional reference detail in the same pooled request on every plan. |
 | Carrier, HLR | Available place or network detail from the same metered core unit, including Free included units. |
 
@@ -291,9 +307,23 @@ if (ip.deep?.datacenter == true) {
 }
 ```
 
+## Bank validation
+
+Bank results include nullable `checks` and `issues` (`BankChecks` and `BankIssue`). Check statuses and issue codes are open strings; handle unknown future values. `not_supported` means the national check did not run, not that it passed. `issues: []` means no applicable check failed; a missing/null value supports older responses. These findings do not establish account existence or ownership. `deep.account` remains a string so leading zeros are preserved.
+
+
+Bank lookups send raw input in a JSON body (`POST /bank`), preserving leading zeros, separators and forbidden characters for server validation. `bank` keeps its existing call signature and IBAN result. Optional `deep.directory` identifies the directory edition, country and open-string match grain; absent data remains unknown.
+
+```kotlin
+val requirements = parse.bankRequirements("US", "us_ach")
+val result = parse.bankUsAch(BankUsAchInput("021000021", "000123456789"))
+```
+
+US ACH checks the routing checksum and supported account format, not account existence, ownership or ACH eligibility. Account checksum status stays `not_supported`; bank names are nullable partial-directory references. Account text is preserved, including letter case, spaces and hyphens. Requirements describe this validation workflow; they are not every field needed to initiate a payment. Unsupported country/format combinations return `supported: false`. Omit the format argument for IBAN requirements. The sample is synthetic, not an account to pay.
+
 ## Errors
 
-Every non-2xx response throws a `ParseAPIException` with `status`, `code`, `docs`, and `requestId`. Branch on `code`.
+Every non-2xx response throws a `ParseAPIException` with `status`, `code`, `docs`, and `requestId`, plus nullable `retryAfter` header metadata. Branch on `code`.
 
 ```kotlin
 try {
@@ -321,6 +351,8 @@ val places = parse.postalNearby("28202") {
 
 Ordinary lookups retry up to twice on network failures, 429, 500, 502, 503, and 504. Carrier, caller, HLR, and email/VAT deep lookups do not retry automatically. Address deep also uses zero retries, reserved for future verification. Setting `retries` in the client configuration explicitly applies that count to every lookup, including metered requests. A retry may count as another lookup.
 
+Automatic retries honor numeric and HTTP-date `Retry-After` values up to five seconds. A longer server wait returns the original API error immediately, with the raw header in `retryAfter`, so the application can schedule a later attempt. Missing or invalid headers use ordinary backoff.
+
 Cancellation stops waiting for the response and closes the default connection. Redirects are returned as errors. Your custom transport should cooperate with coroutine cancellation.
 
 The source build uses Kotlin 2.1.20 and targets JVM 11 bytecode for JVM and Android apps. Dependencies: kotlinx-coroutines and kotlinx-serialization only.
@@ -335,7 +367,30 @@ Run `./gradlew check` before a release. The checked-in `api/parseapi.api` record
 
 Pushes and pull requests run these checks on Java 11 and 21, then build and run the separate consumer in `compatibility/adp-consumer`. Run that consumer locally with `./gradlew -p compatibility/adp-consumer run`. It uses a test transport and makes no API requests.
 
-BIN lookup accepts 6-11 digits as a string, including leading zeros. Spaces and hyphens are accepted. `prefix` is the actual longest match and can be shorter than the input. Unknown reference fields are null. `deep` adds an empty object on every plan.
+## Card
+
+Send 2–11 leading digits as a string. Core returns `bin`, `brand`, `brand_name`
+and a CDN SVG `logo`. Brand detection uses reviewed network rules independently
+of issuer records. Unknown or ambiguous prefixes return null brand fields and a
+generic logo; a known network without reviewed artwork also uses the generic logo.
+
+Optional Deep adds `prefix`, `issuer`, `country`, `type` and `prepaid`, included
+in the same pooled request on every plan. Six or more digits enable directory
+matching. Fewer digits return all-null Deep fields. Compare `deep.prefix` with
+`bin`: equal is an exact recorded match; shorter is broader; null is no match.
+The longest row wins, including null fields. `prepaid: null` means unknown, not
+false. This is partial reference data, not card validity or payment acceptance.
+
+```kotlin
+val card = parse.card("51")
+println(card.logo)
+val details = parse.card("43737400") { deep = true }
+println(details.deep?.prefix)
+```
+
+Leading zeros are preserved. Only ASCII spaces, tabs, CR, LF and hyphens are
+removed; raw input is limited to 64 characters. Invalid prefixes are rejected
+before dispatch, accepted input is forwarded unchanged. Never send a full card number.
 
 ## Stack
 
@@ -350,3 +405,5 @@ Pass a public hostname without a scheme, path, port or IP address. Stack returns
 The complete technology result is included in the core response. The generic `deep=true` option adds only an empty object and is unnecessary for Stack. Successful checks may be reused for up to 24 hours. `pretty` optionally formats the wire JSON. Each lookup uses one request and API version 2.0.0 selected by this client.
 
 Stack defaults to a 35-second transport timeout so a first scan has time to finish. Other lookups retain their 10-second default. An explicit client timeout takes precedence.
+
+Vehicle lookups use `vin` as the input and response field. Existing VIN methods remain available for compatibility.
