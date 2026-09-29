@@ -841,6 +841,27 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/company/${enc(number)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 	}
 
+	/** Directory profile by stable co_ ID; national company-number validation remains company. */
+	suspend fun companyId(id: String): CompanyProfile = companyId(id) {}
+	/** Deep adds detail in the same pooled request, with no hidden lookup. */
+	suspend fun companyId(id: String, configure: CompanyIdOptions.() -> Unit): CompanyProfile = with(CompanyIdOptions().apply(configure)) {
+		get("/company/id/${enc(id)}", deepQuery(deep))
+	}
+
+	/** Use at most one selector, or discover by country or exact industry. The API validates combinations. */
+	suspend fun companySearch(): CompanySearch = companySearch {}
+	/** One bounded page. Exchange narrows ticker; authority narrows identifier.
+	 * Reuse cursor with the same selector, filters and limit. Deep belongs to each profile. */
+	suspend fun companySearch(configure: CompanySearchOptions.() -> Unit): CompanySearch = with(CompanySearchOptions().apply(configure)) {
+		get("/company", listOf("q" to query, "domain" to domain, "ticker" to ticker,
+			"identifier" to identifier, "country" to country, "industry" to industry, "industry_type" to industryType,
+			"exchange" to exchange,
+			"authority" to authority, "limit" to limit?.toString(), "cursor" to cursor) + deepQuery(deep))
+	}
+
+	/** Counts for this directory edition, not complete country or worldwide coverage. */
+	suspend fun companyCoverage(): CompanyCoverage = get("/company/directory/coverage")
+
 	// Transport
 
 	private fun deepQuery(deep: Boolean): List<Pair<String, String?>> =

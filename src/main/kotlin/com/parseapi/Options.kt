@@ -392,6 +392,30 @@ class AsnOptions internal constructor() {
 	var lang: String? = null
 }
 
+/** Directory detail in the same pooled request on every plan. */
+class CompanyIdOptions internal constructor() { var deep: Boolean = false }
+
+/** Use at most one selector, or discover by country, industry or selected registration; reuse cursor with the same filters and limit. */
+class CompanySearchOptions internal constructor() {
+	var query: String? = null
+	var domain: String? = null
+	var ticker: String? = null
+	var identifier: String? = null
+	var country: String? = null
+	/** Exact four-digit SIC string; pair with industryType. */
+	var industry: String? = null
+	/** Open namespace string, currently sic. */
+	var industryType: String? = null
+	/** Selected registration authority; exact form/status filters require this. */
+	/** Exact source legal-form code, not ownership or tax-exempt status. */
+	/** Exact source administrative status, not operating activity. */
+	var exchange: String? = null
+	var authority: String? = null
+	var limit: Int? = null
+	var cursor: String? = null
+	var deep: Boolean = false
+}
+
 /** Filters the serving timezone catalog at one instant. */
 class TimeZonesOptions internal constructor() {
 	var country: String? = null

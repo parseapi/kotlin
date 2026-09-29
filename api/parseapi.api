@@ -852,6 +852,32 @@ public final class com/parseapi/Company$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/CompanyCandidate {
+	public static final field Companion Lcom/parseapi/CompanyCandidate$Companion;
+	public final fun getAddress ()Lcom/parseapi/CompanyProfileAddress;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/CompanyProfileDeep;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getListings ()Ljava/util/List;
+	public final fun getMatch ()Lcom/parseapi/CompanyMatch;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getWebsite ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyCandidate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyCandidate$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyCandidate;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyCandidate;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyCandidate$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/CompanyCountry {
 	public static final field Companion Lcom/parseapi/CompanyCountry$Companion;
 	public final fun getBlocs ()Ljava/util/List;
@@ -870,6 +896,33 @@ public synthetic class com/parseapi/CompanyCountry$$serializer : kotlinx/seriali
 }
 
 public final class com/parseapi/CompanyCountry$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyCoverage {
+	public static final field Companion Lcom/parseapi/CompanyCoverage$Companion;
+	public final fun getCompanies ()J
+	public final fun getCountries ()Ljava/util/List;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getScope ()Ljava/lang/String;
+	public final fun getSnapshotAt ()Ljava/lang/String;
+	public final fun getWithAddress ()J
+	public final fun getWithListings ()J
+	public final fun getWithWebsite ()J
+}
+
+public synthetic class com/parseapi/CompanyCoverage$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyCoverage$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyCoverage;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyCoverage;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyCoverage$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
@@ -901,6 +954,54 @@ public final class com/parseapi/CompanyDeep$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/CompanyEmailAddress {
+	public static final field Companion Lcom/parseapi/CompanyEmailAddress$Companion;
+	public final fun getAddress ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyEmailAddress$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyEmailAddress$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyEmailAddress;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyEmailAddress;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyEmailAddress$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyIdOptions {
+	public final fun getDeep ()Z
+	public final fun setDeep (Z)V
+}
+
+public final class com/parseapi/CompanyMatch {
+	public static final field Companion Lcom/parseapi/CompanyMatch$Companion;
+	public final fun getAuthority ()Ljava/lang/String;
+	public final fun getExchange ()Ljava/lang/String;
+	public final fun getField ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyMatch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyMatch$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyMatch;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyMatch;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyMatch$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/CompanyOptions {
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getDeep ()Z
@@ -908,6 +1009,464 @@ public final class com/parseapi/CompanyOptions {
 	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/CompanyPhoneNumber {
+	public static final field Companion Lcom/parseapi/CompanyPhoneNumber$Companion;
+	public final fun getNumber ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyPhoneNumber$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyPhoneNumber$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyPhoneNumber;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyPhoneNumber;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyPhoneNumber$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfile {
+	public static final field Companion Lcom/parseapi/CompanyProfile$Companion;
+	public final fun getAddress ()Lcom/parseapi/CompanyProfileAddress;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/CompanyProfileDeep;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getListings ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getWebsite ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfile$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfile$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfile;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfile;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfile$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileAddress {
+	public static final field Companion Lcom/parseapi/CompanyProfileAddress$Companion;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStreet ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileAddress$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileAddress$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileAddress;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileAddress;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileAddress$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileDeep {
+	public static final field Companion Lcom/parseapi/CompanyProfileDeep$Companion;
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getAliases ()Ljava/util/List;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDomains ()Ljava/util/List;
+	public final fun getEmailAddresses ()Ljava/util/List;
+	public final fun getEmails ()Ljava/util/List;
+	public final fun getEmployees ()Lcom/parseapi/CompanyProfileEmployees;
+	public final fun getFounded ()Lcom/parseapi/CompanyProfileFounding;
+	public final fun getIdentifiers ()Ljava/util/List;
+	public final fun getIncorporated ()Ljava/lang/String;
+	public final fun getIndustries ()Ljava/util/List;
+	public final fun getJurisdiction ()Lcom/parseapi/CompanyProfileJurisdiction;
+	public final fun getLegalName ()Ljava/lang/String;
+	public final fun getLogo ()Ljava/lang/String;
+	public final fun getParent ()Ljava/lang/String;
+	public final fun getPhoneNumbers ()Ljava/util/List;
+	public final fun getPhones ()Ljava/util/List;
+	public final fun getRegistrations ()Ljava/util/List;
+	public final fun getSocialProfiles ()Ljava/util/List;
+	public final fun getSocials ()Ljava/util/List;
+	public final fun getSources ()Ljava/util/List;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getWebsites ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/CompanyProfileDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileEmail {
+	public static final field Companion Lcom/parseapi/CompanyProfileEmail$Companion;
+	public final fun getAddress ()Ljava/lang/String;
+	public final fun getKind ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileEmail$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileEmail$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileEmail;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileEmail;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileEmail$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileEmployees {
+	public static final field Companion Lcom/parseapi/CompanyProfileEmployees$Companion;
+	public final fun getApproximate ()Z
+	public final fun getAsOf ()Ljava/lang/String;
+	public final fun getBasis ()Ljava/lang/String;
+	public final fun getCount ()J
+	public final fun getMethod ()Ljava/lang/String;
+	public final fun getScope ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileEmployees$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileEmployees$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileEmployees;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileEmployees;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileEmployees$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileFounding {
+	public static final field Companion Lcom/parseapi/CompanyProfileFounding$Companion;
+	public final fun getPrecision ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileFounding$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileFounding$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileFounding;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileFounding;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileFounding$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileIdentifier {
+	public static final field Companion Lcom/parseapi/CompanyProfileIdentifier$Companion;
+	public final fun getAuthority ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getValue ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileIdentifier$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileIdentifier$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileIdentifier;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileIdentifier;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileIdentifier$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileIndustry {
+	public static final field Companion Lcom/parseapi/CompanyProfileIndustry$Companion;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileIndustry$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileIndustry$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileIndustry;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileIndustry;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileIndustry$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileJurisdiction {
+	public static final field Companion Lcom/parseapi/CompanyProfileJurisdiction$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileJurisdiction$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileJurisdiction$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileJurisdiction;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileJurisdiction;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileJurisdiction$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileListing {
+	public static final field Companion Lcom/parseapi/CompanyProfileListing$Companion;
+	public final fun getExchange ()Ljava/lang/String;
+	public final fun getSymbol ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileListing$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileListing$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileListing;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileListing;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileListing$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfilePhone {
+	public static final field Companion Lcom/parseapi/CompanyProfilePhone$Companion;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getNumber ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfilePhone$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfilePhone$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfilePhone;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfilePhone;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfilePhone$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileRegistration {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistration$Companion;
+	public final fun getAddress ()Lcom/parseapi/CompanyProfileRegistrationAddress;
+	public final fun getAuthority ()Ljava/lang/String;
+	public final fun getFormationDate ()Ljava/lang/String;
+	public final fun getJurisdiction ()Lcom/parseapi/CompanyProfileJurisdiction;
+	public final fun getLegalForm ()Lcom/parseapi/CompanyProfileRegistrationLegalForm;
+	public final fun getNumber ()Ljava/lang/String;
+	public final fun getRole ()Ljava/lang/String;
+	public final fun getStatus ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistration$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistration$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistration;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistration;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistration$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileRegistrationAddress {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistrationAddress$Companion;
+	public final fun getCity ()Ljava/lang/String;
+	public final fun getCountryRaw ()Ljava/lang/String;
+	public final fun getKind ()Ljava/lang/String;
+	public final fun getLine1 ()Ljava/lang/String;
+	public final fun getLine2 ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistrationAddress$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistrationAddress$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistrationAddress;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistrationAddress;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistrationAddress$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileRegistrationLegalForm {
+	public static final field Companion Lcom/parseapi/CompanyProfileRegistrationLegalForm$Companion;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileRegistrationLegalForm$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileRegistrationLegalForm$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileRegistrationLegalForm;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileRegistrationLegalForm;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileRegistrationLegalForm$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileSource {
+	public static final field Companion Lcom/parseapi/CompanyProfileSource$Companion;
+	public final fun getFields ()Ljava/util/List;
+	public final fun getObservedAt ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getUpdatedAt ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileSource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileSource$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileSource;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileSource;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileSource$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanyProfileWebsite {
+	public static final field Companion Lcom/parseapi/CompanyProfileWebsite$Companion;
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanyProfileWebsite$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanyProfileWebsite$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyProfileWebsite;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyProfileWebsite;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanyProfileWebsite$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanySearch {
+	public static final field Companion Lcom/parseapi/CompanySearch$Companion;
+	public final fun getCompanies ()Ljava/util/List;
+	public final fun getNext ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanySearch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanySearch$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanySearch;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanySearch;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanySearch$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CompanySearchOptions {
+	public final fun getAuthority ()Ljava/lang/String;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getCursor ()Ljava/lang/String;
+	public final fun getDeep ()Z
+	public final fun getDomain ()Ljava/lang/String;
+	public final fun getExchange ()Ljava/lang/String;
+	public final fun getIdentifier ()Ljava/lang/String;
+	public final fun getIndustry ()Ljava/lang/String;
+	public final fun getIndustryType ()Ljava/lang/String;
+	public final fun getLimit ()Ljava/lang/Integer;
+	public final fun getQuery ()Ljava/lang/String;
+	public final fun getTicker ()Ljava/lang/String;
+	public final fun setAuthority (Ljava/lang/String;)V
+	public final fun setCountry (Ljava/lang/String;)V
+	public final fun setCursor (Ljava/lang/String;)V
+	public final fun setDeep (Z)V
+	public final fun setDomain (Ljava/lang/String;)V
+	public final fun setExchange (Ljava/lang/String;)V
+	public final fun setIdentifier (Ljava/lang/String;)V
+	public final fun setIndustry (Ljava/lang/String;)V
+	public final fun setIndustryType (Ljava/lang/String;)V
+	public final fun setLimit (Ljava/lang/Integer;)V
+	public final fun setQuery (Ljava/lang/String;)V
+	public final fun setTicker (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/CompanySocialProfile {
+	public static final field Companion Lcom/parseapi/CompanySocialProfile$Companion;
+	public final fun getHandle ()Ljava/lang/String;
+	public final fun getPlatform ()Ljava/lang/String;
+	public final fun getUrl ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/CompanySocialProfile$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CompanySocialProfile$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanySocialProfile;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanySocialProfile;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CompanySocialProfile$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/Continent {
@@ -2536,6 +3095,11 @@ public final class com/parseapi/ParseAPI {
 	public final fun citySearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun companyCoverage (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun companyId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun companyId (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun companySearch (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun companySearch (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun continent (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun continent (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun continentCountries (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
