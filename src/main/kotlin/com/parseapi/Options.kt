@@ -197,6 +197,26 @@ class CurrencyRateOptions internal constructor() {
 	var amount: Double? = null
 }
 
+class CurrencyHistoryOptions internal constructor() {
+	var amount: Double? = null
+	/** day (default), week or month. The API bounds sampled rows and the complete archive read. */
+	var interval: String? = null
+}
+
+class CurrencySummaryOptions internal constructor() {
+	/** month (default), quarter or year. */
+	var interval: String? = null
+}
+
+class CurrencyListOptions internal constructor() {
+	var q: String? = null
+	var country: String? = null
+	var deep: Boolean = false
+	var lang: String? = null
+}
+
+
+
 class TimeOptions internal constructor() {
 	var ip: String? = null
 	var city: String? = null

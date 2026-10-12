@@ -663,8 +663,43 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun currencyRate(base: String, quote: String, configure: CurrencyRateOptions.() -> Unit): CurrencyRate =
 		with(CurrencyRateOptions().apply(configure)) {
-			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
+			get("/currency/${enc(base)}/${enc(quote)}", currencyQuery(date, amount))
 		}
+
+	/** Currency names, symbols and decimal precision. */
+	suspend fun currencyList(): CurrencyList = currencyList {}
+	suspend fun currencyList(configure: CurrencyListOptions.() -> Unit): CurrencyList =
+		with(CurrencyListOptions().apply(configure)) { get("/currency", listOf("q" to q, "country" to country) + deepQuery(deep) + listOf("lang" to lang)) }
+	/** Every held quote in the maintained references, with the original quotes overload retained. */
+	suspend fun currencyRates(base: String): CurrencyRates = currencyRates(base) {}
+	suspend fun currencyRates(base: String, configure: CurrencyRateOptions.() -> Unit): CurrencyRates =
+		with(CurrencyRateOptions().apply(configure)) { get("/currency/${enc(base)}/rates", currencyQuery(date, amount)) }
+	/** Up to 50 quotes, retaining explicit missing currencies. */
+	suspend fun currencyRates(base: String, quotes: List<String>): CurrencyRates = currencyRates(base, quotes) {}
+	suspend fun currencyRates(base: String, quotes: List<String>, configure: CurrencyRateOptions.() -> Unit): CurrencyRates =
+		with(CurrencyRateOptions().apply(configure)) {
+			get("/currency/${enc(base)}/rates", listOf("quotes" to quotes.joinToString(",")) + currencyQuery(date, amount))
+		}
+	/** Up to 366 requested calendar days, retaining explicit gaps. */
+	suspend fun currencyHistory(base: String, quote: String, from: String, to: String): CurrencyHistory = currencyHistory(base, quote, from, to) {}
+	suspend fun currencyHistory(base: String, quote: String, from: String, to: String, configure: CurrencyHistoryOptions.() -> Unit): CurrencyHistory =
+		with(CurrencyHistoryOptions().apply(configure)) {
+			get("/currency/${enc(base)}/${enc(quote)}/history", listOf("from" to from, "to" to to) + currencyQuery(null, amount) + listOf("interval" to interval))
+		}
+	/** Up to 50 quotes, 366 days and 5,000 requested pair-days, including gaps. */
+	suspend fun currencyRatesHistory(base: String, quotes: List<String>, from: String, to: String): CurrencyRatesHistory = currencyRatesHistory(base, quotes, from, to) {}
+	suspend fun currencyRatesHistory(base: String, quotes: List<String>, from: String, to: String, configure: CurrencyHistoryOptions.() -> Unit): CurrencyRatesHistory =
+		with(CurrencyHistoryOptions().apply(configure)) {
+			get("/currency/${enc(base)}/rates/history", listOf("quotes" to quotes.joinToString(","), "from" to from, "to" to to) + currencyQuery(null, amount) + listOf("interval" to interval))
+		}
+	/** Period statistics count each original publication day once and retain missing periods. */
+	suspend fun currencyRatesSummary(base: String, quotes: List<String>, from: String, to: String): CurrencyRatesSummary = currencyRatesSummary(base, quotes, from, to) {}
+	suspend fun currencyRatesSummary(base: String, quotes: List<String>, from: String, to: String, configure: CurrencySummaryOptions.() -> Unit): CurrencyRatesSummary =
+		with(CurrencySummaryOptions().apply(configure)) {
+			get("/currency/${enc(base)}/rates/summary", listOf("quotes" to quotes.joinToString(","), "from" to from, "to" to to, "interval" to interval))
+		}
+	private fun currencyQuery(date: String?, amount: Double?): List<Pair<String, String?>> =
+		listOf("date" to date, "amount" to amount?.let(::num))
 
 	/** Current local time, UTC by default. With to or targets, offsetless at is source wall time. */
 	suspend fun time(timezone: String? = null): Time = time(timezone) {}

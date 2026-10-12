@@ -937,6 +937,9 @@ class CurrencyRate private constructor(
 	val amount: Double? = null,
 	val converted: Double? = null,
 	val source: String? = null,
+	val stale: Boolean? = null,
+	val dates: CurrencyRateDates? = null,
+	val units: CurrencyRateUnits? = null,
 )
 
 @Serializable
