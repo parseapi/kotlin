@@ -2172,13 +2172,299 @@ public final class com/parseapi/Emoji$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/EmojiArtwork {
+	public static final field Companion Lcom/parseapi/EmojiArtwork$Companion;
+	public final fun getAttribution ()Ljava/lang/String;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getLicenseUrl ()Ljava/lang/String;
+	public final fun getPng ()Ljava/util/Map;
+	public final fun getSvg ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/EmojiArtwork$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiArtwork$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiArtwork;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiArtwork;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiArtwork$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiArtworkCoverage {
+	public static final field Companion Lcom/parseapi/EmojiArtworkCoverage$Companion;
+	public final fun getPng ()I
+	public final fun getSvg ()I
+}
+
+public synthetic class com/parseapi/EmojiArtworkCoverage$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiArtworkCoverage$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiArtworkCoverage;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiArtworkCoverage;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiArtworkCoverage$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiArtworkSource {
+	public static final field Companion Lcom/parseapi/EmojiArtworkSource$Companion;
+	public final fun getAttribution ()Ljava/lang/String;
+	public final fun getFlagLicense ()Lcom/parseapi/EmojiFlagLicense;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getLicenseUrl ()Ljava/lang/String;
+	public final fun getLoadedCoverage ()Lcom/parseapi/EmojiArtworkCoverage;
+	public final fun getNotices ()Ljava/util/List;
+	public final fun getSourceUrl ()Ljava/lang/String;
+	public final fun getStyle ()Ljava/lang/String;
+	public final fun getUnicodeVersion ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/EmojiArtworkSource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiArtworkSource$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiArtworkSource;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiArtworkSource;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiArtworkSource$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiBrowse {
+	public static final field Companion Lcom/parseapi/EmojiBrowse$Companion;
+	public final fun getEmojis ()Ljava/util/List;
+	public final fun getNextOffset ()Ljava/lang/Integer;
+	public final fun getTotal ()I
+}
+
+public synthetic class com/parseapi/EmojiBrowse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiBrowse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiBrowse;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiBrowse;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiBrowse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCatalog {
+	public static final field Companion Lcom/parseapi/EmojiCatalog$Companion;
+	public final fun getEmojis ()Ljava/util/List;
+	public final fun getForms ()Ljava/util/Map;
+	public final fun getLegacy ()Ljava/util/Map;
+	public final fun getLocalization ()Lcom/parseapi/EmojiCatalogLocalization;
+	public final fun getMetadata ()Lcom/parseapi/EmojiMetadata;
+	public final fun getProfile ()Ljava/lang/String;
+	public final fun getScope ()Lcom/parseapi/EmojiCatalogScope;
+	public final fun getSearch ()Lcom/parseapi/EmojiCatalogSearchFacts;
+	public final fun getShortcodes ()Ljava/util/Map;
+	public final fun getTotal ()I
+}
+
+public synthetic class com/parseapi/EmojiCatalog$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCatalog$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCatalog;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCatalog;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCatalog$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCatalogLocalization {
+	public static final field Companion Lcom/parseapi/EmojiCatalogLocalization$Companion;
+	public final fun getFallbackKeywords ()I
+	public final fun getFallbackNames ()I
+	public final fun getRequestedLocale ()Ljava/lang/String;
+	public final fun getResolvedLocale ()Ljava/lang/String;
+	public final fun getTranslatedKeywords ()I
+	public final fun getTranslatedNames ()I
+}
+
+public synthetic class com/parseapi/EmojiCatalogLocalization$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCatalogLocalization$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCatalogLocalization;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCatalogLocalization;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCatalogLocalization$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCatalogOptions {
+	public final fun getCategory ()Ljava/lang/String;
+	public final fun getDeep ()Z
+	public final fun getIncludeSkinTones ()Ljava/lang/Boolean;
+	public final fun getLang ()Ljava/lang/String;
+	public final fun getMaxVersion ()Ljava/lang/String;
+	public final fun getProfile ()Ljava/lang/String;
+	public final fun getSubcategory ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public final fun setCategory (Ljava/lang/String;)V
+	public final fun setDeep (Z)V
+	public final fun setIncludeSkinTones (Ljava/lang/Boolean;)V
+	public final fun setLang (Ljava/lang/String;)V
+	public final fun setMaxVersion (Ljava/lang/String;)V
+	public final fun setProfile (Ljava/lang/String;)V
+	public final fun setSubcategory (Ljava/lang/String;)V
+	public final fun setVersion (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/EmojiCatalogScope {
+	public static final field Companion Lcom/parseapi/EmojiCatalogScope$Companion;
+	public final fun getCompleteInventory ()Z
+	public final fun getFilters ()Ljava/util/Map;
+}
+
+public synthetic class com/parseapi/EmojiCatalogScope$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCatalogScope$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCatalogScope;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCatalogScope;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCatalogScope$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCatalogSearchFacts {
+	public static final field Companion Lcom/parseapi/EmojiCatalogSearchFacts$Companion;
+	public final fun getLocalizedKeywords ()Ljava/util/List;
+	public final fun getNative ()Ljava/util/Map;
+}
+
+public synthetic class com/parseapi/EmojiCatalogSearchFacts$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCatalogSearchFacts$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCatalogSearchFacts;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCatalogSearchFacts;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCatalogSearchFacts$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCategories {
+	public static final field Companion Lcom/parseapi/EmojiCategories$Companion;
+	public final fun getCategories ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiCategories$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCategories$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCategories;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCategories;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCategories$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCategory {
+	public static final field Companion Lcom/parseapi/EmojiCategory$Companion;
+	public final fun getCategory ()Ljava/lang/String;
+	public final fun getSubcategories ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiCategory$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCategory$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCategory;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCategory;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCategory$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiCompleteness {
+	public static final field Companion Lcom/parseapi/EmojiCompleteness$Companion;
+	public final fun getMissingCount ()I
+	public final fun getUnexpectedCount ()I
+}
+
+public synthetic class com/parseapi/EmojiCompleteness$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiCompleteness$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiCompleteness;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiCompleteness;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiCompleteness$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiConversion {
+	public static final field Companion Lcom/parseapi/EmojiConversion$Companion;
+	public final fun getText ()Ljava/lang/String;
+	public final fun getUnresolved ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiConversion$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiConversion$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiConversion;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiConversion;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiConversion$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/EmojiDeep {
 	public static final field Companion Lcom/parseapi/EmojiDeep$Companion;
+	public final fun getArtwork ()Ljava/util/Map;
+	public final fun getBase ()Ljava/lang/String;
 	public final fun getCodepoints ()Ljava/util/List;
 	public final fun getHex ()Ljava/lang/String;
 	public final fun getKeywords ()Ljava/util/List;
 	public final fun getSkins ()Ljava/util/List;
 	public final fun getStatus ()Ljava/lang/String;
+	public final fun getSubcategory ()Ljava/lang/String;
+	public final fun getVariants ()Ljava/util/List;
 	public final fun getVersion ()Ljava/lang/String;
 }
 
@@ -2196,17 +2482,181 @@ public final class com/parseapi/EmojiDeep$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/EmojiFlagLicense {
+	public static final field Companion Lcom/parseapi/EmojiFlagLicense$Companion;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getLicenseUrl ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/EmojiFlagLicense$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiFlagLicense$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiFlagLicense;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiFlagLicense;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiFlagLicense$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiMetadata {
+	public static final field Companion Lcom/parseapi/EmojiMetadata$Companion;
+	public final fun getArtworkSources ()Ljava/util/List;
+	public final fun getCompleteness ()Lcom/parseapi/EmojiCompleteness;
+	public final fun getEdition ()Ljava/lang/String;
+	public final fun getMaxVersion ()Ljava/lang/String;
+	public final fun getNotices ()Ljava/util/List;
+	public final fun getShortcodeSources ()Ljava/util/Map;
+	public final fun getSourceVersion ()Ljava/lang/String;
+	public final fun getSources ()Ljava/util/List;
+	public final fun getTotal ()I
+}
+
+public synthetic class com/parseapi/EmojiMetadata$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiMetadata$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiMetadata;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiMetadata;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiMetadata$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiNativeSearchFacts {
+	public static final field Companion Lcom/parseapi/EmojiNativeSearchFacts$Companion;
+	public final fun getKeywords ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOrder ()Ljava/lang/Integer;
+}
+
+public synthetic class com/parseapi/EmojiNativeSearchFacts$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiNativeSearchFacts$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiNativeSearchFacts;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiNativeSearchFacts;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiNativeSearchFacts$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiNotice {
+	public static final field Companion Lcom/parseapi/EmojiNotice$Companion;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getNotice ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/EmojiNotice$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiNotice$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiNotice;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiNotice;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiNotice$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/EmojiOptions {
+	public final fun getDeep ()Z
+	public final fun getLang ()Ljava/lang/String;
+	public final fun getShortcodeSource ()Ljava/lang/String;
+	public final fun setDeep (Z)V
+	public final fun setLang (Ljava/lang/String;)V
+	public final fun setShortcodeSource (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/EmojiParse {
+	public static final field Companion Lcom/parseapi/EmojiParse$Companion;
+	public final fun getEmojis ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiParse$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiParse$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiParse;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiParse;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiParse$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiParseItem {
+	public static final field Companion Lcom/parseapi/EmojiParseItem$Companion;
+	public final fun getCategory ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/EmojiDeep;
+	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPositions ()Ljava/util/List;
+	public final fun getShortcodes ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiParseItem$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiParseItem$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiParseItem;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiParseItem;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiParseItem$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiParseOptions {
 	public final fun getDeep ()Z
 	public final fun getLang ()Ljava/lang/String;
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
 }
 
+public final class com/parseapi/EmojiPosition {
+	public static final field Companion Lcom/parseapi/EmojiPosition$Companion;
+	public final fun getEnd ()I
+	public final fun getStart ()I
+}
+
+public synthetic class com/parseapi/EmojiPosition$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiPosition$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiPosition;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiPosition;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiPosition$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/EmojiSearch {
 	public static final field Companion Lcom/parseapi/EmojiSearch$Companion;
 	public final fun getEmojis ()Ljava/util/List;
+	public final fun getNextOffset ()Ljava/lang/Integer;
 	public final fun getQ ()Ljava/lang/String;
+	public final fun getTotal ()Ljava/lang/Integer;
 }
 
 public synthetic class com/parseapi/EmojiSearch$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2224,12 +2674,45 @@ public final class com/parseapi/EmojiSearch$Companion {
 }
 
 public final class com/parseapi/EmojiSearchOptions {
+	public final fun getCategory ()Ljava/lang/String;
 	public final fun getDeep ()Z
+	public final fun getIncludeSkinTones ()Ljava/lang/Boolean;
 	public final fun getLang ()Ljava/lang/String;
 	public final fun getLimit ()Ljava/lang/Integer;
+	public final fun getMaxVersion ()Ljava/lang/String;
+	public final fun getOffset ()Ljava/lang/Integer;
+	public final fun getSubcategory ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+	public final fun setCategory (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
+	public final fun setIncludeSkinTones (Ljava/lang/Boolean;)V
 	public final fun setLang (Ljava/lang/String;)V
 	public final fun setLimit (Ljava/lang/Integer;)V
+	public final fun setMaxVersion (Ljava/lang/String;)V
+	public final fun setOffset (Ljava/lang/Integer;)V
+	public final fun setSubcategory (Ljava/lang/String;)V
+	public final fun setVersion (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/EmojiShortcodeSourceMetadata {
+	public static final field Companion Lcom/parseapi/EmojiShortcodeSourceMetadata$Companion;
+	public final fun getAmbiguousAliases ()I
+	public final fun getMissingRecords ()I
+	public final fun getRecords ()I
+}
+
+public synthetic class com/parseapi/EmojiShortcodeSourceMetadata$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiShortcodeSourceMetadata$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiShortcodeSourceMetadata;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiShortcodeSourceMetadata;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiShortcodeSourceMetadata$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/EmojiSkin {
@@ -2251,6 +2734,72 @@ public synthetic class com/parseapi/EmojiSkin$$serializer : kotlinx/serializatio
 }
 
 public final class com/parseapi/EmojiSkin$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiSource {
+	public static final field Companion Lcom/parseapi/EmojiSource$Companion;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getLicense ()Ljava/lang/String;
+	public final fun getLicenseUrl ()Ljava/lang/String;
+	public final fun getSourceUrl ()Ljava/lang/String;
+	public final fun getVersion ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/EmojiSource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiSource$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiSource;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiSource;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiSource$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiUnresolved {
+	public static final field Companion Lcom/parseapi/EmojiUnresolved$Companion;
+	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getEnd ()I
+	public final fun getReason ()Ljava/lang/String;
+	public final fun getShortcode ()Ljava/lang/String;
+	public final fun getStart ()I
+}
+
+public synthetic class com/parseapi/EmojiUnresolved$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiUnresolved$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiUnresolved;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiUnresolved;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiUnresolved$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/EmojiVariant {
+	public static final field Companion Lcom/parseapi/EmojiVariant$Companion;
+	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getTones ()Ljava/util/List;
+}
+
+public synthetic class com/parseapi/EmojiVariant$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/EmojiVariant$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/EmojiVariant;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/EmojiVariant;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/EmojiVariant$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
@@ -3127,6 +3676,15 @@ public final class com/parseapi/ParseAPI {
 	public final fun email (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emoji (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emoji (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiBrowse (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiBrowse (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiCatalog (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiCatalog (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiCategories (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiConvert (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiMetadata (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiParse (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emojiParse (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun hlr (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

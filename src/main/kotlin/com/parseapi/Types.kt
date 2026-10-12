@@ -1154,6 +1154,8 @@ class Emoji private constructor(
 
 @Serializable
 class EmojiSearch private constructor(
+	val total: Int? = null,
+	val nextOffset: Int? = null,
 	val q: String,
 	val emojis: List<Emoji> = emptyList(),
 )
@@ -1643,6 +1645,10 @@ class DateInfoDeep private constructor(
 
 @Serializable
 class EmojiDeep private constructor(
+	val artwork: Map<String, EmojiArtwork>? = null,
+	val subcategory: String? = null,
+	val base: String? = null,
+	val variants: List<EmojiVariant>? = null,
 	val codepoints: List<String>? = null,
 	val hex: String? = null,
 	val status: String? = null,
@@ -1903,4 +1909,149 @@ class IbanDeep private constructor(
 	/** Branch identifier when that country has one. */
 	val branch: String? = null,
 	val account: String? = null,
+)
+
+@Serializable
+class EmojiBrowse private constructor(val emojis: List<Emoji> = emptyList(), val total: Int, val nextOffset: Int? = null)
+@Serializable
+class EmojiVariant private constructor(val emoji: String, val tones: List<String> = emptyList())
+@Serializable
+class EmojiCategory private constructor(val category: String, val subcategories: List<String> = emptyList())
+@Serializable
+class EmojiCategories private constructor(val categories: List<EmojiCategory> = emptyList())
+/** UTF-16 code-unit positions. End is exclusive. */
+@Serializable
+class EmojiPosition private constructor(val start: Int, val end: Int)
+@Serializable
+class EmojiParseItem private constructor(val emoji: String, val name: String, val shortcodes: List<String> = emptyList(), val category: String? = null, val deep: EmojiDeep? = null, val positions: List<EmojiPosition> = emptyList())
+@Serializable
+class EmojiParse private constructor(val emojis: List<EmojiParseItem> = emptyList())
+
+@Serializable
+class EmojiArtwork private constructor(
+	val license: String? = null,
+	val licenseUrl: String? = null,
+	val attribution: String? = null,
+	val svg: String? = null,
+	val png: Map<String, String> = emptyMap(),
+)
+
+@Serializable
+class EmojiCompleteness private constructor(
+	val missingCount: Int,
+	val unexpectedCount: Int,
+)
+
+@Serializable
+class EmojiSource private constructor(
+	val id: String,
+	val version: String? = null,
+	val sourceUrl: String,
+	val license: String,
+	val licenseUrl: String,
+)
+
+@Serializable
+class EmojiNotice private constructor(
+	val id: String,
+	val license: String,
+	val notice: String,
+)
+
+@Serializable
+class EmojiArtworkCoverage private constructor(
+	val svg: Int,
+	val png: Int,
+)
+
+@Serializable
+class EmojiFlagLicense private constructor(
+	val license: String,
+	val licenseUrl: String,
+	val description: String,
+)
+
+@Serializable
+class EmojiArtworkSource private constructor(
+	val style: String,
+	val version: String? = null,
+	val unicodeVersion: String? = null,
+	val sourceUrl: String,
+	val license: String,
+	val licenseUrl: String,
+	val attribution: String,
+	val loadedCoverage: EmojiArtworkCoverage? = null,
+	val flagLicense: EmojiFlagLicense? = null,
+	val notices: List<String>,
+)
+
+@Serializable
+class EmojiMetadata private constructor(
+ val shortcodeSources: Map<String,EmojiShortcodeSourceMetadata>? = null,
+	val edition: String,
+	val maxVersion: String? = null,
+	val sourceVersion: String,
+	val total: Int,
+	val completeness: EmojiCompleteness,
+	val sources: List<EmojiSource>,
+	val artworkSources: List<EmojiArtworkSource>,
+	val notices: List<EmojiNotice>,
+)
+
+@Serializable
+class EmojiCatalog private constructor(
+ val localization: EmojiCatalogLocalization? = null,
+	val profile: String? = null,
+	val scope: EmojiCatalogScope? = null,
+	val search: EmojiCatalogSearchFacts? = null,
+	val metadata: EmojiMetadata,
+	val total: Int,
+	val emojis: List<Emoji>,
+	val forms: Map<String, String>,
+	val shortcodes: Map<String, Map<String, List<String>>>,
+	val legacy: Map<String, String>,
+)
+
+@Serializable
+class EmojiCatalogScope private constructor(
+	val filters: Map<String,String>,
+	val completeInventory: Boolean,
+)
+
+@Serializable
+class EmojiNativeSearchFacts private constructor(
+ val order: Int? = null,
+	val name: String? = null,
+	val keywords: List<String>,
+)
+
+@Serializable
+class EmojiCatalogSearchFacts private constructor(
+ val localizedKeywords: List<String>? = null,
+	val native: Map<String,EmojiNativeSearchFacts>,
+)
+
+@Serializable
+class EmojiUnresolved private constructor(
+	val emoji: String? = null,
+	val shortcode: String? = null,
+	val start: Int,
+	val end: Int,
+	val reason: String,
+)
+
+@Serializable
+class EmojiConversion private constructor(
+	val text: String,
+	val unresolved: List<EmojiUnresolved>,
+)
+
+@Serializable
+class EmojiCatalogLocalization private constructor(
+ val requestedLocale: String? = null, val resolvedLocale: String? = null, val translatedNames: Int, val translatedKeywords: Int, val fallbackNames: Int, val fallbackKeywords: Int,
+)
+
+@Serializable
+class EmojiShortcodeSourceMetadata private constructor(
+ val records: Int, val missingRecords: Int, val ambiguousAliases: Int,
 )

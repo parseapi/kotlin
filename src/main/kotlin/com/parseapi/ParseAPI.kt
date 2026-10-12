@@ -803,16 +803,41 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun emoji(emoji: String, configure: EmojiOptions.() -> Unit): Emoji =
 		with(EmojiOptions().apply(configure)) {
-			get("/emoji/${enc(emoji)}", deepQuery(deep) + listOf("lang" to lang))
+			get("/emoji/${enc(emoji)}", deepQuery(deep) + listOf("lang" to lang, "shortcode_source" to shortcodeSource))
 		}
 
-	suspend fun emojiSearch(query: String): EmojiSearch =
-		emojiSearch(query) {}
+	suspend fun emojiSearch(query: String): EmojiSearch = emojiSearch(query) {}
 
 	suspend fun emojiSearch(query: String, configure: EmojiSearchOptions.() -> Unit): EmojiSearch =
-		with(EmojiSearchOptions().apply(configure)) {
-			get("/emoji", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep) + listOf("lang" to lang))
+		get("/emoji", listOf("q" to query) + emojiQuery(EmojiSearchOptions().apply(configure)))
+
+	suspend fun emojiBrowse(): EmojiBrowse = emojiBrowse {}
+	suspend fun emojiBrowse(configure: EmojiBrowseOptions.() -> Unit): EmojiBrowse =
+		get("/emoji", emojiQuery(EmojiBrowseOptions().apply(configure)))
+
+	/** Download the complete filtered JSON inventory and offline resolution maps. */
+	suspend fun emojiCatalog(): EmojiCatalog = emojiCatalog {}
+	suspend fun emojiCatalog(configure: EmojiCatalogOptions.() -> Unit): EmojiCatalog = with(EmojiCatalogOptions().apply(configure)) {
+		get("/emoji/catalog", listOf("profile" to profile, "deep" to deep.toString(), "lang" to lang, "category" to category, "subcategory" to subcategory, "version" to version, "max_version" to maxVersion, "include_skin_tones" to includeSkinTones?.toString()))
+	}
+	suspend fun emojiConvert(text: String, direction: String, shortcodeSource: String): EmojiConversion =
+		post("/emoji/convert", buildJsonObject { put("text",text) }.toString(), listOf("direction" to direction,"shortcode_source" to shortcodeSource))
+
+	suspend fun emojiMetadata(): EmojiMetadata = get("/emoji/metadata")
+
+	suspend fun emojiCategories(): EmojiCategories = get("/emoji/categories")
+
+	/** Positions use UTF-16 code units; end is exclusive. */
+	suspend fun emojiParse(text: String): EmojiParse = emojiParse(text) {}
+	suspend fun emojiParse(text: String, configure: EmojiParseOptions.() -> Unit): EmojiParse =
+		with(EmojiParseOptions().apply(configure)) {
+			post("/emoji/parse", buildJsonObject { put("text", text) }.toString(), deepQuery(deep) + listOf("lang" to lang))
 		}
+
+
+	private fun emojiQuery(options: EmojiSearchOptions): List<Pair<String, String?>> = with(options) {
+		listOf("limit" to limit?.toString()) + deepQuery(deep) + listOf("lang" to lang, "category" to category, "subcategory" to subcategory, "version" to version, "max_version" to maxVersion, "include_skin_tones" to includeSkinTones?.toString(), "offset" to offset?.toString())
+	}
 
 	suspend fun address(address: String): Address = address(address) {}
 	suspend fun address(address: String, configure: AddressOptions.() -> Unit): Address = with(AddressOptions().apply(configure)) {
@@ -876,8 +901,8 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		userAgent: String? = null,
 	): T = json.decodeFromString(fetch(path, query, userAgent))
 
-	private suspend inline fun <reified T> post(path: String, body: String): T =
-		json.decodeFromString(fetch(path, emptyList(), null, body))
+	private suspend inline fun <reified T> post(path: String, body: String, query: List<Pair<String, String?>> = emptyList()): T =
+		json.decodeFromString(fetch(path, query, null, body))
 
 	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?, body: String? = null): String {
 		var url = baseUrl + path

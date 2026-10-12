@@ -279,6 +279,12 @@ class WeatherOptions internal constructor() {
 }
 
 class EmojiSearchOptions internal constructor() {
+	var category: String? = null
+	var subcategory: String? = null
+	var version: String? = null
+	var maxVersion: String? = null
+	var includeSkinTones: Boolean? = null
+	var offset: Int? = null
 	/** Display language for this request. */
 	var lang: String? = null
 	var limit: Int? = null
@@ -362,6 +368,7 @@ class LanguageOptions internal constructor() {
 }
 
 class EmojiOptions internal constructor() {
+	var shortcodeSource: String? = null
 	/** Display language for this request. */
 	var lang: String? = null
 	var deep: Boolean = false
@@ -450,4 +457,18 @@ class NpiOptions internal constructor() {
 	/** Display language for this request. */
 	var lang: String? = null
 	var deep: Boolean = false
+}
+
+typealias EmojiBrowseOptions = EmojiSearchOptions
+class EmojiParseOptions internal constructor() { var deep: Boolean = false; var lang: String? = null }
+
+class EmojiCatalogOptions internal constructor() {
+	var profile: String? = null
+	var deep: Boolean = true
+	var lang: String? = null
+	var category: String? = null
+	var subcategory: String? = null
+	var version: String? = null
+	var maxVersion: String? = null
+	var includeSkinTones: Boolean? = null
 }
