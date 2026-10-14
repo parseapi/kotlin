@@ -1324,7 +1324,9 @@ class Measure private constructor(
 	/** Decimal string preserving the API's precision. */
 	val amount: String? = null,
 	val unit: String? = null,
+	/** Failure reason. Null when omitted by a successful response. */
 	val reason: String? = null,
+	/** Unit alternatives. Empty when omitted by the response. */
 	val choices: List<MeasureChoice> = emptyList(),
 )
 
