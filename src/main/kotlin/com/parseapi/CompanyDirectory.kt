@@ -68,7 +68,7 @@ class CompanyProfileEmployees private constructor(
 	/** Open string, currently legal_entity or consolidated_group. */
 	val scope: String,
 	/** Open string, currently reported. */
-	val method: String,
+	val method: String = "",
 	val approximate: Boolean,
 )
 
@@ -215,7 +215,7 @@ class CompanyCoverage private constructor(
 	val scope: String,
 	val label: String,
 	val description: String,
-	val snapshotAt: String,
+	val snapshotAt: String = "",
 	val companies: Long,
 	val countries: List<String> = emptyList(),
 	val withWebsite: Long,
