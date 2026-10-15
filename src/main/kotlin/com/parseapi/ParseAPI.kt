@@ -13,6 +13,8 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
@@ -36,6 +38,12 @@ class ParseAPIException @JvmOverloads constructor(
 	val requestId: String?,
 	val retryAfter: String? = null,
 ) : Exception(message)
+
+{
+    /** Only present for structured HTTP409 ambiguous_city; no Deep or private fields. */
+    var candidates: List<CityAmbiguityCandidate>? = null
+        internal set
+}
 
 /** One prepared HTTP request, handed to the transport. */
 class ParseAPIRequest internal constructor(
@@ -238,7 +246,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun city(name: String, configure: CityOptions.() -> Unit): City =
 		with(CityOptions().apply(configure)) {
-			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + deepQuery(deep) + listOf("lang" to lang))
+			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + cityQuery(type, grain, aliases, hierarchy, ambiguity) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	/** Pin or refetch a city by its minted id (city_ + 12 chars). */
@@ -246,7 +254,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun cityId(id: String, configure: CityIdOptions.() -> Unit): City =
 		with(CityIdOptions().apply(configure)) {
-			get("/city/id/${enc(id)}", deepQuery(deep) + listOf("lang" to lang))
+			get("/city/id/${enc(id)}", listOf("hierarchy" to if (hierarchy) "true" else null) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun citySearch(query: String): CitySearch =
@@ -254,14 +262,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	suspend fun citySearch(query: String, configure: CitySearchOptions.() -> Unit): CitySearch =
 		with(CitySearchOptions().apply(configure)) {
-			get("/city", listOf("q" to query, "country" to country, "state" to state, "limit" to limit?.toString()) + deepQuery(deep) + listOf("lang" to lang))
+			val parameters = listOf("q" to query, "match" to match, "max_distance" to maxDistance?.toString(), "country" to country, "state" to state, "limit" to limit?.toString()) + cityQuery(type, grain, aliases, hierarchy) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, page, cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation)
+			if (match != null || maxDistance != null) citySpellingSearch(parameters) else get("/city", parameters)
 		}
 
 	suspend fun cityNearest(lat: Double, lon: Double): CityNearest = cityNearest(lat, lon) {}
 
 	suspend fun cityNearest(lat: Double, lon: Double, configure: CityNearestOptions.() -> Unit): CityNearest =
 		with(CityNearestOptions().apply(configure)) {
-			get("/city", listOf("lat" to num(lat), "lon" to num(lon)) + deepQuery(deep) + listOf("lang" to lang))
+			get("/city", listOf("lat" to num(lat), "lon" to num(lon), "country" to country, "state" to state) + cityQuery(type, grain, hierarchy = hierarchy) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 	suspend fun cityNearby(name: String): CityNearby =
@@ -277,9 +286,95 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 					"country" to country,
 					"state" to state,
 					"limit" to limit?.toString(),
-				) + deepQuery(deep) + listOf("lang" to lang),
+				) + cityQuery(type, grain, aliases, hierarchy, ambiguity) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, page, cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation),
 			)
 		}
+
+	/** Browse stored cities. Reuse nextCursor with the same filters and display options. */
+	suspend fun cityList(): CityList = cityList {}
+
+	suspend fun cityList(configure: CityListOptions.() -> Unit): CityList =
+		with(CityListOptions().apply(configure)) {
+			get("/city", listOf("browse" to "true", "country" to country, "state" to state, "limit" to limit?.toString()) + cityQuery(type, grain, hierarchy = hierarchy) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, cursor = cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation) + listOf("format" to "list") + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang))
+		}
+
+	/** List stored city centers around a coordinate; distances do not infer containment. */
+	suspend fun cityNearbyCoordinates(lat: Double, lon: Double): CityNearbyCoordinates = cityNearbyCoordinates(lat, lon) {}
+
+	suspend fun cityNearbyCoordinates(lat: Double, lon: Double, configure: CityNearbyCoordinatesOptions.() -> Unit): CityNearbyCoordinates =
+		with(CityNearbyCoordinatesOptions().apply(configure)) {
+			get("/city", listOf("lat" to num(lat), "lon" to num(lon), "nearby" to "true", "radius" to radius?.let(::num), "unit" to unit, "country" to country, "state" to state, "limit" to limit?.toString()) + cityQuery(type, grain, hierarchy = hierarchy) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, cursor = cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation) + listOf("format" to "list") + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang))
+		}
+
+
+	suspend fun cityResource(name: String, configure: CityOptions.() -> Unit = {}): CityResource =
+		with(CityOptions().apply(configure)) {
+			get("/city/${enc(name)}", listOf("country" to country, "state" to state) + cityQuery(type, grain, aliases, hierarchy, ambiguity) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + listOf("format" to "resource"))
+		}
+
+	suspend fun cityIdResource(id: String, configure: CityIdOptions.() -> Unit = {}): CityResource =
+		with(CityIdOptions().apply(configure)) {
+			get("/city/id/${enc(id)}", listOf("hierarchy" to if (hierarchy) "true" else null) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + listOf("format" to "resource"))
+		}
+
+	suspend fun cityNearestResource(lat: Double, lon: Double, configure: CityNearestOptions.() -> Unit = {}): CityResource =
+		with(CityNearestOptions().apply(configure)) {
+			get("/city", listOf("lat" to num(lat), "lon" to num(lon), "country" to country, "state" to state) + cityQuery(type, grain, hierarchy = hierarchy) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + listOf("format" to "resource"))
+		}
+
+	suspend fun citySearchList(query: String, configure: CitySearchOptions.() -> Unit = {}): CityList =
+		with(CitySearchOptions().apply(configure)) {
+			get(if (match != null || maxDistance != null) "/city/search" else "/city", listOf("q" to query, "match" to match, "max_distance" to maxDistance?.toString(), "country" to country, "state" to state, "limit" to limit?.toString()) + cityQuery(type, grain, aliases, hierarchy) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, page, cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation) + listOf("format" to "list"))
+		}
+
+	suspend fun cityNearbyList(name: String, configure: CityNearbyOptions.() -> Unit = {}): CityList =
+		with(CityNearbyOptions().apply(configure)) {
+			get(
+				"/city/${enc(name)}/nearby",
+				listOf(
+					"radius" to radius?.let(::num),
+					"unit" to unit,
+					"country" to country,
+					"state" to state,
+					"limit" to limit?.toString(),
+				) + cityQuery(type, grain, aliases, hierarchy, ambiguity) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep) + listOf("lang" to lang) + cityCollectionQuery(minPopulation, maxPopulation, timezone, bbox, sort, order, page, cursor) + cityExtraQuery(countries, excludeCountries, timezones, minElevation, maxElevation) + listOf("format" to "list"),
+			)
+		}
+
+    /** Lists reviewed relationships; empty results do not prove absence. */
+    suspend fun cityChildren(id: String, configure: CityRelationsOptions.() -> Unit = {}): CityRelations =
+        with(CityRelationsOptions().apply(configure)) { get("/city/id/${enc(id)}/children", listOf("limit" to limit?.toString(), "cursor" to cursor, "hierarchy" to if(hierarchy) "true" else null, "lang" to lang) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep)) }
+
+    suspend fun cityAncestors(id: String, configure: CityAncestorsOptions.() -> Unit = {}): CityRelations =
+        with(CityAncestorsOptions().apply(configure)) { get("/city/id/${enc(id)}/ancestors", listOf("hierarchy" to if(hierarchy) "true" else null, "lang" to lang) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep)) }
+
+    suspend fun citySiblings(id: String, configure: CityRelationsOptions.() -> Unit = {}): CityRelations =
+        with(CityRelationsOptions().apply(configure)) { get("/city/id/${enc(id)}/siblings", listOf("limit" to limit?.toString(), "cursor" to cursor, "hierarchy" to if(hierarchy) "true" else null, "lang" to lang) + listOf("romanized" to if(romanized) "true" else null) + deepQuery(deep)) }
+
+    /** Great-circle distance between stored centers. Unknown coordinates yield null. */
+    suspend fun cityDistance(from: String, to: String): CityDistance = get("/city/id/${enc(from)}/distance/${enc(to)}")
+
+
+
+	    private fun cityExtraQuery(countries: List<String>?, excludeCountries: List<String>?, timezones: List<String>?, minElevation: Double?, maxElevation: Double?): List<Pair<String, String?>> = listOf(
+        "countries" to countries?.joinToString(","), "exclude_countries" to excludeCountries?.joinToString(","), "timezones" to timezones?.joinToString(","), "min_elevation" to minElevation?.let(::num), "max_elevation" to maxElevation?.let(::num),
+    )
+	private fun cityCollectionQuery(minPopulation: Long?, maxPopulation: Long?, timezone: String?, bbox: String?, sort: String?, order: String?, page: Boolean = false, cursor: String? = null): List<Pair<String, String?>> = listOf(
+		"min_population" to minPopulation?.toString(), "max_population" to maxPopulation?.toString(),
+		"timezone" to timezone, "bbox" to bbox, "sort" to sort, "order" to order,
+		"page" to if (page) "true" else null, "cursor" to cursor,
+	)
+
+	private fun cityQuery(type: String?, grain: String?, aliases: Boolean = false, hierarchy: Boolean = false, ambiguity: String? = null): List<Pair<String, String?>> = listOf(
+		"type" to type, "grain" to grain, "aliases" to if (aliases) "true" else null,
+		"hierarchy" to if (hierarchy) "true" else null, "ambiguity" to ambiguity,
+	)
+
+	private suspend fun citySpellingSearch(query: List<Pair<String, String?>>): CitySearch {
+		val body = json.parseToJsonElement(fetch("/city/search", query, null)).jsonObject
+		val classic = buildJsonObject { for ((key, value) in body) put(key, value); put("cities", body.getValue("data")) }
+		return json.decodeFromString(classic.toString())
+	}
 
 	/** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). */
 	suspend fun language(code: String): Language = language(code) {}
@@ -951,7 +1046,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				null
 			}
 			fun field(name: String): String? = (body?.get(name) as? JsonPrimitive)?.contentOrNull
-			throw ParseAPIException(
+			val error = ParseAPIException(
 				response.status,
 				field("code") ?: "unknown_error",
 				field("message") ?: "Request failed with status ${response.status}",
@@ -959,6 +1054,23 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 				field("request_id"),
 				retryAfter,
 			)
+            if (response.status == 409 && error.code == "ambiguous_city") {
+                error.candidates = (body?.get("candidates") as? JsonArray)?.take(2)?.mapNotNull { value ->
+                    val row = value as? JsonObject ?: return@mapNotNull null
+                    val id = (row["id"] as? JsonPrimitive)?.takeIf { it.isString }?.content
+                    val objectType = (row["object"] as? JsonPrimitive)?.takeIf { it.isString }?.content
+                    if (id == null || !Regex("city_[a-z0-9]{12}").matches(id) || objectType != "city") return@mapNotNull null
+                    val safe = buildJsonObject {
+                        put("id", id); put("object", "city")
+                        for (key in listOf("name", "name_local", "country", "country_name", "state", "state_name", "type")) {
+                            val item = row[key] as? JsonPrimitive ?: continue
+                            if (item.contentOrNull == null || (item.isString && item.content.length <= 255)) put(key, item)
+                        }
+                    }
+                    json.decodeFromJsonElement(CityAmbiguityCandidate.serializer(), safe)
+                }
+            }
+            throw error
 		}
 	}
 
@@ -991,7 +1103,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.9.0"
+		const val VERSION = "1.10.0"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

@@ -39,7 +39,8 @@ class Continent private constructor(
 	val region: String,
 	val subregion: String,
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val emoji: String,
@@ -160,6 +161,9 @@ class District private constructor(
 
 @Serializable
 class City private constructor(
+	val nameRomanized: String? = null,
+	val romanizationLanguage: String? = null,
+	val match: CityMatch? = null,
 	val name: String,
 	val nameLocal: String? = null,
 	val type: String? = null,
@@ -175,11 +179,15 @@ class City private constructor(
 	/** Minted parse id (city_ + 12 chars). Stable pin via cityId(). */
 	val id: String,
 	val deep: CityDeep? = null,
+	val grain: String? = null,
+	val parent: CityParent? = null,
 )
 
 /** Nearest-city lookups add the distance from the query point. */
 @Serializable
 class CityNearest private constructor(
+	val nameRomanized: String? = null,
+	val romanizationLanguage: String? = null,
 	val name: String,
 	val nameLocal: String? = null,
 	val type: String? = null,
@@ -196,6 +204,8 @@ class CityNearest private constructor(
 	val distance: Double,
 	val distanceMi: Double,
 	val deep: CityDeep? = null,
+	val grain: String? = null,
+	val parent: CityParent? = null,
 )
 
 @Serializable
@@ -204,6 +214,10 @@ class CitySearch private constructor(
 	val country: String? = null,
 	val state: String? = null,
 	val cities: List<City> = emptyList(),
+	val type: String? = null,
+	val grain: String? = null,
+	val aliases: Boolean? = null,
+	@SerialName("next_cursor") val nextCursor: String? = null,
 )
 
 @Serializable
@@ -214,6 +228,7 @@ class CityNearby private constructor(
 	val radius: Double,
 	val unit: String,
 	val nearby: List<CityNearest> = emptyList(),
+	@SerialName("next_cursor") val nextCursor: String? = null,
 )
 
 @Serializable
@@ -1408,7 +1423,8 @@ class CountryDeep private constructor(
 	val region: String? = null,
 	val subregion: String? = null,
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	val area: Double? = null,
 	/** Land area in km2. */
@@ -1457,7 +1473,8 @@ class CountryElevationPoint private constructor(
 @Serializable
 class StateDeep private constructor(
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val fips: String? = null,
@@ -1473,7 +1490,8 @@ class StateDeep private constructor(
 @Serializable
 class DistrictDeep private constructor(
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	/** Total area in km2 (land + water, or the official total). */
 	val area: Double? = null,
@@ -1493,8 +1511,12 @@ class CityDeep private constructor(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
+	/** Exact date and counting basis only when a reviewed dated observation was admitted. */
+	val populationObservedOn: String? = null,
+	val populationBasis: String? = null,
 	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
@@ -1506,7 +1528,8 @@ class PostalDeep private constructor(
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	/** Total area in km2. Null when the source has no water split. */
 	val area: Double? = null,
@@ -1700,7 +1723,8 @@ class PostalMetroDeep private constructor(
 @Serializable
 class StateDistrictItemDeep private constructor(
 	val population: Long? = null,
-	/** Reporting year or period for population (YYYY or YYYY-YYYY). Null when unknown or unverifiable. */
+	@Deprecated("No longer returned; retained for source compatibility")
+	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 
 )
@@ -2056,4 +2080,110 @@ class EmojiCatalogLocalization private constructor(
 @Serializable
 class EmojiShortcodeSourceMetadata private constructor(
  val records: Int, val missingRecords: Int, val ambiguousAliases: Int,
+)
+
+
+@Serializable
+class CityParent private constructor(
+	val id: String,
+	val name: String? = null,
+	val nameLocal: String? = null,
+	val country: String,
+	val state: String? = null,
+	val type: String? = null,
+	val grain: String? = null,
+)
+
+@Serializable
+class CityMatch private constructor(
+	val type: String, val source: String, val value: String, val language: String? = null, val editDistance: Int? = null,
+)
+
+@Serializable
+class CityResource private constructor(
+	val nameRomanized: String? = null,
+	val romanizationLanguage: String? = null,
+	val match: CityMatch? = null,
+    val id: String,
+    val `object`: String,
+    val name: String? = null,
+    val nameLocal: String? = null,
+    val country: String? = null,
+    val countryName: String? = null,
+    val state: String? = null,
+    val stateName: String? = null,
+    val district: String? = null,
+    val districtName: String? = null,
+    val type: String? = null,
+    val grain: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val timezone: String? = null,
+    val distance: Double? = null,
+    val distanceMi: Double? = null,
+    val parent: CityParent? = null,
+    val deep: CityDeep? = null,
+)
+
+@Serializable
+class CityList private constructor(
+    val `object`: String,
+    val data: List<CityResource>,
+    val hasMore: Boolean? = null,
+    val url: String? = null,
+    val nextCursor: String? = null,
+    val q: String? = null,
+    val country: String? = null,
+    val state: String? = null,
+    val type: String? = null,
+    val grain: String? = null,
+)
+
+@Serializable
+class CityAmbiguityCandidate private constructor(
+    val id: String,
+    val `object`: String,
+    val name: String? = null,
+    val nameLocal: String? = null,
+    val country: String? = null,
+    val countryName: String? = null,
+    val state: String? = null,
+    val stateName: String? = null,
+    val type: String? = null,
+)
+
+@Serializable
+class CityRelations private constructor(
+    val `object`: String,
+    val data: List<CityResource>,
+    val hasMore: Boolean? = null,
+    val url: String? = null,
+    val nextCursor: String? = null,
+    val cityId: String,
+    val relationship: String,
+    val coverage: String,
+    val parentId: String? = null,
+)
+
+@Serializable
+class CityDistance private constructor(
+    val `object`: String,
+    val from: String,
+    val to: String,
+    val distance: Double? = null,
+    val distanceMi: Double? = null,
+    val method: String,
+)
+
+@Serializable
+class CityNearbyCoordinates private constructor(
+    val `object`: String,
+    val data: List<CityResource>,
+    val hasMore: Boolean? = null,
+    val url: String? = null,
+    val nextCursor: String? = null,
+    val latitude: Double,
+    val longitude: Double,
+    val radius: Double,
+    val unit: String,
 )

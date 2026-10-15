@@ -58,31 +58,79 @@ class DistrictOptions internal constructor() {
 }
 
 class CityOptions internal constructor() {
+	var romanized: Boolean = false
 	/** Display language for this request. */
 	var lang: String? = null
 	var country: String? = null
 	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var aliases: Boolean = false
+	var hierarchy: Boolean = false
+	/** error refuses an ambiguous exact name; default winner is unchanged. */
+	var ambiguity: String? = null
 	var deep: Boolean = false
 }
 
 class CitySearchOptions internal constructor() {
+	var romanized: Boolean = false
+	var match: String? = null
+	var maxDistance: Int? = null
 	/** Display language for this request. */
 	var lang: String? = null
 	var country: String? = null
 	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var aliases: Boolean = false
+	var hierarchy: Boolean = false
 	var limit: Int? = null
 	var deep: Boolean = false
+	var minPopulation: Long? = null
+	var maxPopulation: Long? = null
+	var timezone: String? = null
+	/** west,south,east,north; west greater than east crosses the date line. */
+	var bbox: String? = null
+	var sort: String? = null
+	var order: String? = null
+	var page: Boolean = false
+	var cursor: String? = null
+	var countries: List<String>? = null
+	var excludeCountries: List<String>? = null
+	var timezones: List<String>? = null
+	var minElevation: Double? = null
+	var maxElevation: Double? = null
 }
 
 class CityNearbyOptions internal constructor() {
+	var romanized: Boolean = false
 	/** Display language for this request. */
 	var lang: String? = null
 	var radius: Double? = null
 	var unit: String? = null
 	var country: String? = null
 	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var aliases: Boolean = false
+	var hierarchy: Boolean = false
+	var ambiguity: String? = null
 	var limit: Int? = null
 	var deep: Boolean = false
+	var minPopulation: Long? = null
+	var maxPopulation: Long? = null
+	var timezone: String? = null
+	/** west,south,east,north; west greater than east crosses the date line. */
+	var bbox: String? = null
+	var sort: String? = null
+	var order: String? = null
+	var page: Boolean = false
+	var cursor: String? = null
+	var countries: List<String>? = null
+	var excludeCountries: List<String>? = null
+	var timezones: List<String>? = null
+	var minElevation: Double? = null
+	var maxElevation: Double? = null
 }
 
 /** Country is an ISO2 context for gender, not a nationality claim. */
@@ -340,14 +388,22 @@ class CountryOptions internal constructor() {
 }
 
 class CityIdOptions internal constructor() {
+	var romanized: Boolean = false
 	/** Display language for this request. */
 	var lang: String? = null
+	var hierarchy: Boolean = false
 	var deep: Boolean = false
 }
 
 class CityNearestOptions internal constructor() {
+	var romanized: Boolean = false
 	/** Display language for this request. */
 	var lang: String? = null
+	var country: String? = null
+	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var hierarchy: Boolean = false
 	var deep: Boolean = false
 }
 
@@ -471,4 +527,76 @@ class EmojiCatalogOptions internal constructor() {
 	var version: String? = null
 	var maxVersion: String? = null
 	var includeSkinTones: Boolean? = null
+}
+
+
+class CityListOptions internal constructor() {
+	var romanized: Boolean = false
+	var country: String? = null
+	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var hierarchy: Boolean = false
+	var limit: Int? = null
+	var minPopulation: Long? = null
+	var maxPopulation: Long? = null
+	var timezone: String? = null
+	/** west,south,east,north; west greater than east crosses the date line. */
+	var bbox: String? = null
+	var sort: String? = null
+	var order: String? = null
+	var cursor: String? = null
+	var deep: Boolean = false
+	var lang: String? = null
+	var countries: List<String>? = null
+	var excludeCountries: List<String>? = null
+	var timezones: List<String>? = null
+	var minElevation: Double? = null
+	var maxElevation: Double? = null
+
+}
+
+class CityNearbyCoordinatesOptions internal constructor() {
+	var romanized: Boolean = false
+	var radius: Double? = null
+	var unit: String? = null
+	var country: String? = null
+	var state: String? = null
+	var type: String? = null
+	var grain: String? = null
+	var hierarchy: Boolean = false
+	var limit: Int? = null
+	var minPopulation: Long? = null
+	var maxPopulation: Long? = null
+	var timezone: String? = null
+	/** west,south,east,north; west greater than east crosses the date line. */
+	var bbox: String? = null
+	var sort: String? = null
+	var order: String? = null
+	var cursor: String? = null
+	var deep: Boolean = false
+	var lang: String? = null
+	var countries: List<String>? = null
+	var excludeCountries: List<String>? = null
+	var timezones: List<String>? = null
+	var minElevation: Double? = null
+	var maxElevation: Double? = null
+
+}
+
+class CityRelationsOptions internal constructor() {
+	var romanized: Boolean = false
+    var limit: Int? = null
+    var cursor: String? = null
+
+    var hierarchy: Boolean = false
+    var deep: Boolean = false
+    var lang: String? = null
+}
+
+class CityAncestorsOptions internal constructor() {
+	var romanized: Boolean = false
+    var hierarchy: Boolean = false
+    var deep: Boolean = false
+    var lang: String? = null
 }

@@ -16,7 +16,7 @@ class LocationStatisticsTest {
   val deep = """{"population":0,"population_period":"2020-2024","property_tax":{"annual_median":0,"currency":"USD","period":"2020-2024"}}"""
   val place = ParseAPI("test") { transport = StubTransport(200, """{"postal":"12345","country":"US","deep":$deep}""") }.postal("12345") { country = "US"; this.deep = true }
   assertEquals(0L, place.deep?.population)
-  assertEquals("2020-2024", place.deep?.populationPeriod)
+  assertNull(place.deep?.populationPeriod)
   assertEquals(0.0, place.deep?.propertyTax?.annualMedian)
   assertEquals("USD", place.deep?.propertyTax?.currency)
   assertEquals("2020-2024", place.deep?.propertyTax?.period)
