@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.4 — 2026-10-15
+
+- Report the installed source distribution version in the SDK User-Agent and version constant.
+
 ## 1.9.3 — 2026-10-15
 
 - Decode ordinary API responses when retired source metadata is omitted, retaining existing getters and call signatures.

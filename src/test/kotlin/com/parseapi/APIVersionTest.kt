@@ -21,6 +21,7 @@ class APIVersionTest {
 			transport = stub
 		}
 		val result = client.ipSelf { deep = true }
+		assertEquals(System.getProperty("parseapi.artifact.version"), ParseAPI.VERSION)
 		assertEquals("192.0.2.1", result.ip)
 		assertNull(result.country)
 		assertNotNull(result.deep)
