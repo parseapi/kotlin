@@ -604,7 +604,7 @@ class Tariff private constructor(
 	/** Column 1 general rate, verbatim. */
 	val general: String? = null,
 	/** The official release that answered (2026HTSRev17). */
-	val revision: String,
+	val revision: String = "",
 	val deep: TariffDeep? = null,
 )
 
@@ -622,7 +622,7 @@ class TariffSearch private constructor(
 	val edition: String? = null,
 	val date: String? = null,
 	val q: String,
-	val revision: String,
+	val revision: String = "",
 	/** Up to 20 lines, best match first. */
 	val lines: List<TariffSearchHit> = emptyList(),
 )
@@ -967,7 +967,7 @@ typealias Time = Timezone
 /** Serving timezone IDs and their pinned rule edition. */
 @Serializable
 class TimeZones private constructor(
-	val timezoneDatabaseVersion: String,
+	val timezoneDatabaseVersion: String = "",
 	val timezones: List<String>,
 	val at: String? = null,
 	val zones: List<TimeZoneEntry>? = null,
@@ -1829,7 +1829,7 @@ class TimeLocation private constructor(
 	val status: String,
 	val candidates: List<TimeLocationCandidate>,
 	val truncated: Boolean,
-	val source: String,
+	val source: String = "",
 )
 
 // Industry names for the existing US NAICS response contract.
@@ -2016,7 +2016,7 @@ class EmojiMetadata private constructor(
  val shortcodeSources: Map<String,EmojiShortcodeSourceMetadata>? = null,
 	val edition: String,
 	val maxVersion: String? = null,
-	val sourceVersion: String,
+	val sourceVersion: String = "",
 	val total: Int,
 	val completeness: EmojiCompleteness,
 	val sources: List<EmojiSource>,
