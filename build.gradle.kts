@@ -33,6 +33,7 @@ java {
 
 tasks.test {
 	useJUnitPlatform()
+	systemProperty("parseapi.artifact.version", project.version.toString())
 }
 
 // Live smoke against the edge: gradle smoke (PARSEAPI_KEY in the env).

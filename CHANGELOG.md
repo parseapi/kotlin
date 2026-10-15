@@ -6,6 +6,10 @@
 - Keep existing City calls and response defaults compatible; expose ambiguity candidates when requested.
 - Remove population observation periods from public examples; retain published typed members only for source compatibility.
 
+## 1.9.4 — 2026-10-15
+
+- Report the installed source distribution version in the SDK User-Agent and version constant.
+
 ## 1.9.3 — 2026-10-15
 
 - Decode ordinary API responses when retired source metadata is omitted, retaining existing getters and call signatures.
