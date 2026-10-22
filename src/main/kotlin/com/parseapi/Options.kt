@@ -222,9 +222,6 @@ class UseragentOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class VinOptions internal constructor() {
-	var deep: Boolean = false
-}
 
 class TariffOptions internal constructor() {
 	var edition: String? = null
@@ -495,8 +492,6 @@ class TimeZonesOptions internal constructor() {
 typealias IndustryOptions = NaicsOptions
 typealias IndustrySearchOptions = NaicsSearchOptions
 
-/** Options for a Vehicle lookup by VIN. */
-typealias VehicleOptions = VinOptions
 
 class BinOptions internal constructor() {
 	var deep: Boolean = false

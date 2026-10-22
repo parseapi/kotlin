@@ -627,58 +627,8 @@ class TariffSearch private constructor(
 	val lines: List<TariffSearchHit> = emptyList(),
 )
 
-@Serializable
-class VinRecall private constructor(
-	/** Government campaign number. */
-	val campaign: String,
-	/** Report date, ISO YYYY-MM-DD. */
-	val date: String? = null,
-	val component: String? = null,
-	/** The filed summary verbatim. */
-	val summary: String? = null,
-)
 
-@Serializable
-class VinDeep private constructor(
-	/**
-	 * Recall campaigns for the decoded year, make and model. Empty when none,
-	 * null when the recall registry did not answer.
-	 */
-	val recalls: List<VinRecall>? = null,
-	val series: String? = null,
-	val doors: Int? = null,
-	val cylinders: Int? = null,
-	/** Engine displacement in liters. */
-	val displacement: Double? = null,
-	val fuel: String? = null,
-	val horsepower: Double? = null,
-	/** fwd, rwd, awd, 4wd. */
-	val drive: String? = null,
-	/** automatic, manual, cvt. */
-	val transmission: String? = null,
-	val manufacturer: String? = null,
-	@SerialName("plant_city") val plantCity: String? = null,
-	@SerialName("plant_state") val plantState: String? = null,
-	@SerialName("plant_country") val plantCountry: String? = null,
-	/** Gross vehicle weight rating class as filed. */
-	val gvwr: String? = null,
-)
 
-@Serializable
-class Vin private constructor(
-	/** Normalized VIN, uppercase, no spaces. Invalid input still echoes the fold. */
-	val vin: String? = null,
-	val valid: Boolean,
-	val year: Int? = null,
-	val make: String? = null,
-	val model: String? = null,
-	val trim: String? = null,
-	/** Body style (sedan, coupe, suv, pickup). */
-	val body: String? = null,
-	/** Vehicle type (passenger car, truck, motorcycle, bus, trailer). */
-	val type: String? = null,
-	val deep: VinDeep? = null,
-)
 
 /** Always empty. The metered proves are their own endpoints: carrier, caller, hlr. */
 @Serializable
@@ -1842,9 +1792,6 @@ typealias IndustryMatch = NAICSMatch
 typealias IndustrySearch = NAICSSearch
 typealias IndustrySearchResult = NAICSSearchResult
 
-typealias Vehicle = Vin
-typealias VehicleDeep = VinDeep
-typealias VehicleRecall = VinRecall
 
 // Published compatibility declarations.
 @Serializable

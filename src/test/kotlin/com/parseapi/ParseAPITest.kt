@@ -74,25 +74,7 @@ class UrlMappingTest {
 		assertEquals("https://api.parseapi.com/bank", stub.requests[0].url)
 	}
 
-	@Test
-	fun vinDeep() = runBlocking {
-		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","deep":{"recalls":[],"plant_city":"Marysville"}}""")
-		val decoded = client(stub).vin("1HGCM82633A004352") { this.deep = true }
-		assertEquals("https://api.parseapi.com/vin/1HGCM82633A004352?deep=true", stub.requests[0].url)
-		assertEquals(2003, decoded.year)
-		assertEquals("Marysville", decoded.deep?.plantCity)
-		assertEquals(0, decoded.deep?.recalls?.size)
-	}
 
-	@Test
-	fun vehicleDeep() = runBlocking {
-		val stub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"year":2003,"make":"Honda","deep":{"recalls":[],"plant_city":"Marysville"}}""")
-		val decoded = client(stub).vehicle("1HGCM82633A004352") { this.deep = true }
-		assertEquals("https://api.parseapi.com/vehicle/1HGCM82633A004352?deep=true", stub.requests[0].url)
-		assertEquals(2003, decoded.year)
-		assertEquals("Marysville", decoded.deep?.plantCity)
-		assertEquals(0, decoded.deep?.recalls?.size)
-	}
 
 	@Test
 	fun provider() = runBlocking {

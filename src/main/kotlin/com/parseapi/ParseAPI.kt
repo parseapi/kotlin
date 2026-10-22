@@ -670,23 +670,9 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/useragent", deepQuery(deep), userAgent = ua)
 		}
 
-	/** Decodes a 17-character VIN. Deep adds model-level recall campaigns on paid plans. */
-	suspend fun vehicle(vin: String): Vehicle =
-		vehicle(vin) {}
 
-	suspend fun vehicle(vin: String, configure: VehicleOptions.() -> Unit): Vehicle =
-		with(VehicleOptions().apply(configure)) {
-			get("/vehicle/${enc(vin)}", deepQuery(deep))
-		}
 
-	/** Compatibility entry for VIN callers. */
-	suspend fun vin(vin: String): Vin =
-		vin(vin) {}
 
-	suspend fun vin(vin: String, configure: VinOptions.() -> Unit): Vin =
-		with(VinOptions().apply(configure)) {
-			get("/vin/${enc(vin)}", deepQuery(deep))
-		}
 
 	/**
 	 * Look up the general US duty schedule line. Paid deep adds units and the special and other
@@ -1109,7 +1095,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.0"
+		const val VERSION = "1.10.1"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

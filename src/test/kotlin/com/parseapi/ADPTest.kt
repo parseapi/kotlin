@@ -115,21 +115,7 @@ class ADPTest {
    assertEquals(1,stub1.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
   }
-  run {
-   val plainStub = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"make":"Honda"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.vin("1HGCM82633A004352")
-   assertNull(plain.deep)
-   val stub0 = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"make":"Honda","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.vin("1HGCM82633A004352") { deep=true }
-   assertNotNull(rich0.deep)
-   assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
-   val stub1 = StubTransport(200, """{"vin":"1HGCM82633A004352","valid":true,"make":"Honda","deep":{"horsepower":240.5,"recalls":[]}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.vin("1HGCM82633A004352") { deep=true }
-   assertNotNull(rich1.deep)
-   assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
-  }
+
   run {
    val plainStub = StubTransport(200, """{"phone":"+14155552671","valid":true}""")
    val plain = ParseAPI("test") { transport = plainStub }.phone("+14155552671")
