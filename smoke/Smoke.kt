@@ -83,7 +83,6 @@ fun main(): Unit = runBlocking {
 	expectOk("postalNearby", { parse.postalNearby("28202") { this.country = "US"; this.radius = 40.0 } }) { if (it.nearby.isNotEmpty()) null else "no nearby" }
 	expectOk("postalDistance", { parse.postalDistance("28202", "10001") { this.country = "US" } }) { if (it.distance > 800 && it.distance < 1000) null else "distance ${it.distance}" }
 	expectOk("email", { parse.email("hello@gmail.com") }) { if (it.valid) null else "not valid" }
-	expectOk("vat", { parse.vat("DE136695976") }) { if (it.valid && it.country == "DE") null else "not valid DE" }
 	expectOk("card", { parse.card("00 0000") }) {
 		if (it.bin == "000000") null else "BIN echo mismatch"
 	}
@@ -91,10 +90,6 @@ fun main(): Unit = runBlocking {
 		if (it.valid && it.country == "DE" && it.bank == "37040044") null else "not valid DE"
 	}
 	expectOk("bank junk", { parse.bank("hello") }) { if (!it.valid) null else "expected invalid" }
-	expectOk("npi", { parse.provider("1881018208") }) {
-		if (it.valid && it.registered == true) null else "not registered"
-	}
-	expectOk("npi junk", { parse.provider("hello") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("phone", { parse.phone("+14155552671") }) { if (it.phone == "+14155552671") null else "wrong phone" }
 	// Metered core siblings: junk numbers answer 200 valid false, free, no vendor dip.
 	expectOk("carrier junk free", { parse.carrier("555-0100") }) { if (!it.valid) null else "expected invalid" }

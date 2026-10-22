@@ -168,22 +168,14 @@ class EmailOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class VatOptions internal constructor() {
-	var country: String? = null
-	var from: String? = null
-	var deep: Boolean = false
-}
+
 
 class BankOptions internal constructor() {
 	var country: String? = null
 	var deep: Boolean = false
 }
 
-class ProviderOptions internal constructor() {
-	/** Display language for this request. */
-	var lang: String? = null
-	var deep: Boolean = false
-}
+
 
 class PhoneOptions internal constructor() {
 	var country: String? = null
@@ -223,19 +215,9 @@ class UseragentOptions internal constructor() {
 }
 
 
-class TariffOptions internal constructor() {
-	var edition: String? = null
-	var date: String? = null
-	/** Add units and the special and other schedule columns on paid plans. */
-	var deep: Boolean = false
-	/** ISO 3166-1 alpha-2 origin. With paid deep, resolves country-specific measures. Optional for schedule detail. */
-	var origin: String? = null
-}
 
-class TariffSearchOptions internal constructor() {
-	var edition: String? = null
-	var date: String? = null
-}
+
+
 
 class CurrencyRateOptions internal constructor() {
 	var date: String? = null
@@ -437,10 +419,7 @@ class ContinentCountriesOptions internal constructor() {
 	var lang: String? = null
 }
 
-/** Display language for this operation. */
-class BlocCountriesOptions internal constructor() {
-	var lang: String? = null
-}
+
 
 /** Display language for this operation. */
 class CountryStatesOptions internal constructor() {
@@ -504,11 +483,7 @@ class IbanOptions internal constructor() {
 }
 
 
-class NpiOptions internal constructor() {
-	/** Display language for this request. */
-	var lang: String? = null
-	var deep: Boolean = false
-}
+
 
 typealias EmojiBrowseOptions = EmojiSearchOptions
 class EmojiParseOptions internal constructor() { var deep: Boolean = false; var lang: String? = null }

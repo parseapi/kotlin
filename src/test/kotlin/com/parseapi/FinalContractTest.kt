@@ -25,7 +25,7 @@ class FinalContractTest {
     fun meteredDefaultsDoNotRetryAndExplicitOverrideDoes() = runBlocking {
         val calls: List<suspend (ParseAPI) -> Any> = listOf(
             { it.carrier("junk") }, { it.caller("junk") }, { it.hlr("junk") },
-            { it.address("123 Main St") { deep = true } }, { it.email("a@example.com") { deep = true } }, { it.vat("DE136695976") { deep = true } },
+            { it.address("123 Main St") { deep = true } }, { it.email("a@example.com") { deep = true } },
         )
         for (call in calls) {
             val stub = StubTransport(503, "{}")

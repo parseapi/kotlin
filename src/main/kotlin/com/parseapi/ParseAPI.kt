@@ -196,16 +196,11 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/country/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
 		}
 
-	suspend fun bloc(code: String): Bloc =
-		get("/bloc/${enc(code)}")
 
-	suspend fun blocCountries(code: String): BlocCountries =
-		get("/bloc/${enc(code)}/countries")
 
-	suspend fun blocCountries(code: String, configure: BlocCountriesOptions.() -> Unit): BlocCountries =
-		with(BlocCountriesOptions().apply(configure)) {
-			get("/bloc/${enc(code)}/countries", listOf("lang" to lang))
-		}
+
+
+
 
 
 	suspend fun countryStates(code: String): CountryStates =
@@ -446,23 +441,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/email/${enc(email)}", deepQuery(deep))
 		}
 
-	/**
-	 * Check VAT format and checksum. Deep requests a metered registry check where supported. Deep
-	 * checks use one attempt by default. Supply your own VAT number for a consultation reference
-	 * when supported. Metered checks require a secret key on a server. App keys return empty deep.
-	 */
-	suspend fun vat(number: String): Vat =
-		vat(number) {}
 
-	/**
-	 * Check VAT format and checksum. Deep requests a metered registry check where supported. Deep
-	 * checks use one attempt by default. Supply your own VAT number for a consultation reference
-	 * when supported. Metered checks require a secret key on a server. App keys return empty deep.
-	 */
-	suspend fun vat(number: String, configure: VatOptions.() -> Unit): Vat =
-		with(VatOptions().apply(configure)) {
-			get("/vat/${enc(number)}", listOf("country" to country, "from" to from) + deepQuery(deep))
-		}
 
 	/** Checksum and structure. bank and branch are codes inside the number, not names. */
 	suspend fun iban(iban: String): Iban =
@@ -473,13 +452,11 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/iban/${enc(iban)}", listOf("country" to country) + deepQuery(deep))
 		}
 
-	suspend fun npi(npi: String): Npi =
-		npi(npi) {}
 
-	suspend fun npi(npi: String, configure: NpiOptions.() -> Unit): Npi =
-		with(NpiOptions().apply(configure)) {
-			get("/npi/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
-		}
+
+
+
+
 
 	suspend fun bin(bin: String): Bin = bin(bin) {}
 
@@ -510,14 +487,9 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun bankRequirements(country: String, format: String? = null): BankRequirements =
 		get("/bank/requirements", listOf("country" to country, "format" to format))
 
-	/** Look up a US healthcare provider by NPI. Deep adds Medicare enrollment on paid plans. */
-	suspend fun provider(npi: String): Provider =
-		provider(npi) {}
 
-	suspend fun provider(npi: String, configure: ProviderOptions.() -> Unit): Provider =
-		with(ProviderOptions().apply(configure)) {
-			get("/provider/${enc(npi)}", deepQuery(deep) + listOf("lang" to lang))
-		}
+
+
 
 	/**
 	 * Parse a phone number and its formats. Pass country for national numbers when needed. Deep
@@ -674,25 +646,9 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 
 
-	/**
-	 * Look up the general US duty schedule line. Paid deep adds units and the special and other
-	 * schedule columns. Add origin with deep to resolve country-specific measures. Without origin,
-	 * schedule detail remains available and origin-dependent fields are null. A null effective rate is
-	 * not a zero rate.
-	 */
-	suspend fun tariff(code: String): Tariff =
-		tariff(code) {}
 
-	/**
-	 * Look up the general US duty schedule line. Paid deep adds units and the special and other
-	 * schedule columns. Add origin with deep to resolve country-specific measures. Without origin,
-	 * schedule detail remains available and origin-dependent fields are null. A null effective rate is
-	 * not a zero rate.
-	 */
-	suspend fun tariff(code: String, configure: TariffOptions.() -> Unit): Tariff =
-		with(TariffOptions().apply(configure)) {
-			get<Tariff>("/tariff/${enc(code)}", listOf("origin" to origin, "edition" to edition, "date" to date) + deepQuery(deep)).also { tariffSelection(edition, date, it.edition, it.date) }
-		}
+
+
 
 	/** US NAICS 2022 definition and hierarchy. */
 	suspend fun naics(code: String): NAICS = industry(code)
@@ -715,27 +671,21 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/industry", listOf("q" to query, "limit" to limit?.toString()) + deepQuery(deep))
 		}
 
-	private fun tariffExactEdition(value: String): Boolean {
-        if (value.length == 64 && value.all { it in '0'..'9' || it in 'a'..'f' }) return true
-        if (!Regex("ted_[1-9][0-9]{0,19}").matches(value)) return false
-        val digits = value.substring(4); return digits.length < 20 || digits <= "18446744073709551615"
-    }
 
-	private fun tariffSelection(edition: String?, date: String?, gotEdition: String?, gotDate: String?) {
-		val confirmedEdition = gotEdition != null && tariffExactEdition(gotEdition)
-		if ((edition != null || date != null) && (!confirmedEdition || (edition != null && gotEdition != edition) || gotDate != date)) {
-			throw ParseAPIException(0, "tariff_selection_mismatch", "Tariff response did not confirm the requested edition/date. The server may not support this selection.", null, null)
-		}
-	}
 
-	/** Searches tariff schedule descriptions by product. */
-	suspend fun tariffSearch(query: String): TariffSearch = tariffSearch(query) {}
 
-	/** Pin an immutable edition or request a date with verified source coverage. */
-	suspend fun tariffSearch(query: String, configure: TariffSearchOptions.() -> Unit): TariffSearch =
-		with(TariffSearchOptions().apply(configure)) {
-			get<TariffSearch>("/tariff", listOf("q" to query, "edition" to edition, "date" to date)).also { tariffSelection(edition, date, it.edition, it.date) }
-		}
+
+
+
+
+
+
+
+
+
+
+
+
 
 	suspend fun currency(code: String): Currency = currency(code) {}
 
@@ -1095,7 +1045,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.1"
+		const val VERSION = "1.10.2"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

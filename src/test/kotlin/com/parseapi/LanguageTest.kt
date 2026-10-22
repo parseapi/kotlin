@@ -30,7 +30,6 @@ class LanguageTest {
    Operation("IPSelf", "/ip", "deep=true") { parse, language -> parse.ipSelf { this.deep = true; this.lang = language } },
    Operation("Continent", "/continent/EU", "") { parse, language -> parse.continent("EU") { this.lang = language } },
    Operation("ContinentCountries", "/continent/EU/countries", "") { parse, language -> parse.continentCountries("EU") { this.lang = language } },
-   Operation("BlocCountries", "/bloc/EU/countries", "") { parse, language -> parse.blocCountries("EU") { this.lang = language } },
    Operation("Country", "/country/DE", "deep=true") { parse, language -> parse.country("DE") { this.deep = true; this.lang = language } },
    Operation("CountryStates", "/country/DE/states", "") { parse, language -> parse.countryStates("DE") { this.lang = language } },
    Operation("State", "/state/CA", "country=US") { parse, language -> parse.state("CA") { this.country = "US"; this.lang = language } },
@@ -45,7 +44,6 @@ class LanguageTest {
    Operation("PostalNearby", "/postal/28202/nearby", "country=US&radius=8") { parse, language -> parse.postalNearby("28202") { this.country = "US"; this.radius = 8.0; this.lang = language } },
    Operation("PostalDistance", "/postal/28202/distance/10001", "country=US") { parse, language -> parse.postalDistance("28202", "10001") { this.country = "US"; this.lang = language } },
    Operation("Company", "/company/732829320", "country=FR&deep=true") { parse, language -> parse.company("732829320") { this.country = "FR"; this.deep = true; this.lang = language } },
-   Operation("NPI", "/provider/1881018208", "deep=true") { parse, language -> parse.provider("1881018208") { this.deep = true; this.lang = language } },
    Operation("ASN", "/asn/AS13335", "") { parse, language -> parse.asn("AS13335") { this.lang = language } },
    Operation("Currency", "/currency/USD", "deep=true") { parse, language -> parse.currency("USD") { this.deep = true; this.lang = language } },
    Operation("Language", "/language/ja", "") { parse, language -> parse.language("ja") { this.lang = language } },
@@ -60,7 +58,7 @@ class LanguageTest {
    Operation("EmojiSearch", "/emoji", "limit=2&q=visage") { parse, language -> parse.emojiSearch("visage") { this.limit = 2; this.lang = language } },
    Operation("MeasureUnits", "/measure/units", "q=meter&unit=m") { parse, language -> parse.measureUnits { this.query = "meter"; this.unit = "m"; this.lang = language } },
   )
-  assertEquals(33, operations.size)
+  assertEquals(31, operations.size)
   for (operation in operations) {
    // An API error avoids conflating this URL test with each product decoder.
    val stub = StubTransport(400, """{"code":"fixture_error","message":"Fixture"}""")

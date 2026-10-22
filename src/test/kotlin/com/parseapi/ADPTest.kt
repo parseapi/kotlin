@@ -100,21 +100,7 @@ class ADPTest {
    assertEquals(plainStub.requests.single().url,stub1.requests.single().url)
    assertTrue(stub1.requests.single().body!!.contains("\"deep\":true"))
   }
-  run {
-   val plainStub = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.provider("1881018208")
-   assertNull(plain.deep)
-   val stub0 = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.provider("1881018208") { deep=true }
-   assertNotNull(rich0.deep)
-   assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
-   val stub1 = StubTransport(200, """{"npi":"1881018208","valid":true,"excluded":true,"credential":"MD","state_name":"Minnesota","deep":{"deactivated_at":"2026-09-01","enrollments":[]}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.provider("1881018208") { deep=true }
-   assertNotNull(rich1.deep)
-   assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
-  }
+
 
   run {
    val plainStub = StubTransport(200, """{"phone":"+14155552671","valid":true}""")
@@ -161,21 +147,7 @@ class ADPTest {
    assertEquals(1,stub1.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
   }
-  run {
-   val plainStub = StubTransport(200, """{"hts":"8471.30.01.00","description":"Portable computers","revision":"2026"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.tariff("8471.30.01.00")
-   assertNull(plain.deep)
-   val stub0 = StubTransport(200, """{"hts":"8471.30.01.00","description":"Portable computers","revision":"2026","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.tariff("8471.30.01.00") { deep=true }
-   assertNotNull(rich0.deep)
-   assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
-   val stub1 = StubTransport(200, """{"hts":"8471.30.01.00","description":"Portable computers","revision":"2026","deep":{"units":[],"special":"Free","origin":null,"effective_rate":null,"measures":null}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.tariff("8471.30.01.00") { deep=true }
-   assertNotNull(rich1.deep)
-   assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
-  }
+
   run {
    val plainStub = StubTransport(200, """{"naics":"541511","name":"Programming","level":6,"parent":"54151","year":2022,"country":"US"}""")
    val plain = ParseAPI("test") { transport = plainStub }.industry("541511")

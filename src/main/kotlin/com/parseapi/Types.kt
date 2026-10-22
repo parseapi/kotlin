@@ -83,26 +83,11 @@ class CountryStateItem private constructor(
 	val type: String? = null,
 )
 
-@Serializable
-class Bloc private constructor(
-	val bloc: String,
-	val name: String,
-	val members: Int,
-)
 
-@Serializable
-class BlocCountryItem private constructor(
-	val country: String,
-	val name: String,
-	val emoji: String? = null,
-	val callingCode: String? = null,
-)
 
-@Serializable
-class BlocCountries private constructor(
-	val bloc: String,
-	val countries: List<BlocCountryItem> = emptyList(),
-)
+
+
+
 
 @Serializable
 class CountryStates private constructor(
@@ -338,32 +323,11 @@ class Email private constructor(
 	val deep: EmailDeep? = null,
 )
 
-@Serializable
-class VatAddress private constructor(
-	val street: String? = null,
-	val city: String? = null,
-	val postal: String? = null,
-	val country: String? = null,
-)
 
-@Serializable
-class VatDeep private constructor(
-	val registered: Boolean? = null,
-	val name: String? = null,
-	val address: VatAddress? = null,
-	val consultation: String? = null,
-	/** Registry-provided check time, or null when unavailable. */
-	val consultedAt: String? = null,
-)
 
-@Serializable
-class Vat private constructor(
-	val vat: String? = null,
-	val valid: Boolean,
-	val country: String? = null,
-	val from: String? = null,
-	val deep: VatDeep? = null,
-)
+
+
+
 
 /** Network identity. Null brand means unknown or ambiguous. */
 @Serializable
@@ -477,155 +441,27 @@ class BankRequirementField private constructor(
 	val normalization: String? = null,
 )
 
-@Serializable
-class ProviderTaxonomy private constructor(
-	val taxonomy: String? = null,
-	val specialty: String? = null,
-	val primary: Boolean? = null,
-	val license: String? = null,
-	val state: String? = null,
-)
 
-@Serializable
-class ProviderSource private constructor(
-	val edition: String? = null,
-	val publishedAt: String? = null,
-	val through: String? = null,
-	val importedAt: String? = null,
-)
 
-@Serializable
-class ProviderSources private constructor(
-	val nppes: ProviderSource? = null,
-	val leie: ProviderSource? = null,
-	val pecos: ProviderSource? = null,
-	val optout: ProviderSource? = null,
-)
 
-@Serializable
-class Provider private constructor(
-	val sources: ProviderSources? = null,
-	/** Input with accepted separators removed; null when empty. Invalid values remain visible. */
-	val npi: String? = null,
-	/** Format and NPI checksum only; does not verify a provider or credentials. */
-	val valid: Boolean,
-	/** Found in the stored NPPES snapshot. Null when input is invalid. */
-	val registered: Boolean? = null,
-	/** Recorded NPI activation status. Null when unknown; not licensure or practice status. */
-	val active: Boolean? = null,
-	/** NPI-only match in the stored OIG LEIE file. False is not complete exclusion clearance. */
-	val excluded: Boolean? = null,
-	/** individual or organization. */
-	val type: String? = null,
-	val name: String? = null,
-	val first: String? = null,
-	val last: String? = null,
-	val credential: String? = null,
-	val specialty: String? = null,
-	/** NUCC taxonomy code. */
-	val taxonomy: String? = null,
-	val address: String? = null,
-	val city: String? = null,
-	val state: String? = null,
-	val stateName: String? = null,
-	val postal: String? = null,
-	val country: String? = null,
-	val phone: String? = null,
-	val deep: ProviderDeep? = null,
-)
 
-@Serializable
-class ProviderEnrollment private constructor(
-	/** part_a, part_b, practitioner, dme, order_refer, mdpp. Null when unknown. */
-	val type: String? = null,
-	val specialty: String? = null,
-	val state: String? = null,
-)
 
-@Serializable
-class ProviderDeep private constructor(
-	val enumeratedAt: String? = null,
-	val updatedAt: String? = null,
-	val reactivatedAt: String? = null,
-	val taxonomies: List<ProviderTaxonomy>? = null,
-	/** Present in the stored Medicare FFS enrollment extract; not payment eligibility. */
-	val medicare: Boolean? = null,
-	/** NPI-only match in the stored CMS opt-out affidavit list. Null when unavailable. */
-	val optOut: Boolean? = null,
-	/** Stored enrollment rows. Null when unavailable; empty when no rows are returned. */
-	val enrollments: List<ProviderEnrollment>? = null,
-	/** Recorded NPI deactivation date, YYYY-MM-DD. Null when active or unavailable. */
-	val deactivatedAt: String? = null,
-)
 
-@Serializable
-class TariffMeasure private constructor(
-	/** Chapter 99 heading, dotted (9903.01.24). */
-	val heading: String,
-	/** The measure text verbatim. */
-	val description: String,
-	/** The rate string verbatim. */
-	val rate: String? = null,
-	/** Effective from, ISO YYYY-MM-DD. Null when the schedule states none. */
-	val from: String? = null,
-	/** Expires, ISO YYYY-MM-DD. Null when open-ended. */
-	val until: String? = null,
-	val conditional: Boolean? = null,
-)
 
-@Serializable
-class TariffDeep private constructor(
-	/** Open-string explanation when effectiveRate is null. */
-	val reason: String? = null,
-	/** The origin country the measures were resolved for. */
-	val origin: String? = null,
-	/** Composed ad valorem percent for matched stored measures only, not complete duty or landed cost. Null when the components do not compose cleanly. */
-	@SerialName("effective_rate") val effectiveRate: Double? = null,
-	/** Matching stored Chapter 99 schedule measures for this code and goods origin. */
-	val measures: List<TariffMeasure>? = null,
-	/** Units of quantity (No., kg). */
-	val units: List<String>? = null,
-	/** Column 1 special rate, verbatim. */
-	val special: String? = null,
-	/** Column 2 rate, verbatim. */
-	val other: String? = null,
-)
 
-@Serializable
-class Tariff private constructor(
-	val edition: String? = null,
-	val date: String? = null,
-	/** Normalized code with dots (8471.30.01.00). */
-	val hts: String,
-	/** The schedule line verbatim. */
-	val description: String,
-	/** Parent descriptions from the schedule outline, outermost first. */
-	val lineage: List<String> = emptyList(),
-	/** Column 1 general rate, verbatim. */
-	val general: String? = null,
-	/** The official release that answered (2026HTSRev17). */
-	val revision: String = "",
-	val deep: TariffDeep? = null,
-)
 
-@Serializable
-class TariffSearchHit private constructor(
-	val hts: String,
-	val description: String,
-	val general: String? = null,
-	/** Parent descriptions, outermost first. Older responses may omit this context. */
-	val lineage: List<String>? = null,
-)
 
-@Serializable
-class TariffSearch private constructor(
-	val edition: String? = null,
-	val date: String? = null,
-	val q: String,
-	val revision: String = "",
-	/** Up to 20 lines, best match first. */
-	val lines: List<TariffSearchHit> = emptyList(),
-)
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1827,54 +1663,11 @@ class Iban private constructor(
 	val deep: IbanDeep? = null,
 )
 
-@Serializable
-class Npi private constructor(
-	/** Normalized 10-digit NPI. Invalid input still echoes the fold. */
-	val npi: String? = null,
-	val valid: Boolean,
-	/** Exists in the CMS NPPES registry. */
-	val registered: Boolean? = null,
-	val active: Boolean? = null,
-	/** On the OIG exclusion list. */
-	val excluded: Boolean? = null,
-	/** individual or organization. */
-	val type: String? = null,
-	val name: String? = null,
-	val first: String? = null,
-	val last: String? = null,
-	val credential: String? = null,
-	val specialty: String? = null,
-	/** NUCC taxonomy code. */
-	val taxonomy: String? = null,
-	val address: String? = null,
-	val city: String? = null,
-	val state: String? = null,
-	val stateName: String? = null,
-	val postal: String? = null,
-	val country: String? = null,
-	val phone: String? = null,
-	val deep: NpiDeep? = null,
-)
 
-@Serializable
-class NpiEnrollment private constructor(
-	/** part_a, part_b, practitioner, dme, order_refer, mdpp. Null when unknown. */
-	val type: String? = null,
-	val specialty: String? = null,
-	val state: String? = null,
-)
 
-@Serializable
-class NpiDeep private constructor(
-	/** In the published Medicare FFS enrollment extract. */
-	val medicare: Boolean? = null,
-	/** On the CMS opt-out affidavit list. Matched by NPI only. */
-	val optOut: Boolean? = null,
-	/** Enrollment rows. Empty when medicare is false. */
-	val enrollments: List<NpiEnrollment>? = null,
-	/** Date CMS deactivated the NPI, YYYY-MM-DD. Null when still active. */
-	val deactivatedAt: String? = null,
-)
+
+
+
 
 @Serializable
 class IbanDeep private constructor(

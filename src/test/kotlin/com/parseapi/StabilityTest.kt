@@ -48,16 +48,6 @@ class StabilityTest {
 	}
 
 	@Test
-	fun blocAndMembers() = runBlocking {
-		val bloc = StubTransport(200, """{"bloc":"EU","name":"European Union","members":27}""")
-		assertEquals(27, stabilityClient(bloc).bloc("EU").members)
-		assertEquals("https://api.parseapi.com/bloc/EU", bloc.requests.single().url)
-		val members = StubTransport(200, """{"bloc":"EU","countries":[{"country":"FR","name":"France","calling_code":"33"}]}""")
-		assertEquals("33", stabilityClient(members).blocCountries("EU").countries.single().callingCode)
-		assertEquals("https://api.parseapi.com/bloc/EU/countries", members.requests.single().url)
-	}
-
-	@Test
 	fun countryStatesIsOneRequest() = runBlocking {
 		val stub = StubTransport(200, """{"country":"US","states":[]}""")
 		stabilityClient(stub).countryStates("US")
