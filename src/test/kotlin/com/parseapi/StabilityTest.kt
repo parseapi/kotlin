@@ -74,13 +74,6 @@ class StabilityTest {
 	}
 
 	@Test
-	fun largeCurrencyAmountIsNotClampedToLong() = runBlocking {
-		val stub = StubTransport(200, """{"base":"USD","quote":"EUR","rate":0.9,"date":"2026-09-04"}""")
-		stabilityClient(stub).currencyRate("USD", "EUR") { this.amount = 1e20 }
-		assertTrue(stub.requests.single().url.endsWith("amount=1.0E20"))
-	}
-
-	@Test
 	fun cancellationIsNotRetried() {
 		val calls = AtomicInteger()
 		val transport = ParseAPITransport {

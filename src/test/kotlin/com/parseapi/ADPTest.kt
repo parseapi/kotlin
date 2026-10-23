@@ -163,21 +163,6 @@ class ADPTest {
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
   }
   run {
-   val plainStub = StubTransport(200, """{"currency":"USD","name":"US Dollar"}""")
-   val plain = ParseAPI("test") { transport = plainStub }.currency("USD")
-   assertNull(plain.deep)
-   val stub0 = StubTransport(200, """{"currency":"USD","name":"US Dollar","deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.currency("USD") { deep=true }
-   assertNotNull(rich0.deep)
-   assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub0.requests.single().url)
-   val stub1 = StubTransport(200, """{"currency":"USD","name":"US Dollar","deep":{"numeric":840,"countries":[]}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.currency("USD") { deep=true }
-   assertNotNull(rich1.deep)
-   assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
-  }
-  run {
    val plainStub = StubTransport(200, """{"language":"en","name":"English","direction":"ltr"}""")
    val plain = ParseAPI("test") { transport = plainStub }.language("en")
    assertNull(plain.deep)

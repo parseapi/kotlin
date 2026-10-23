@@ -530,14 +530,6 @@ class Asn private constructor(
 	val countryName: String? = null,
 )
 
-@Serializable
-class Mac private constructor(
-	val mac: String,
-	val valid: Boolean,
-	val vendor: String? = null,
-	val local: Boolean? = null,
-	val multicast: Boolean? = null,
-)
 
 
 /** A published DNS record. Value retains DNS presentation syntax, including TXT quoting. */
@@ -627,15 +619,6 @@ class Useragent private constructor(
 	val deep: UseragentDeep? = null,
 )
 
-@Serializable
-class Currency private constructor(
-	val currency: String,
-	val name: String,
-	val symbol: String? = null,
-	val symbolNative: String? = null,
-	val digits: Int? = null,
-	val deep: CurrencyDeep? = null,
-)
 
 /** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). Codes are lowercase. */
 @Serializable
@@ -664,16 +647,6 @@ class Name private constructor(
 	val deep: NameDeep? = null,
 )
 
-@Serializable
-class CurrencyRate private constructor(
-	val base: String,
-	val quote: String,
-	val rate: Double,
-	val date: String,
-	val amount: Double? = null,
-	val converted: Double? = null,
-	val source: String? = null,
-)
 
 @Serializable
 class TimezoneNextDst private constructor(
@@ -1046,38 +1019,6 @@ class Company private constructor(
 @Serializable
 class AddressDeep private constructor()
 
-@Serializable
-class MeasureChoice private constructor(
-	val unit: String,
-	val name: String,
-)
-
-@Serializable
-class Measure private constructor(
-	val measure: String,
-	val valid: Boolean,
-	val type: String? = null,
-	/** Decimal string preserving the API's precision. */
-	val amount: String? = null,
-	val unit: String? = null,
-	/** Failure reason. Null when omitted by a successful response. */
-	val reason: String? = null,
-	/** Unit alternatives. Empty when omitted by the response. */
-	val choices: List<MeasureChoice> = emptyList(),
-)
-
-@Serializable
-class MeasureUnit private constructor(
-	val unit: String,
-	val name: String,
-	val type: String,
-	val aliases: List<String> = emptyList(),
-)
-
-@Serializable
-class MeasureUnits private constructor(
-	val units: List<MeasureUnit> = emptyList(),
-)
 
 @Serializable
 class NAICSChild private constructor(
@@ -1312,14 +1253,6 @@ class NAICSDeep private constructor(
 	val children: List<NAICSChild>? = null,
 	/** Classification exclusions. Null for omitted/null older responses. */
 	val exclusions: List<NAICSExclusion>? = null,
-)
-
-
-@Serializable
-class CurrencyDeep private constructor(
-	val numeric: Int? = null,
-	val namePlural: String? = null,
-	val countries: List<String>? = null,
 )
 
 

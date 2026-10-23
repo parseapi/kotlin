@@ -566,9 +566,6 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 
 
-	suspend fun mac(mac: String): Mac =
-		get("/mac/${enc(mac)}")
-
 	/** Look up a 2-11 digit card prefix. Preserve leading zeros in the string. */
 	suspend fun card(bin: String): Card = card(bin) {}
 
@@ -580,24 +577,6 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		}
 		return get("/card/${enc(bin)}", deepQuery(options.deep))
 	}
-
-	/** Parse or convert a measurement. Amount is a decimal string. Without to, use its canonical unit. */
-	suspend fun measure(measure: String): Measure = measure(measure) {}
-
-	/** Locale and system (us or imperial) resolve explicit ambiguity. Invalid measurements return valid=false. */
-	suspend fun measure(measure: String, configure: MeasureOptions.() -> Unit): Measure =
-		with(MeasureOptions().apply(configure)) {
-			get("/measure/${enc(measure)}", listOf("to" to to, "locale" to locale, "system" to system))
-		}
-
-	suspend fun measureUnits(): MeasureUnits = measureUnits {}
-
-	/** Discover reviewed units. unit filters compatible conversion targets. */
-	suspend fun measureUnits(configure: MeasureUnitsOptions.() -> Unit): MeasureUnits =
-		with(MeasureUnitsOptions().apply(configure)) {
-			get("/measure/units", listOf("q" to query, "type" to type, "unit" to unit) + listOf("lang" to lang))
-		}
-
 
 	/** Published DNS records with TTLs. Pooled on every plan. */
 	suspend fun dns(domain: String): Dns = dns(domain) {}
@@ -667,22 +646,6 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 
 
-
-	suspend fun currency(code: String): Currency = currency(code) {}
-
-	suspend fun currency(code: String, configure: CurrencyOptions.() -> Unit): Currency =
-		with(CurrencyOptions().apply(configure)) {
-			get("/currency/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
-		}
-
-	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
-	suspend fun currencyRate(base: String, quote: String): CurrencyRate =
-		currencyRate(base, quote) {}
-
-	suspend fun currencyRate(base: String, quote: String, configure: CurrencyRateOptions.() -> Unit): CurrencyRate =
-		with(CurrencyRateOptions().apply(configure)) {
-			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
-		}
 
 	/** Current local time, UTC by default. With to or targets, offsetless at is source wall time. */
 	suspend fun time(timezone: String? = null): Time = time(timezone) {}
@@ -1026,7 +989,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.3"
+		const val VERSION = "1.10.4"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

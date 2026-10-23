@@ -45,7 +45,6 @@ class LanguageTest {
    Operation("PostalDistance", "/postal/28202/distance/10001", "country=US") { parse, language -> parse.postalDistance("28202", "10001") { this.country = "US"; this.lang = language } },
    Operation("Company", "/company/732829320", "country=FR&deep=true") { parse, language -> parse.company("732829320") { this.country = "FR"; this.deep = true; this.lang = language } },
    Operation("ASN", "/asn/AS13335", "") { parse, language -> parse.asn("AS13335") { this.lang = language } },
-   Operation("Currency", "/currency/USD", "deep=true") { parse, language -> parse.currency("USD") { this.deep = true; this.lang = language } },
    Operation("Language", "/language/ja", "") { parse, language -> parse.language("ja") { this.lang = language } },
    Operation("Time", "/time/America%2FNew_York", "at=2026-01-01T12%3A00&deep=true&to=UTC") { parse, language -> parse.time("America/New_York") { this.at = "2026-01-01T12:00"; this.to = "UTC"; this.deep = true; this.lang = language } },
    Operation("TimeAt", "/time", "at=2026-01-01T12%3A00Z&lat=0&lon=0") { parse, language -> parse.timeAt(0.0, 0.0) { this.at = "2026-01-01T12:00Z"; this.lang = language } },
@@ -56,9 +55,8 @@ class LanguageTest {
    Operation("Point", "/point", "deep=true&lat=0&lon=0") { parse, language -> parse.point(0.0, 0.0) { this.deep = true; this.lang = language } },
    Operation("Emoji", "/emoji/%F0%9F%98%80", "deep=true") { parse, language -> parse.emoji("😀") { this.deep = true; this.lang = language } },
    Operation("EmojiSearch", "/emoji", "limit=2&q=visage") { parse, language -> parse.emojiSearch("visage") { this.limit = 2; this.lang = language } },
-   Operation("MeasureUnits", "/measure/units", "q=meter&unit=m") { parse, language -> parse.measureUnits { this.query = "meter"; this.unit = "m"; this.lang = language } },
   )
-  assertEquals(31, operations.size)
+  assertEquals(29, operations.size)
   for (operation in operations) {
    // An API error avoids conflating this URL test with each product decoder.
    val stub = StubTransport(400, """{"code":"fixture_error","message":"Fixture"}""")
@@ -84,7 +82,6 @@ class LanguageTest {
   val stub = StubTransport(mutableListOf(
    ParseAPIResponse(200, """{"country":"DE","name":"Allemagne","continent":"EU","name_local":"Deutschland","currency_name":null,"future":true}""", emptyMap()),
    ParseAPIResponse(200, """{"date":"2026-04-03","valid":true}""", emptyMap()),
-   ParseAPIResponse(200, """{"measure":"1,5 m","valid":true,"amount":"150","unit":"cm"}""", emptyMap()),
   ))
   val parse = ParseAPI("test") { transport = stub; retries = 0; baseUrl = "https://api.parseapi.com" }
   val country = parse.country("DE") { lang = "fr" }
@@ -96,10 +93,7 @@ class LanguageTest {
   val date = parse.date("03/04/2026") { format = "dmy"; lang = "en-US" }
   assertEquals("2026-04-03", date.date)
   assertEquals("https://api.parseapi.com/date/03%2F04%2F2026?format=dmy&lang=en-US", stub.requests[1].url)
-  val measure = parse.measure("1,5 m") { locale = "de-DE"; to = "cm" }
-  assertEquals("150", measure.amount)
-  assertEquals("https://api.parseapi.com/measure/1%2C5%20m?to=cm&locale=de-DE", stub.requests[2].url)
-  for (type in listOf(CurrencyRateOptions::class.java, MeasureOptions::class.java, HolidayOptions::class.java,
+  for (type in listOf(HolidayOptions::class.java,
    NameOptions::class.java, EmailOptions::class.java, PhoneOptions::class.java, AddressOptions::class.java)) {
    assertTrue(type.methods.none { it.name in listOf("getLang", "setLang") }, type.simpleName)
   }

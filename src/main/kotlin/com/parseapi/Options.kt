@@ -216,10 +216,6 @@ class UseragentOptions internal constructor() {
 
 
 
-class CurrencyRateOptions internal constructor() {
-	var date: String? = null
-	var amount: Double? = null
-}
 
 class TimeOptions internal constructor() {
 	var ip: String? = null
@@ -335,21 +331,6 @@ class CompanyOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-/** Options for measurement conversion. System accepts us or imperial. */
-class MeasureOptions internal constructor() {
-	var to: String? = null
-	var locale: String? = null
-	var system: String? = null
-}
-
-/** Filters for the reviewed unit catalog. Unit selects compatible targets. */
-class MeasureUnitsOptions internal constructor() {
-	/** Display language for this request. */
-	var lang: String? = null
-	var query: String? = null
-	var type: String? = null
-	var unit: String? = null
-}
 
 class NaicsSearchOptions internal constructor() {
 	/** Maximum results, 1-50. Default 10. */
@@ -387,11 +368,6 @@ class NaicsOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class CurrencyOptions internal constructor() {
-	/** Display language for this request. */
-	var lang: String? = null
-	var deep: Boolean = false
-}
 
 class LanguageOptions internal constructor() {
 	/** Display language for this request. */

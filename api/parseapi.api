@@ -1891,90 +1891,6 @@ public final class com/parseapi/CountryStatesOptions {
 	public final fun setLang (Ljava/lang/String;)V
 }
 
-public final class com/parseapi/Currency {
-	public static final field Companion Lcom/parseapi/Currency$Companion;
-	public final fun getCurrency ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CurrencyDeep;
-	public final fun getDigits ()Ljava/lang/Integer;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getSymbol ()Ljava/lang/String;
-	public final fun getSymbolNative ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/Currency$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Currency$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Currency;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Currency;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Currency$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/CurrencyDeep {
-	public static final field Companion Lcom/parseapi/CurrencyDeep$Companion;
-	public final fun getCountries ()Ljava/util/List;
-	public final fun getNamePlural ()Ljava/lang/String;
-	public final fun getNumeric ()Ljava/lang/Integer;
-}
-
-public synthetic class com/parseapi/CurrencyDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/CurrencyDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CurrencyDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CurrencyDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/CurrencyDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/CurrencyOptions {
-	public final fun getDeep ()Z
-	public final fun getLang ()Ljava/lang/String;
-	public final fun setDeep (Z)V
-	public final fun setLang (Ljava/lang/String;)V
-}
-
-public final class com/parseapi/CurrencyRate {
-	public static final field Companion Lcom/parseapi/CurrencyRate$Companion;
-	public final fun getAmount ()Ljava/lang/Double;
-	public final fun getBase ()Ljava/lang/String;
-	public final fun getConverted ()Ljava/lang/Double;
-	public final fun getDate ()Ljava/lang/String;
-	public final fun getQuote ()Ljava/lang/String;
-	public final fun getRate ()D
-	public final fun getSource ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/CurrencyRate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/CurrencyRate$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CurrencyRate;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CurrencyRate;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/CurrencyRate$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/CurrencyRateOptions {
-	public final fun getAmount ()Ljava/lang/Double;
-	public final fun getDate ()Ljava/lang/String;
-	public final fun setAmount (Ljava/lang/Double;)V
-	public final fun setDate (Ljava/lang/String;)V
-}
-
 public final class com/parseapi/DateInfo {
 	public static final field Companion Lcom/parseapi/DateInfo$Companion;
 	public final fun getDate ()Ljava/lang/String;
@@ -3211,135 +3127,6 @@ public final class com/parseapi/LanguageOptions {
 	public final fun setLang (Ljava/lang/String;)V
 }
 
-public final class com/parseapi/Mac {
-	public static final field Companion Lcom/parseapi/Mac$Companion;
-	public final fun getLocal ()Ljava/lang/Boolean;
-	public final fun getMac ()Ljava/lang/String;
-	public final fun getMulticast ()Ljava/lang/Boolean;
-	public final fun getValid ()Z
-	public final fun getVendor ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/Mac$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Mac$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Mac;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Mac;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Mac$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/Measure {
-	public static final field Companion Lcom/parseapi/Measure$Companion;
-	public final fun getAmount ()Ljava/lang/String;
-	public final fun getChoices ()Ljava/util/List;
-	public final fun getMeasure ()Ljava/lang/String;
-	public final fun getReason ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-	public final fun getUnit ()Ljava/lang/String;
-	public final fun getValid ()Z
-}
-
-public synthetic class com/parseapi/Measure$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Measure$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Measure;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Measure;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Measure$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/MeasureChoice {
-	public static final field Companion Lcom/parseapi/MeasureChoice$Companion;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getUnit ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/MeasureChoice$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/MeasureChoice$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/MeasureChoice;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/MeasureChoice;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/MeasureChoice$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/MeasureOptions {
-	public final fun getLocale ()Ljava/lang/String;
-	public final fun getSystem ()Ljava/lang/String;
-	public final fun getTo ()Ljava/lang/String;
-	public final fun setLocale (Ljava/lang/String;)V
-	public final fun setSystem (Ljava/lang/String;)V
-	public final fun setTo (Ljava/lang/String;)V
-}
-
-public final class com/parseapi/MeasureUnit {
-	public static final field Companion Lcom/parseapi/MeasureUnit$Companion;
-	public final fun getAliases ()Ljava/util/List;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-	public final fun getUnit ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/MeasureUnit$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/MeasureUnit$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/MeasureUnit;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/MeasureUnit;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/MeasureUnit$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/MeasureUnits {
-	public static final field Companion Lcom/parseapi/MeasureUnits$Companion;
-	public final fun getUnits ()Ljava/util/List;
-}
-
-public synthetic class com/parseapi/MeasureUnits$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/MeasureUnits$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/MeasureUnits;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/MeasureUnits;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/MeasureUnits$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/MeasureUnitsOptions {
-	public final fun getLang ()Ljava/lang/String;
-	public final fun getQuery ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-	public final fun getUnit ()Ljava/lang/String;
-	public final fun setLang (Ljava/lang/String;)V
-	public final fun setQuery (Ljava/lang/String;)V
-	public final fun setType (Ljava/lang/String;)V
-	public final fun setUnit (Ljava/lang/String;)V
-}
-
 public final class com/parseapi/Mx {
 	public static final field Companion Lcom/parseapi/Mx$Companion;
 	public final fun getDomain ()Ljava/lang/String;
@@ -3693,10 +3480,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun country (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun currency (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun currency (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun currencyRate (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun currencyRate (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun date (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun date (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun dateToday (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3738,11 +3521,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun ipSelf (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun language (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun language (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun mac (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun measure (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun measure (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun measureUnits (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun measureUnits (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun mx (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun naics (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun naics (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

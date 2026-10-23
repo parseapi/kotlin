@@ -93,16 +93,11 @@ fun main(): Unit = runBlocking {
 	expectOk("hlr junk free", { parse.hlr("555-0100") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("domain", { parse.domain("gmail.com") }) { if (!it.available) null else "gmail available?" }
 	expectOk("asn", { parse.asn("AS13335") }) { if (it.asn == 13335L) null else "wrong ASN" }
-	expectOk("mac", { parse.mac("00:1B:63:84:45:E6") }) { if (it.valid && it.mac == "00:1B:63:84:45:E6" && it.local == false && it.multicast == false) null else "wrong MAC" }
-	expectOk("measure", { parse.measure("5 ft 11 in") { to = "cm" } }) { if (it.valid && it.amount == "180.34" && it.unit == "cm") null else "wrong conversion" }
-	expectOk("measureUnits", { parse.measureUnits { unit = "m" } }) { if (it.units.any { unit -> unit.unit == "m" }) null else "missing metre" }
 	expectOk("dns", { parse.dns("example.com") { type = "A" } }) { if (it.records.any { record -> record.type == "A" }) null else "no A records" }
 	expectOk("mx", { parse.mx("gmail.com") }) { if (it.mx.isNotEmpty()) null else "no mx" }
 	expectOk("useragent", {
 		parse.useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
 	}) { if (it.browser == "Chrome") null else "browser ${it.browser}" }
-	expectOk("currency", { parse.currency("USD") }) { if (it.symbol == "$") null else "wrong symbol" }
-	expectOk("currencyRate", { parse.currencyRate("USD", "EUR") }) { if (it.rate > 0 && it.rate < 10) null else "rate ${it.rate}" }
 	expectOk("language", { parse.language("en") }) { if (it.language == "en" && it.name == "English") null else "wrong language" }
 	expectOk("name", { parse.name("BILLY O'SHALL") }) { if (it.name == "Billy O'Shall" && it.valid) null else "wrong name" }
 	expectOk("timezone", { parse.timezone("America/New_York") }) { if (it.offset == "-04:00" || it.offset == "-05:00") null else "offset ${it.offset}" }
