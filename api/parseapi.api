@@ -5420,3 +5420,4 @@ public synthetic class com/parseapi/WeatherStation$$serializer : kotlinx/seriali
 public final class com/parseapi/WeatherStation$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
+
