@@ -170,10 +170,7 @@ class EmailOptions internal constructor() {
 
 
 
-class BankOptions internal constructor() {
-	var country: String? = null
-	var deep: Boolean = false
-}
+
 
 
 
@@ -477,10 +474,7 @@ class BinOptions internal constructor() {
 }
 
 
-class IbanOptions internal constructor() {
-	var country: String? = null
-	var deep: Boolean = false
-}
+
 
 
 

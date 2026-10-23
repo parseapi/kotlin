@@ -83,23 +83,7 @@ class ADPTest {
    assertEquals(1,stub1.requests.size)
    assertEquals(plainStub.requests.single().url+(if (plainStub.requests.single().url.contains("?")) "&" else "?")+"deep=true",stub1.requests.single().url)
   }
-  run {
-   val plainStub = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true}""")
-   val plain = ParseAPI("test") { transport = plainStub }.bank("DE89370400440532013000")
-   assertNull(plain.deep)
-   val stub0 = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"deep":{}}""")
-   val rich0 = ParseAPI("test") { transport=stub0 }.bank("DE89370400440532013000") { deep=true }
-   assertNotNull(rich0.deep)
-   assertEquals(1,stub0.requests.size)
-   assertEquals(plainStub.requests.single().url,stub0.requests.single().url)
-   assertTrue(stub0.requests.single().body!!.contains("\"deep\":true"))
-   val stub1 = StubTransport(200, """{"iban":"DE89370400440532013000","valid":true,"deep":{"checksum":"89","branch":null,"account":"0532013000"}}""")
-   val rich1 = ParseAPI("test") { transport=stub1 }.bank("DE89370400440532013000") { deep=true }
-   assertNotNull(rich1.deep)
-   assertEquals(1,stub1.requests.size)
-   assertEquals(plainStub.requests.single().url,stub1.requests.single().url)
-   assertTrue(stub1.requests.single().body!!.contains("\"deep\":true"))
-  }
+
 
 
   run {

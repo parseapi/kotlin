@@ -349,97 +349,32 @@ class CardDeep private constructor(
 	val prepaid: Boolean? = null,
 )
 
-@Serializable
-class Bank private constructor(
-	val iban: String? = null,
-	val valid: Boolean,
-	val country: String? = null,
-	/** Print form in groups of four, for display. Null when invalid. */
-	val formatted: String? = null,
-	/** Bank identifier parsed from the number, not a name. */
-	val bank: String? = null,
-	/** Institution name from the national bank-code directory. Null when unsourced. */
-	val bankName: String? = null,
-	/** BIC from that same directory. Null when unsourced or missing. */
-	val bic: String? = null,
-	/** Performed IBAN checks; absent on older responses. Statuses are open strings. */
-	val checks: BankChecks? = null,
-	/** Lookup findings, separate from HTTP errors. Empty when applicable checks pass. */
-	val issues: List<BankIssue>? = null,
-	val deep: BankDeep? = null,
-)
 
-@Serializable
-class BankChecks private constructor(
-	val input: String? = null,
-	val country: String? = null,
-	val length: String? = null,
-	val structure: String? = null,
-	val checksum: String? = null,
-	val national: String? = null,
-)
 
-@Serializable
-class BankIssue private constructor(
-	val field: String? = null,
-	val code: String? = null,
-	val message: String? = null,
-)
 
-/** Raw US ACH collection input. Preserve case, separators and leading zeros. */
-class BankUsAchInput(val routing: String, val account: String)
 
-@Serializable
-class BankDirectory private constructor(
-	val edition: String? = null,
-	val country: String? = null,
-	val match: String? = null,
-)
 
-@Serializable
-class BankUsAch private constructor(
-	val format: String? = null,
-	val country: String? = null,
-	val routing: String? = null,
-	val account: String? = null,
-	val valid: Boolean,
-	val bankName: String? = null,
-	val checks: BankUsAchChecks? = null,
-	val issues: List<BankIssue>? = null,
-)
 
-@Serializable
-class BankUsAchChecks private constructor(
-	val routingFormat: String? = null,
-	val routingChecksum: String? = null,
-	val accountFormat: String? = null,
-	val accountChecksum: String? = null,
-)
 
-@Serializable
-class BankRequirements private constructor(
-	val country: String,
-	val format: String,
-	val supported: Boolean,
-	val fields: List<BankRequirementField>,
-	val checks: Map<String, String>,
-	val limitations: List<String>,
-)
 
-@Serializable
-class BankRequirementField private constructor(
-	val key: String,
-	val label: String,
-	val required: Boolean,
-	val type: String,
-	val length: Int? = null,
-	val minLength: Int? = null,
-	val maxLength: Int? = null,
-	val maxInputLength: Int? = null,
-	val lengthUnit: String? = null,
-	val pattern: String? = null,
-	val normalization: String? = null,
-)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1344,15 +1279,7 @@ class PostalDeep private constructor(
 )
 
 
-@Serializable
-class BankDeep private constructor(
-	/** Directory edition and match grain, when available. Match is an open string. */
-	val directory: BankDirectory? = null,
-	val checksum: String? = null,
-	/** Branch identifier when that country has one. */
-	val branch: String? = null,
-	val account: String? = null,
-)
+
 
 
 @Serializable
@@ -1647,21 +1574,6 @@ class Bin private constructor(
 	val deep: BinDeep? = null,
 )
 
-@Serializable
-class Iban private constructor(
-	val iban: String? = null,
-	val valid: Boolean,
-	val country: String? = null,
-	/** Print form in groups of four, for display. Null when invalid. */
-	val formatted: String? = null,
-	/** Bank identifier parsed from the number, not a name. */
-	val bank: String? = null,
-	/** Institution name from the national bank-code directory. Null when unsourced. */
-	val bankName: String? = null,
-	/** BIC from that same directory. Null when unsourced or missing. */
-	val bic: String? = null,
-	val deep: IbanDeep? = null,
-)
 
 
 
@@ -1669,13 +1581,8 @@ class Iban private constructor(
 
 
 
-@Serializable
-class IbanDeep private constructor(
-	val checksum: String? = null,
-	/** Branch identifier when that country has one. */
-	val branch: String? = null,
-	val account: String? = null,
-)
+
+
 
 @Serializable
 class EmojiBrowse private constructor(val emojis: List<Emoji> = emptyList(), val total: Int, val nextOffset: Int? = null)

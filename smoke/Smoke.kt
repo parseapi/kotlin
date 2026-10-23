@@ -86,10 +86,6 @@ fun main(): Unit = runBlocking {
 	expectOk("card", { parse.card("00 0000") }) {
 		if (it.bin == "000000") null else "BIN echo mismatch"
 	}
-	expectOk("bank", { parse.bank("DE89370400440532013000") }) {
-		if (it.valid && it.country == "DE" && it.bank == "37040044") null else "not valid DE"
-	}
-	expectOk("bank junk", { parse.bank("hello") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("phone", { parse.phone("+14155552671") }) { if (it.phone == "+14155552671") null else "wrong phone" }
 	// Metered core siblings: junk numbers answer 200 valid false, free, no vendor dip.
 	expectOk("carrier junk free", { parse.carrier("555-0100") }) { if (!it.valid) null else "expected invalid" }
