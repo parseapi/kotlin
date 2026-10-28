@@ -1758,7 +1758,10 @@ public final class com/parseapi/CountryDeep {
 	public final fun getFifa ()Ljava/lang/String;
 	public final fun getFrequency ()Ljava/lang/Integer;
 	public final fun getFullName ()Ljava/lang/String;
+	public final fun getGdp ()Ljava/lang/Double;
+	public final fun getGdpPerCapita ()Ljava/lang/Double;
 	public final fun getHighestPoint ()Lcom/parseapi/CountryElevationPoint;
+	public final fun getInternetUsers ()Ljava/lang/Double;
 	public final fun getIoc ()Ljava/lang/String;
 	public final fun getIso3 ()Ljava/lang/String;
 	public final fun getLandArea ()Ljava/lang/Double;
@@ -1767,6 +1770,7 @@ public final class com/parseapi/CountryDeep {
 	public final fun getPlate ()Ljava/lang/String;
 	public final fun getPlugs ()Ljava/util/List;
 	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationGrowth ()Ljava/lang/Double;
 	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getPostalFormat ()Ljava/lang/String;
 	public final fun getPostalRegex ()Ljava/lang/String;
@@ -1778,6 +1782,7 @@ public final class com/parseapi/CountryDeep {
 	public final fun getTaxRate ()Ljava/lang/Double;
 	public final fun getTld ()Ljava/lang/String;
 	public final fun getUnits ()Ljava/lang/String;
+	public final fun getUrbanPopulation ()Ljava/lang/Double;
 	public final fun getVoltage ()Ljava/lang/Integer;
 	public final fun getWaterArea ()Ljava/lang/Double;
 	public final fun getWeekStart ()Ljava/lang/String;

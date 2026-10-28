@@ -1075,6 +1075,14 @@ class NAICSSearch private constructor(
 
 @Serializable
 class CountryDeep private constructor(
+	/** Latest available GDP and GDP per person in current US dollars. */
+	val gdp: Double? = null,
+	val gdpPerCapita: Double? = null,
+	/** Annual percent change; negative values indicate decline. */
+	val populationGrowth: Double? = null,
+	/** Shares of population, from 0 to 100. */
+	val urbanPopulation: Double? = null,
+	val internetUsers: Double? = null,
 	val iso3: String? = null,
 	val numeric: Int? = null,
 	val fullName: String? = null,

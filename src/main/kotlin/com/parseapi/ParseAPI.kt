@@ -989,7 +989,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.4"
+		const val VERSION = "1.10.5"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
