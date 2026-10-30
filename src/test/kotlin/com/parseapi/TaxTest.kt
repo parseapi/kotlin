@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 class TaxTest {
  @Test fun deepTaxReferencesPreserveDecimalsAndZero() = runBlocking {
   val country = ParseAPI("test") { transport = StubTransport(200, """{"country":"DE","name":"Germany","continent":"EU","deep":{"tax":"VAT","tax_rate":19,"tax_id_format":"DE999999999","tax_id_regex":"^DE[0-9]{9}$"}}""") }.country("DE") { deep = true }
-  assertEquals("VAT", country.deep?.tax)
+  assertEquals("VAT", country.deep?.tax?.name)
   assertEquals(19.0, country.deep?.taxRate)
   assertEquals("DE999999999", country.deep?.taxIdFormat)
   assertEquals("^DE[0-9]{9}$", country.deep?.taxIdRegex)
@@ -26,7 +26,7 @@ class TaxTest {
    assertNull(postal.deep?.taxRate)
    assertNull(postal.deep?.taxRateSpecial)
    val country = ParseAPI("test") { transport = StubTransport(200, """{"country":"DE","name":"Germany","continent":"EU"$field}""") }.country("DE")
-   assertNull(country.deep?.tax)
+   assertNull(country.deep?.tax?.name)
    assertNull(country.deep?.taxRate)
    assertNull(country.deep?.taxIdFormat)
    assertNull(country.deep?.taxIdRegex)

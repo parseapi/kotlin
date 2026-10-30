@@ -51,13 +51,40 @@ class Continent private constructor(
 	val emoji: String,
 )
 
+private fun countryFlagShape(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+ val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+ if(!record.containsKey("flag") && record.containsKey("emoji"))record["flag"]=record.getValue("emoji")
+ record.remove("emoji")
+ return kotlinx.serialization.json.JsonObject(record)
+}
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializable
-class ContinentCountryItem private constructor(
-	val country: String,
-	val name: String,
-	val emoji: String? = null,
-	val callingCode: String? = null,
+class CountryCapital private constructor(
+ @kotlinx.serialization.EncodeDefault val name:String? = null,
+ @kotlinx.serialization.EncodeDefault val lat:Double? = null,
+ @kotlinx.serialization.EncodeDefault val lon:Double? = null,
 )
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@Serializable
+class CountryTax private constructor(
+ @kotlinx.serialization.EncodeDefault val name:String? = null,
+ /** Standard national reference percentage, not calculated tax due. */
+ @kotlinx.serialization.EncodeDefault val rate:Double? = null,
+)
+
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = CountryItemWireSerializer::class)
+class ContinentCountryItem private constructor(
+ val country:String,
+ val name:String,
+ val flag:String? = null,
+ val callingCode:String? = null,
+) { val emoji:String? get() = flag }
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object CountryItemWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<ContinentCountryItem>(ContinentCountryItem.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = countryFlagShape(element)
+}
 
 @Serializable
 class ContinentCountries private constructor(
@@ -65,7 +92,9 @@ class ContinentCountries private constructor(
 	val countries: List<ContinentCountryItem> = emptyList(),
 )
 
-@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = CountryWireSerializer::class)
 class Country private constructor(
 	val country: String,
 	val name: String,
@@ -75,11 +104,46 @@ class Country private constructor(
 	val currencyName: String? = null,
 	val currencySymbol: String? = null,
 	val callingCode: String? = null,
-	val emoji: String? = null,
+	val flag: String? = null,
 	val languages: List<String> = emptyList(),
 	val deep: CountryDeep? = null,
 	val timezones: List<String>? = null,
-)
+	val iso3: String? = null,
+	val numeric: Int? = null,
+	@SerialName("name_full")
+	@kotlinx.serialization.json.JsonNames("full_name")
+	val nameFull: String? = null,
+	val demonym: String? = null,
+	val region: String? = null,
+	val subregion: String? = null,
+	val capital: CountryCapital? = null,
+	val borders: List<String>? = null,
+	val blocs: List<String>? = null,
+) {
+	/** Legacy source getter; JSON contains only name_full. */
+	val fullName: String? get() = nameFull
+	val emoji: String? get() = flag
+	val capitalLat: Double? get() = capital?.lat
+	val capitalLon: Double? get() = capital?.lon
+}
+
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object CountryWireSerializer : kotlinx.serialization.json.JsonTransformingSerializer<Country>(Country.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(countryFlagShape(element) as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  if(record.containsKey("name_full"))record.remove("full_name")
+  val capital=record["capital"]
+  if(capital !is kotlinx.serialization.json.JsonObject && (capital is kotlinx.serialization.json.JsonPrimitive && capital.isString || record.containsKey("capital_lat") || record.containsKey("capital_lon"))) {
+   record["capital"]=kotlinx.serialization.json.buildJsonObject {
+    put("name",capital ?: kotlinx.serialization.json.JsonNull)
+    put("lat",record["capital_lat"] ?: kotlinx.serialization.json.JsonNull)
+    put("lon",record["capital_lon"] ?: kotlinx.serialization.json.JsonNull)
+   }
+  }
+  record.remove("capital_lat");record.remove("capital_lon")
+  return kotlinx.serialization.json.JsonObject(record)
+ }
+}
 
 @Serializable
 class CountryStateItem private constructor(
@@ -1092,7 +1156,9 @@ class NAICSSearch private constructor(
 )
 
 
-@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = CountryDeepWireSerializer::class)
 class CountryDeep private constructor(
 	/** Latest available GDP and GDP per person in current US dollars. */
 	val gdp: Double? = null,
@@ -1129,13 +1195,10 @@ class CountryDeep private constructor(
 	val tld: String? = null,
 	val borders: List<String>? = null,
 	val blocs: List<String>? = null,
-	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
-	val tax: String? = null,
-	/** Standard country reference rate in percent (19 means 19%). Null is unknown, zero is known zero. */
-	val taxRate: Double? = null,
-	/** Tax registration number mask (9 is a digit, A is a letter). Describes format only. */
+	/** Country tax reference; individual unknown facts remain null. */
+	val tax: CountryTax? = null,
+	/** Historical flat payload only; omitted from current encoding. */
 	val taxIdFormat: String? = null,
-	/** Anchored tax registration number format regex. A match does not establish registration. */
 	val taxIdRegex: String? = null,
 	val weekStart: String? = null,
 	val units: String? = null,
@@ -1149,7 +1212,37 @@ class CountryDeep private constructor(
 	val ioc: String? = null,
 	val fifa: String? = null,
 	val plate: String? = null,
-)
+	val gdpUsd: Double? = null,
+	val gdpPerCapitaUsd: Double? = null,
+	val populationGrowthPercent: Double? = null,
+	val urbanPopulationPercent: Double? = null,
+	val internetUsersPercent: Double? = null,
+	/** Average terrain elevation in meters above sea level. */
+	val elevationAverage: Double? = null,
+) {
+ val taxRate:Double? get() = tax?.rate
+}
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object CountryDeepWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<CountryDeep>(CountryDeep.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val tax=record["tax"]
+  if(tax !is kotlinx.serialization.json.JsonObject && (tax is kotlinx.serialization.json.JsonPrimitive && tax.isString || listOf("tax_rate","tax_id_format","tax_id_regex").any(record::containsKey))) {
+   record["tax"]=kotlinx.serialization.json.buildJsonObject {
+    put("name",tax ?: kotlinx.serialization.json.JsonNull)
+    put("rate",record["tax_rate"] ?: kotlinx.serialization.json.JsonNull)
+   }
+  }
+  record.remove("tax_rate")
+  if(tax is kotlinx.serialization.json.JsonObject){record.remove("tax_id_format");record.remove("tax_id_regex")}
+  return kotlinx.serialization.json.JsonObject(record)
+ }
+ override fun transformSerialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  for(key in listOf("tax_id_format","tax_id_regex","taxIdFormat","taxIdRegex"))record.remove(key)
+  return kotlinx.serialization.json.JsonObject(record)
+ }
+}
 
 @Serializable
 class CountryElevationPoint private constructor(
