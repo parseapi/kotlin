@@ -91,7 +91,7 @@ fun main(): Unit = runBlocking {
 	expectOk("carrier junk free", { parse.carrier("555-0100") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("caller junk free", { parse.caller("555-0100") }) { if (!it.valid) null else "expected invalid" }
 	expectOk("hlr junk free", { parse.hlr("555-0100") }) { if (!it.valid) null else "expected invalid" }
-	expectOk("domain", { parse.domain("gmail.com") }) { if (!it.available) null else "gmail available?" }
+	expectOk("domain", { parse.domain("gmail.com") }) { if (it.available == false) null else "gmail registration is unknown or unregistered" }
 	expectOk("asn", { parse.asn("AS13335") }) { if (it.asn == 13335L) null else "wrong ASN" }
 	expectOk("dns", { parse.dns("example.com") { type = "A" } }) { if (it.records.any { record -> record.type == "A" }) null else "no A records" }
 	expectOk("mx", { parse.mx("gmail.com") }) { if (it.mx.isNotEmpty()) null else "no mx" }

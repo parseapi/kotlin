@@ -223,7 +223,7 @@ class RetriesTest {
 			),
 		)
 		val result = client(stub, retries = 2).domain("x.com")
-		assertFalse(result.available)
+		assertEquals(false, result.available)
 		assertEquals(3, stub.requests.size)
 	}
 
@@ -268,7 +268,7 @@ class RetriesTest {
 		}
 		val parse = ParseAPI("parse_testtesttesttest") { this.baseUrl = "https://api.parseapi.com"; this.retries = 2; this.transport = transport }
 		val result = parse.domain("x.com")
-		assertFalse(result.available)
+		assertEquals(false, result.available)
 		assertEquals(2, calls)
 	}
 }

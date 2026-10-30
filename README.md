@@ -119,7 +119,7 @@ parse.elevation(35.2271, -80.8431)
 parse.point(36.0726, -79.792)
 parse.weather(40.7128, -74.006)
 parse.domain("example.com")
-parse.domainResult("example.com") { deep = true }
+parse.domain("example.com") { deep = true }
 parse.stack("example.com")
 parse.asn("AS13335")
 parse.mx("example.com")
@@ -267,7 +267,7 @@ The default call returns the common answer. Request more detail with `parse.coun
 | Time, Date, Language, Emoji, Point | Optional reference detail in the same pooled request on every plan. |
 | Carrier, HLR | Available place or network detail from the same metered core unit, including Free included units. |
 
-Use `domainResult` when availability may be unknown: `available` is `true`, `false`, or `null`. It makes the same single Domain request and preserves partial registration detail. The existing `domain` methods keep their `Boolean` property and decoding behavior; an unknown availability result cannot decode into that model.
+Use `domain` for registration availability: `available` is `true`, `false`, or `null` when unknown. Missing or null DNSSEC is unknown, while `false` is a known unsigned observation. The existing `domainResult` methods and model remain available.
 
 Email deep includes mailbox status and the reason for the result, plus a suggested first name, no-reply flag, plus-address tag and mail service. The suggested name is not a verified identity. Unavailable details are null.
 

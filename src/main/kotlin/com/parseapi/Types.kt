@@ -593,7 +593,8 @@ class DomainDeep private constructor(
 @Serializable
 class Domain private constructor(
 	val domain: String,
-	val available: Boolean,
+	/** True means unregistered, false means registered, null means unknown. */
+	val available: Boolean? = null,
 	val deep: DomainDeep? = null,
 )
 
