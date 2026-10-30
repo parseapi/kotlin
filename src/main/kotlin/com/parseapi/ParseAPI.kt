@@ -557,6 +557,15 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/domain/${enc(domain)}", deepQuery(deep))
 		}
 
+	/** Preserve unknown availability as null in the same Domain lookup. */
+	suspend fun domainResult(domain: String): DomainResult = domainResult(domain) {}
+
+	/** The existing domain methods retain their Boolean result and decoding behavior. */
+	suspend fun domainResult(domain: String, configure: DomainOptions.() -> Unit): DomainResult =
+		with(DomainOptions().apply(configure)) {
+			get("/domain/${enc(domain)}", deepQuery(deep))
+		}
+
 	suspend fun asn(asn: String): Asn =
 		get("/asn/${enc(asn)}")
 
@@ -989,7 +998,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.6"
+		const val VERSION = "1.10.7"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)

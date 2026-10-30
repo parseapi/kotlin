@@ -19,6 +19,11 @@ class IpDeep private constructor(
 	val tor: Boolean? = null,
 	val vpn: Boolean? = null,
 	val provider: String? = null,
+	/** Present only when supported. District is qualified by the response country. */
+	val district: String? = null,
+	val districtName: String? = null,
+	val censusDivision: String? = null,
+	val censusRegion: String? = null,
 )
 
 @Serializable
@@ -489,8 +494,10 @@ class Stack private constructor(
 	val domain: String,
 	val url: String,
 	val checkedAt: String? = null,
-	val scope: String,
-	val pages: Int,
+	/** No longer returned. Empty when absent. Retained for source compatibility. */
+	val scope: String = "",
+	/** No longer returned. Zero when absent, not a measured page count. */
+	val pages: Int = 0,
 	val partial: Boolean? = null,
 	val cms: List<StackTechnology>? = null,
 	val servers: List<StackTechnology>? = null,
@@ -523,6 +530,14 @@ class DomainDeep private constructor(
 class Domain private constructor(
 	val domain: String,
 	val available: Boolean,
+	val deep: DomainDeep? = null,
+)
+
+/** Domain availability with null for an unknown registration result. */
+@Serializable
+class DomainResult private constructor(
+	val domain: String,
+	val available: Boolean? = null,
 	val deep: DomainDeep? = null,
 )
 

@@ -2153,6 +2153,27 @@ public final class com/parseapi/DomainRegistration$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/DomainResult {
+	public static final field Companion Lcom/parseapi/DomainResult$Companion;
+	public final fun getAvailable ()Ljava/lang/Boolean;
+	public final fun getDeep ()Lcom/parseapi/DomainDeep;
+	public final fun getDomain ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/DomainResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/DomainResult$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/DomainResult;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/DomainResult;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/DomainResult$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/Elevation {
 	public static final field Companion Lcom/parseapi/Elevation$Companion;
 	public final fun getElevation ()Ljava/lang/Double;
@@ -3043,8 +3064,12 @@ public final class com/parseapi/Ip$Companion {
 
 public final class com/parseapi/IpDeep {
 	public static final field Companion Lcom/parseapi/IpDeep$Companion;
+	public final fun getCensusDivision ()Ljava/lang/String;
+	public final fun getCensusRegion ()Ljava/lang/String;
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getDatacenter ()Ljava/lang/Boolean;
+	public final fun getDistrict ()Ljava/lang/String;
+	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getProvider ()Ljava/lang/String;
 	public final fun getRegistry ()Ljava/lang/String;
 	public final fun getRelay ()Ljava/lang/Boolean;
@@ -3495,6 +3520,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun dns (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun domain (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun domain (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun domainResult (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun domainResult (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun elevation (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun email (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun email (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

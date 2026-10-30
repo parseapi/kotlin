@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.parseapi"
-version = "1.10.6"
+version = "1.10.7"
 
 repositories {
 	mavenCentral()
