@@ -3774,6 +3774,7 @@ public final class com/parseapi/Postal {
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getStateNameLocal ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/Postal$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -3907,6 +3908,7 @@ public final class com/parseapi/PostalMetro {
 	public final fun getOtherShare ()Ljava/lang/Double;
 	public final fun getResidentialShare ()Ljava/lang/Double;
 	public final fun getShare ()Ljava/lang/Double;
+	public final fun getSharePercent ()Ljava/lang/Double;
 	public final fun getType ()Ljava/lang/String;
 }
 

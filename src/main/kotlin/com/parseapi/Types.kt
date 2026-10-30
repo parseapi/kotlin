@@ -226,6 +226,8 @@ class PostalMetro private constructor(
 	val residentialShare: Double? = null,
 	val businessShare: Double? = null,
 	val otherShare: Double? = null,
+	/** Percentage of ZIP addresses (0-100). Null is unknown or absent. */
+	val sharePercent: Double? = null,
 )
 
 @Serializable
@@ -254,6 +256,8 @@ class Postal private constructor(
 	val longitude: Double? = null,
 	val timezone: String? = null,
 	val deep: PostalDeep? = null,
+	/** Open ZIP type, including future values. Null is unknown or absent. */
+	val type: String? = null,
 )
 
 @Serializable
