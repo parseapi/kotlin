@@ -2042,7 +2042,6 @@ public final class com/parseapi/District {
 	public final fun getName ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 }
@@ -4136,10 +4135,7 @@ public final class com/parseapi/Stack {
 	public final fun getEcommerce ()Ljava/util/List;
 	public final fun getFrameworks ()Ljava/util/List;
 	public final fun getHosting ()Ljava/util/List;
-	public final fun getPages ()I
-	public final fun getPartial ()Ljava/lang/Boolean;
 	public final fun getPayments ()Ljava/util/List;
-	public final fun getScope ()Ljava/lang/String;
 	public final fun getServers ()Ljava/util/List;
 	public final fun getUrl ()Ljava/lang/String;
 }
@@ -4215,7 +4211,6 @@ public final class com/parseapi/State {
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 }

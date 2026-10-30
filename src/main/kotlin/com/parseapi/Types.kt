@@ -174,7 +174,6 @@ class State private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val timezone: String? = null,
 	val timezones: List<String> = emptyList(),
 	@SerialName("iso_3166_2") val iso31662: String? = null,
 	val deep: StateDeep? = null,
@@ -208,7 +207,6 @@ class District private constructor(
 	val countryName: String? = null,
 	val latitude: Double? = null,
 	val longitude: Double? = null,
-	val timezone: String? = null,
 	val timezones: List<String> = emptyList(),
 	val deep: DistrictDeep? = null,
 )
@@ -558,11 +556,6 @@ class Stack private constructor(
 	val domain: String,
 	val url: String,
 	val checkedAt: String? = null,
-	/** No longer returned. Empty when absent. Retained for source compatibility. */
-	val scope: String = "",
-	/** No longer returned. Zero when absent, not a measured page count. */
-	val pages: Int = 0,
-	val partial: Boolean? = null,
 	val cms: List<StackTechnology>? = null,
 	val servers: List<StackTechnology>? = null,
 	val frameworks: List<StackTechnology>? = null,
