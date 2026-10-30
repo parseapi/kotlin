@@ -43,22 +43,25 @@ class DomainResultTest {
 		}
 	}
 
-	@Test fun existingDomainCallableAndBooleanStayUnchanged() = runBlocking {
-		for (available in listOf(true, false)) {
-			val stub = StubTransport(200, """{"domain":"x.example","available":$available,"deep":{"registration":{"registered":false}}}""")
-			val parse = client(stub)
-			val lookup: suspend (String, DomainOptions.() -> Unit) -> Domain = parse::domain
-			val result = lookup("x.example") { deep = true }
-			val unchangedBoolean: Boolean = result.available
-			assertEquals(available, unchangedBoolean)
-			assertEquals(false, result.deep?.registration?.registered)
-			assertNull(result.deep?.registration?.dnssec); assertNull(result.deep?.registration?.status)
-			assertEquals(1, stub.requests.size)
-		}
-		val stub = StubTransport(200, """{"domain":"x.example","available":null}""")
-		assertFailsWith<SerializationException> { client(stub).domain("x.example") }
-		assertEquals(1, stub.requests.size, "A decode failure does not repeat the lookup")
-	}
+	@Test fun existingDomainCallablePreservesUnknownAndKnownAvailability() = runBlocking {
+        for ((raw, expected) in listOf("true" to true, "false" to false, "null" to null)) {
+            for (signing in listOf("", ",\"dnssec\":null", ",\"dnssec\":false", ",\"dnssec\":true")) {
+                val detail = when (raw) { "null" -> "{}"; "true" -> """{"registration":{"registered":false}}"""; else -> """{"registration":{"registered":true$signing}}""" }
+                val stub = StubTransport(200, """{"domain":"x.example","available":$raw,"deep":$detail}""")
+                val parse = client(stub)
+                val lookup: suspend (String, DomainOptions.() -> Unit) -> Domain = parse::domain
+                val result = lookup("x.example") { deep = true }
+                val available: Boolean? = result.available
+                assertEquals(expected, available)
+                val expectedSigning = when { raw != "false" -> null; signing.contains("false") -> false; signing.contains("true") -> true; else -> null }
+                assertEquals(expectedSigning, result.deep?.registration?.dnssec)
+                assertEquals(1, stub.requests.size)
+            }
+        }
+        val stub = StubTransport(200, """{"domain":"x.example","available":"not-a-boolean"}""")
+        assertFailsWith<SerializationException> { client(stub).domain("x.example") }
+        assertEquals(1, stub.requests.size, "A decode failure does not repeat the lookup")
+    }
 
 	@Test fun noDeepOverloadsAndExplicitFalseRemainAvailable() = runBlocking {
 		val stub = StubTransport(200, """{"domain":"x.example","available":false}""")
@@ -67,7 +70,7 @@ class DomainResultTest {
 		val lookup: suspend (String) -> DomainResult = parse::domainResult
 		val result = lookup("x.example")
 		assertEquals(false, result.available); assertNull(result.deep)
-		assertFalse(old("x.example").available)
+		assertEquals(false, old("x.example").available)
 		assertEquals(2, stub.requests.size)
 		assertTrue(stub.requests.all { it.url == "https://api.parseapi.com/domain/x.example" })
 	}

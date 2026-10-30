@@ -46,7 +46,7 @@ class NetworkContractsTest {
         assertEquals(listOf("America/New_York"), district.timezones)
         assertTrue(districtStub.requests.single().url.endsWith("/district/36061?country=US&state=NY"))
         val domain = codec.decodeFromJsonElement<Domain>(fixtures.getValue("domain_unregistered"))
-        assertTrue(domain.available); assertEquals(false, domain.deep?.registration?.registered)
+        assertEquals(true, domain.available); assertEquals(false, domain.deep?.registration?.registered)
         assertNull(domain.deep?.registration?.dnssec)
     }
 }

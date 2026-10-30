@@ -2145,7 +2145,7 @@ public final class com/parseapi/DnsRecord$Companion {
 
 public final class com/parseapi/Domain {
 	public static final field Companion Lcom/parseapi/Domain$Companion;
-	public final fun getAvailable ()Z
+	public final fun getAvailable ()Ljava/lang/Boolean;
 	public final fun getDeep ()Lcom/parseapi/DomainDeep;
 	public final fun getDomain ()Ljava/lang/String;
 }
