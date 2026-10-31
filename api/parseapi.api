@@ -3168,8 +3168,10 @@ public final class com/parseapi/IpSelfOptions {
 
 public final class com/parseapi/Language {
 	public static final field Companion Lcom/parseapi/Language$Companion;
+	public final fun getCountries ()Ljava/util/List;
 	public final fun getDeep ()Lcom/parseapi/LanguageDeep;
 	public final fun getDirection ()Ljava/lang/String;
+	public final fun getIso3 ()Ljava/lang/String;
 	public final fun getLanguage ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNameLocal ()Ljava/lang/String;
@@ -4202,9 +4204,13 @@ public final class com/parseapi/StackTechnology$Companion {
 
 public final class com/parseapi/State {
 	public static final field Companion Lcom/parseapi/State$Companion;
+	public final fun getAreaCodes ()Ljava/util/List;
+	public final fun getCapital ()Lcom/parseapi/StateCapital;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
 	public final fun getDeep ()Lcom/parseapi/StateDeep;
+	public final fun getFips ()Ljava/lang/String;
+	public final fun getIso ()Ljava/lang/String;
 	public final fun getIso31662 ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
@@ -4229,6 +4235,27 @@ public final class com/parseapi/State$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/StateCapital {
+	public static final field Companion Lcom/parseapi/StateCapital$Companion;
+	public final fun getLat ()Ljava/lang/Double;
+	public final fun getLon ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/StateCapital$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StateCapital$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateCapital;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateCapital;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StateCapital$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/StateDeep {
 	public static final field Companion Lcom/parseapi/StateDeep$Companion;
 	public final fun getArea ()Ljava/lang/Double;
@@ -4237,7 +4264,7 @@ public final class com/parseapi/StateDeep {
 	public final fun getFips ()Ljava/lang/String;
 	public final fun getPopulation ()Ljava/lang/Long;
 	public final fun getPopulationPeriod ()Ljava/lang/String;
-	public final fun getTax ()Ljava/lang/String;
+	public final fun getTax ()Lcom/parseapi/StateTax;
 	public final fun getTaxRate ()Ljava/lang/Double;
 }
 
@@ -4336,6 +4363,26 @@ public final class com/parseapi/StateOptions {
 	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/StateTax {
+	public static final field Companion Lcom/parseapi/StateTax$Companion;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRate ()Ljava/lang/Double;
+}
+
+public synthetic class com/parseapi/StateTax$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StateTax$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateTax;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateTax;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StateTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/TimeAtOptions {

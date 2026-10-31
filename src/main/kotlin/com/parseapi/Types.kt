@@ -51,6 +51,16 @@ class Continent private constructor(
 	val emoji: String,
 )
 
+
+private fun isoWireShape(element:kotlinx.serialization.json.JsonElement, canonical:String, vararg legacy:String):kotlinx.serialization.json.JsonElement {
+ val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+ if(!record.containsKey(canonical)) {
+  for(key in legacy) { if(record.containsKey(key)) { record[canonical]=record.getValue(key); break } }
+ }
+ for(key in legacy)record.remove(key)
+ return kotlinx.serialization.json.JsonObject(record)
+}
+
 private fun countryFlagShape(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
  if(!record.containsKey("flag") && record.containsKey("emoji"))record["flag"]=record.getValue("emoji")
@@ -108,7 +118,9 @@ class Country private constructor(
 	val languages: List<String> = emptyList(),
 	val deep: CountryDeep? = null,
 	val timezones: List<String>? = null,
+	@SerialName("iso_alpha3")
 	val iso3: String? = null,
+	@SerialName("iso_numeric")
 	val numeric: Int? = null,
 	@SerialName("name_full")
 	@kotlinx.serialization.json.JsonNames("full_name")
@@ -130,7 +142,7 @@ class Country private constructor(
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 private object CountryWireSerializer : kotlinx.serialization.json.JsonTransformingSerializer<Country>(Country.generatedSerializer()) {
  override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
-  val record=(countryFlagShape(element) as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val record=(countryFlagShape(isoWireShape(isoWireShape(element,"iso_alpha3","iso3"),"iso_numeric","numeric")) as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
   if(record.containsKey("name_full"))record.remove("full_name")
   val capital=record["capital"]
   if(capital !is kotlinx.serialization.json.JsonObject && (capital is kotlinx.serialization.json.JsonPrimitive && capital.isString || record.containsKey("capital_lat") || record.containsKey("capital_lon"))) {
@@ -165,6 +177,15 @@ class CountryStates private constructor(
 )
 
 @Serializable
+class StateCapital private constructor(
+	val name: String? = null,
+	val lat: Double? = null,
+	val lon: Double? = null,
+)
+
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = StateISOWireSerializer::class)
 class State private constructor(
 	val state: String,
 	val name: String,
@@ -175,9 +196,18 @@ class State private constructor(
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	val timezones: List<String> = emptyList(),
-	@SerialName("iso_3166_2") val iso31662: String? = null,
+	@SerialName("iso_subdivision")
+	val iso: String? = null,
+	val fips: String? = null,
+	val areaCodes: List<String>? = null,
+	val capital: StateCapital? = null,
 	val deep: StateDeep? = null,
-)
+) { val iso31662:String? get()=iso }
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object StateISOWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<State>(State.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = isoWireShape(element,"iso_subdivision","iso","iso_3166_2")
+}
+
 
 @Serializable
 class StateDistrictItem private constructor(
@@ -698,7 +728,9 @@ class Useragent private constructor(
 
 
 /** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). Codes are lowercase. */
-@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = LanguageISOWireSerializer::class)
 class Language private constructor(
 	val language: String,
 	val name: String,
@@ -706,7 +738,15 @@ class Language private constructor(
 	val script: String? = null,
 	val direction: String,
 	val deep: LanguageDeep? = null,
+	@SerialName("iso_alpha3")
+	val iso3: String? = null,
+	val countries: List<String>? = null,
 )
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object LanguageISOWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<Language>(Language.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = isoWireShape(element,"iso_alpha3","iso3")
+}
+
 
 /**
  * A parsed person name. Junk input returns valid false, never an error.
@@ -1162,7 +1202,9 @@ class CountryDeep private constructor(
 	/** Shares of population, from 0 to 100. */
 	val urbanPopulation: Double? = null,
 	val internetUsers: Double? = null,
+	@SerialName("iso_alpha3")
 	val iso3: String? = null,
+	@SerialName("iso_numeric")
 	val numeric: Int? = null,
 	val fullName: String? = null,
 	val demonym: String? = null,
@@ -1219,7 +1261,7 @@ class CountryDeep private constructor(
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 private object CountryDeepWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<CountryDeep>(CountryDeep.generatedSerializer()) {
  override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
-  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val record=(isoWireShape(isoWireShape(element,"iso_alpha3","iso3"),"iso_numeric","numeric") as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
   val tax=record["tax"]
   if(tax !is kotlinx.serialization.json.JsonObject && (tax is kotlinx.serialization.json.JsonPrimitive && tax.isString || listOf("tax_rate","tax_id_format","tax_id_regex").any(record::containsKey))) {
    record["tax"]=kotlinx.serialization.json.buildJsonObject {
@@ -1232,7 +1274,7 @@ private object CountryDeepWireSerializer:kotlinx.serialization.json.JsonTransfor
   return kotlinx.serialization.json.JsonObject(record)
  }
  override fun transformSerialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
-  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val record=(isoWireShape(isoWireShape(element,"iso_alpha3","iso3"),"iso_numeric","numeric") as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
   for(key in listOf("tax_id_format","tax_id_regex","taxIdFormat","taxIdRegex"))record.remove(key)
   return kotlinx.serialization.json.JsonObject(record)
  }
@@ -1247,20 +1289,49 @@ class CountryElevationPoint private constructor(
 
 
 @Serializable
+class StateTax private constructor(
+	val name: String? = null,
+	/** Reference rate in percent. */
+	val rate: Double? = null,
+)
+
+
+
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with=StateDeepWireSerializer::class)
 class StateDeep private constructor(
 	val population: Long? = null,
 	@Deprecated("No longer returned; retained for source compatibility")
 	@kotlinx.serialization.Transient
 	val populationPeriod: String? = null,
 	val area: Double? = null,
-	val fips: String? = null,
-	val capital: String? = null,
-	val areaCodes: List<String>? = null,
-	/** Levy name, such as VAT, GST or sales tax. Null when unknown or not applicable. */
-	val tax: String? = null,
-	/** State or province reference rate in percent. Country, state and postal rates are alternative references, not additive. */
-	val taxRate: Double? = null,
-)
+	val tax: StateTax? = null,
+ /** Historical Deep read members retained for existing source consumers. */
+ val fips:String? = null,
+ val capital:String? = null,
+ val areaCodes:List<String>? = null,
+) { val taxRate:Double? get() = tax?.rate }
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object StateDeepWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<StateDeep>(StateDeep.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val tax=record["tax"]
+  if(tax !is kotlinx.serialization.json.JsonObject && (tax is kotlinx.serialization.json.JsonPrimitive && tax.isString || record.containsKey("tax_rate"))) {
+   record["tax"]=kotlinx.serialization.json.buildJsonObject {
+    put("name",tax ?: kotlinx.serialization.json.JsonNull)
+    put("rate",record["tax_rate"] ?: kotlinx.serialization.json.JsonNull)
+   }
+  }
+  record.remove("tax_rate")
+  return kotlinx.serialization.json.JsonObject(record)
+ }
+ override fun transformSerialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(element as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  listOf("fips","capital","area_codes").forEach(record::remove)
+  return kotlinx.serialization.json.JsonObject(record)
+ }
+}
 
 
 @Serializable
@@ -1370,11 +1441,19 @@ class NAICSDeep private constructor(
 )
 
 
-@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with=LanguageDeepWireSerializer::class)
 class LanguageDeep private constructor(
-	val iso3: String? = null,
-	val countries: List<String>? = null,
+ /** Historical Deep read members; current canonical responses keep these facts in Core. */
+ @SerialName("iso_alpha3") val iso3:String? = null,
+ val countries:List<String>? = null,
 )
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object LanguageDeepWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<LanguageDeep>(LanguageDeep.generatedSerializer()) {
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = isoWireShape(element,"iso_alpha3","iso3")
+ override fun transformSerialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = kotlinx.serialization.json.JsonObject(emptyMap())
+}
 
 
 @Serializable
