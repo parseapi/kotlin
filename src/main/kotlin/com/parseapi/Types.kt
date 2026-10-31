@@ -1960,3 +1960,30 @@ class CityNearbyCoordinates private constructor(
     val radius: Double,
     val unit: String,
 )
+
+
+@Serializable
+class Currency private constructor(
+	val currency: String,
+	val isoNumeric: Int? = null,
+	val name: String,
+	val namePlural: String? = null,
+	val symbol: String? = null,
+	val symbolNative: String? = null,
+	val digits: Int? = null,
+	val countries: List<String>? = null,
+	val deep: CurrencyDeep? = null,
+)
+
+@Serializable
+class CurrencyRate private constructor(
+	val base: String,
+	val quote: String,
+	val rate: Double,
+	val date: String,
+	val amount: Double? = null,
+	val converted: Double? = null,
+)
+
+@Serializable
+class CurrencyDeep private constructor()

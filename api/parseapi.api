@@ -1957,6 +1957,89 @@ public final class com/parseapi/CountryTax$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/Currency {
+	public static final field Companion Lcom/parseapi/Currency$Companion;
+	public final fun getCountries ()Ljava/util/List;
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getDeep ()Lcom/parseapi/CurrencyDeep;
+	public final fun getDigits ()Ljava/lang/Integer;
+	public final fun getIsoNumeric ()Ljava/lang/Integer;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNamePlural ()Ljava/lang/String;
+	public final fun getSymbol ()Ljava/lang/String;
+	public final fun getSymbolNative ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/Currency$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/Currency$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Currency;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Currency;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/Currency$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CurrencyDeep {
+	public static final field Companion Lcom/parseapi/CurrencyDeep$Companion;
+}
+
+public synthetic class com/parseapi/CurrencyDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CurrencyDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CurrencyDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CurrencyDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CurrencyDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CurrencyOptions {
+	public final fun getDeep ()Z
+	public final fun getLang ()Ljava/lang/String;
+	public final fun setDeep (Z)V
+	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/CurrencyRate {
+	public static final field Companion Lcom/parseapi/CurrencyRate$Companion;
+	public final fun getAmount ()Ljava/lang/Double;
+	public final fun getBase ()Ljava/lang/String;
+	public final fun getConverted ()Ljava/lang/Double;
+	public final fun getDate ()Ljava/lang/String;
+	public final fun getQuote ()Ljava/lang/String;
+	public final fun getRate ()D
+}
+
+public synthetic class com/parseapi/CurrencyRate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CurrencyRate$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CurrencyRate;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CurrencyRate;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CurrencyRate$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CurrencyRateOptions {
+	public final fun getAmount ()Ljava/lang/Double;
+	public final fun getDate ()Ljava/lang/String;
+	public final fun setAmount (Ljava/lang/Double;)V
+	public final fun setDate (Ljava/lang/String;)V
+}
+
 public final class com/parseapi/DateInfo {
 	public static final field Companion Lcom/parseapi/DateInfo$Companion;
 	public final fun getDate ()Ljava/lang/String;
@@ -3572,6 +3655,10 @@ public final class com/parseapi/ParseAPI {
 	public final fun country (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun currency (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun currency (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun currencyRate (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun currencyRate (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun date (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun date (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun dateToday (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

@@ -540,3 +540,15 @@ class CityAncestorsOptions internal constructor() {
     var deep: Boolean = false
     var lang: String? = null
 }
+
+
+class CurrencyRateOptions internal constructor() {
+	var date: String? = null
+	var amount: Double? = null
+}
+
+class CurrencyOptions internal constructor() {
+	/** Display language for this request. */
+	var lang: String? = null
+	var deep: Boolean = false
+}

@@ -372,6 +372,22 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	/** One language by BCP 47 shortest code (en) or ISO 639-3 (eng). */
+	suspend fun currency(code: String): Currency = currency(code) {}
+
+	suspend fun currency(code: String, configure: CurrencyOptions.() -> Unit): Currency =
+		with(CurrencyOptions().apply(configure)) {
+			get("/currency/${enc(code)}", deepQuery(deep) + listOf("lang" to lang))
+		}
+
+	/** Daily official reference cross rate. Pass date for a past day, amount to convert. */
+	suspend fun currencyRate(base: String, quote: String): CurrencyRate =
+		currencyRate(base, quote) {}
+
+	suspend fun currencyRate(base: String, quote: String, configure: CurrencyRateOptions.() -> Unit): CurrencyRate =
+		with(CurrencyRateOptions().apply(configure)) {
+			get("/currency/${enc(base)}/${enc(quote)}", listOf("date" to date, "amount" to amount?.let(::num)))
+		}
+
 	suspend fun language(code: String): Language = language(code) {}
 
 	suspend fun language(code: String, configure: LanguageOptions.() -> Unit): Language =
@@ -998,7 +1014,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.10.10"
+		const val VERSION = "1.11.0"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
