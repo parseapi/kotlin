@@ -1758,8 +1758,8 @@ public final class com/parseapi/Country$Companion {
 
 public final class com/parseapi/CountryCapital {
 	public static final field Companion Lcom/parseapi/CountryCapital$Companion;
-	public final fun getLat ()Ljava/lang/Double;
-	public final fun getLon ()Ljava/lang/Double;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
 }
 
@@ -4324,8 +4324,8 @@ public final class com/parseapi/State$Companion {
 
 public final class com/parseapi/StateCapital {
 	public static final field Companion Lcom/parseapi/StateCapital$Companion;
-	public final fun getLat ()Ljava/lang/Double;
-	public final fun getLon ()Ljava/lang/Double;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
 }
 

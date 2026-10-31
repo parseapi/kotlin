@@ -71,8 +71,8 @@ private fun countryFlagShape(element:kotlinx.serialization.json.JsonElement):kot
 @Serializable
 class CountryCapital private constructor(
  @kotlinx.serialization.EncodeDefault val name:String? = null,
- @kotlinx.serialization.EncodeDefault val lat:Double? = null,
- @kotlinx.serialization.EncodeDefault val lon:Double? = null,
+ @kotlinx.serialization.EncodeDefault @kotlinx.serialization.json.JsonNames("lat") val latitude:Double? = null,
+ @kotlinx.serialization.EncodeDefault @kotlinx.serialization.json.JsonNames("lon") val longitude:Double? = null,
 )
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializable
@@ -135,8 +135,8 @@ class Country private constructor(
 	/** Legacy source getter; JSON contains only name_full. */
 	val fullName: String? get() = nameFull
 	val emoji: String? get() = flag
-	val capitalLat: Double? get() = capital?.lat
-	val capitalLon: Double? get() = capital?.lon
+	val capitalLat: Double? get() = capital?.latitude
+	val capitalLon: Double? get() = capital?.longitude
 }
 
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
@@ -145,11 +145,12 @@ private object CountryWireSerializer : kotlinx.serialization.json.JsonTransformi
   val record=(countryFlagShape(isoWireShape(isoWireShape(element,"iso_alpha3","iso3"),"iso_numeric","numeric")) as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
   if(record.containsKey("name_full"))record.remove("full_name")
   val capital=record["capital"]
+  if(capital is kotlinx.serialization.json.JsonObject) record["capital"]=isoWireShape(isoWireShape(capital,"latitude","lat"),"longitude","lon")
   if(capital !is kotlinx.serialization.json.JsonObject && (capital is kotlinx.serialization.json.JsonPrimitive && capital.isString || record.containsKey("capital_lat") || record.containsKey("capital_lon"))) {
    record["capital"]=kotlinx.serialization.json.buildJsonObject {
     put("name",capital ?: kotlinx.serialization.json.JsonNull)
-    put("lat",record["capital_lat"] ?: kotlinx.serialization.json.JsonNull)
-    put("lon",record["capital_lon"] ?: kotlinx.serialization.json.JsonNull)
+    put("latitude",record["capital_lat"] ?: kotlinx.serialization.json.JsonNull)
+    put("longitude",record["capital_lon"] ?: kotlinx.serialization.json.JsonNull)
    }
   }
   record.remove("capital_lat");record.remove("capital_lon")
@@ -176,11 +177,12 @@ class CountryStates private constructor(
 	val states: List<CountryStateItem> = emptyList(),
 )
 
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializable
 class StateCapital private constructor(
 	val name: String? = null,
-	val lat: Double? = null,
-	val lon: Double? = null,
+	@kotlinx.serialization.json.JsonNames("lat") val latitude: Double? = null,
+	@kotlinx.serialization.json.JsonNames("lon") val longitude: Double? = null,
 )
 
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
@@ -205,7 +207,12 @@ class State private constructor(
 ) { val iso31662:String? get()=iso }
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 private object StateISOWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<State>(State.generatedSerializer()) {
- override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement = isoWireShape(element,"iso_subdivision","iso","iso_3166_2")
+ override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
+  val record=(isoWireShape(element,"iso_subdivision","iso","iso_3166_2") as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val capital=record["capital"]
+  if(capital is kotlinx.serialization.json.JsonObject) record["capital"]=isoWireShape(isoWireShape(capital,"latitude","lat"),"longitude","lon")
+  return kotlinx.serialization.json.JsonObject(record)
+ }
 }
 
 
