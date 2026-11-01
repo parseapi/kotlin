@@ -1,5 +1,5 @@
 ```sh
-git clone --branch 1.10.8 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 1.11.2 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -11,7 +11,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:1.10.8")
+implementation("com.parseapi:parseapi:1.11.2")
 ```
 
 ```kotlin
@@ -459,3 +459,20 @@ JSON encoding uses the canonical ISO field names.
 Country and State capital coordinates use `latitude` and `longitude`. Update
 `capital.lat` and `capital.lon` reads to `capital.latitude` and
 `capital.longitude` when adopting this release.
+
+## Postal and Weather migration
+
+Postal `deep.property_tax` uses `PostalPropertyTax`. Its known `annual_median`
+remains available when currency and period are absent. Update explicit tax-type
+annotations; optional legacy currency/period members retain supplied older facts.
+Currency context stays on Postal Deep. District's full tax model is unchanged.
+
+Weather minute rates use `precipitation_rate` / `precipitation_rate_in` in JSON
+and `precipitationRate` / `precipitationRateIn` in this SDK (mm/hour and inches/hour).
+Update old minute member reads. Decoders accept the earlier minute wire names
+during rollout, with canonical presence and null taking priority; encoding uses
+only canonical names. Historical `precipitation` / `precipitation_in` are amounts
+and remain unchanged. Already installed older SDKs do not gain these reader fixes.
+
+Recompile applications using the Postal property-tax getter against the new SDK.
+Replacing the package alone does not preserve that getter's binary signature.

@@ -3978,7 +3978,7 @@ public final class com/parseapi/PostalDeep {
 	public final fun getNeighbors ()Ljava/util/List;
 	public final fun getPopulation ()Ljava/lang/Long;
 	public final fun getPopulationPeriod ()Ljava/lang/String;
-	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
+	public final fun getPropertyTax ()Lcom/parseapi/PostalPropertyTax;
 	public final fun getTax ()Ljava/lang/String;
 	public final fun getTaxRate ()Ljava/lang/Double;
 	public final fun getTaxRateCity ()Ljava/lang/Double;
@@ -4190,6 +4190,27 @@ public final class com/parseapi/PostalOptions {
 	public final fun setCountry (Ljava/lang/String;)V
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/PostalPropertyTax {
+	public static final field Companion Lcom/parseapi/PostalPropertyTax$Companion;
+	public final fun getAnnualMedian ()D
+	public final fun getCurrency ()Ljava/lang/String;
+	public final fun getPeriod ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/PostalPropertyTax$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PostalPropertyTax$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PostalPropertyTax;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PostalPropertyTax;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PostalPropertyTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/parseapi/PropertyTax {
@@ -5375,8 +5396,8 @@ public final class com/parseapi/WeatherHour$Companion {
 public final class com/parseapi/WeatherMinute {
 	public static final field Companion Lcom/parseapi/WeatherMinute$Companion;
 	public final fun getAt ()Ljava/lang/String;
-	public final fun getPrecipitation ()Ljava/lang/Double;
-	public final fun getPrecipitationIn ()Ljava/lang/Double;
+	public final fun getPrecipitationRate ()Ljava/lang/Double;
+	public final fun getPrecipitationRateIn ()Ljava/lang/Double;
 	public final fun getType ()Ljava/lang/String;
 }
 

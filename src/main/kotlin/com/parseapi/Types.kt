@@ -993,13 +993,23 @@ class EmojiSearch private constructor(
 	val emojis: List<Emoji> = emptyList(),
 )
 
-@Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+@kotlinx.serialization.KeepGeneratedSerializer
+@Serializable(with = WeatherMinuteWireSerializer::class)
 class WeatherMinute private constructor(
 	val at: String? = null,
-	val precipitation: Double? = null,
-	val precipitationIn: Double? = null,
+	/** Instantaneous precipitation rate in mm/hour. */
+	val precipitationRate: Double? = null,
+	/** Instantaneous precipitation rate in inches/hour. */
+	val precipitationRateIn: Double? = null,
 	val type: String? = null,
 )
+
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+private object WeatherMinuteWireSerializer : kotlinx.serialization.json.JsonTransformingSerializer<WeatherMinute>(WeatherMinute.generatedSerializer()) {
+	override fun transformDeserialize(element: kotlinx.serialization.json.JsonElement): kotlinx.serialization.json.JsonElement =
+		isoWireShape(isoWireShape(element, "precipitation_rate", "precipitation"), "precipitation_rate_in", "precipitation_in")
+}
 
 @Serializable
 class WeatherDay private constructor(
@@ -1377,6 +1387,16 @@ class CityDeep private constructor(
 )
 
 
+/** Postal's compact annual property-tax statistic. Currency context is on PostalDeep. */
+@Serializable
+class PostalPropertyTax private constructor(
+	val annualMedian: Double,
+	/** Read from older richer responses when supplied; null for compact records. */
+	val currency: String? = null,
+	/** Read from older richer responses when supplied; null when absent. */
+	val period: String? = null,
+)
+
 @Serializable
 class PostalDeep private constructor(
 	val elevation: Double? = null,
@@ -1408,7 +1428,7 @@ class PostalDeep private constructor(
 	/** Special component of the ZIP reference rate, in percent. Null when unknown. */
 	val taxRateSpecial: Double? = null,
 	/** Median annual property tax payable on owner-occupied homes in this statistical area. Null when unsupported, missing or censored. */
-	val propertyTax: PropertyTax? = null,
+	val propertyTax: PostalPropertyTax? = null,
 )
 
 
