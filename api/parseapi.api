@@ -3906,6 +3906,7 @@ public final class com/parseapi/PointCity$Companion {
 public final class com/parseapi/PointDeep {
 	public static final field Companion Lcom/parseapi/PointDeep$Companion;
 	public final fun getCity ()Lcom/parseapi/PointCity;
+	public final fun getElectoral ()Lcom/parseapi/PointElectoral;
 	public final fun getElevation ()Ljava/lang/Double;
 	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getResolution ()Ljava/lang/Double;
@@ -3922,6 +3923,27 @@ public synthetic class com/parseapi/PointDeep$$serializer : kotlinx/serializatio
 }
 
 public final class com/parseapi/PointDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/PointElectoral {
+	public static final field Companion Lcom/parseapi/PointElectoral$Companion;
+	public final fun getCode ()Ljava/lang/String;
+	public final fun getCongress ()Ljava/lang/Integer;
+	public final fun getName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/PointElectoral$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PointElectoral$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PointElectoral;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PointElectoral;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PointElectoral$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

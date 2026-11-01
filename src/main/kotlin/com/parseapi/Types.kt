@@ -854,12 +854,21 @@ class Elevation private constructor(
 	val resolution: Double? = null,
 )
 
+/** Electoral district at the requested coordinates. Codes preserve leading zeros. */
+@Serializable
+class PointElectoral private constructor(
+	val code: String,
+	val name: String? = null,
+	val congress: Int? = null,
+)
+
 @Serializable
 class PointDeep private constructor(
 	val city: PointCity? = null,
 	val elevation: Double? = null,
 	val elevationFt: Double? = null,
 	val resolution: Double? = null,
+	val electoral: PointElectoral? = null,
 )
 
 @Serializable

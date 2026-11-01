@@ -771,7 +771,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	/**
 	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
-	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
+	 * nearest-city context on paid plans or with retained Deep access. The timezone ID stays in core. The nearest city is null when
 	 * none is within 200 km.
 	 */
 	suspend fun point(lat: Double, lon: Double): Point =
@@ -779,7 +779,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 
 	/**
 	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
-	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
+	 * nearest-city context on paid plans or with retained Deep access. The timezone ID stays in core. The nearest city is null when
 	 * none is within 200 km.
 	 */
 	suspend fun point(lat: Double, lon: Double, configure: PointOptions.() -> Unit): Point =
@@ -1014,7 +1014,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.11.2"
+		const val VERSION = "1.11.3"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.0.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
