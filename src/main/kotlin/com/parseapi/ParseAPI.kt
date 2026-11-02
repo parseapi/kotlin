@@ -890,8 +890,6 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			"authority" to authority, "limit" to limit?.toString(), "cursor" to cursor) + deepQuery(deep))
 	}
 
-	/** Counts for this directory edition, not complete country or worldwide coverage. */
-	suspend fun companyCoverage(): CompanyCoverage = get("/company/directory/coverage")
 
 	// Transport
 

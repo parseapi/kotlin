@@ -1064,18 +1064,6 @@ public final class com/parseapi/CompanyCountry$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
-public final class com/parseapi/CompanyCoverage {
-	public static final field Companion Lcom/parseapi/CompanyCoverage$Companion;
-	public final fun getCompanies ()J
-	public final fun getCountries ()Ljava/util/List;
-	public final fun getDescription ()Ljava/lang/String;
-	public final fun getLabel ()Ljava/lang/String;
-	public final fun getScope ()Ljava/lang/String;
-	public final fun getSnapshotAt ()Ljava/lang/String;
-	public final fun getWithAddress ()J
-	public final fun getWithListings ()J
-	public final fun getWithWebsite ()J
-}
 
 public synthetic class com/parseapi/CompanyCoverage$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
 	public static final field INSTANCE Lcom/parseapi/CompanyCoverage$$serializer;
@@ -1178,6 +1166,8 @@ public final class com/parseapi/CompanyOptions {
 
 public final class com/parseapi/CompanyPhoneNumber {
 	public static final field Companion Lcom/parseapi/CompanyPhoneNumber$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getE164 ()Ljava/lang/String;
 	public final fun getNumber ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 }
@@ -3642,7 +3632,6 @@ public final class com/parseapi/ParseAPI {
 	public static synthetic fun citySiblings$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun companyCoverage (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companyId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companyId (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companySearch (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

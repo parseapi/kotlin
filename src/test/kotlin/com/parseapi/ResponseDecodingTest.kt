@@ -16,7 +16,6 @@ class ResponseDecodingTest {
    val time = json.decodeFromString<Timezone>(body(profile,"time"))
    val metadata = json.decodeFromString<EmojiMetadata>(body(profile,"emoji-metadata"))
    val catalog = json.decodeFromString<EmojiCatalog>(body(profile,"emoji-catalog"))
-   val coverage = json.decodeFromString<CompanyCoverage>(body(profile,"company-coverage"))
    val company = json.decodeFromString<CompanyProfile>(body(profile,"company-profile"))
    assertTrue(zones.timezones.isNotEmpty()); assertEquals(1791907200L,time.unix)
    assertEquals("US",time.location?.candidates?.first()?.country)
@@ -25,10 +24,10 @@ class ResponseDecodingTest {
    assertEquals(false,company.deep?.employees?.approximate); assertEquals(if(profile == "standard") "reported" else "",company.deep?.employees?.method)
    if (profile == "standard") {
     assertTrue(zones.timezoneDatabaseVersion.isNotEmpty())
-    assertTrue(metadata.sourceVersion.isNotEmpty()); assertTrue(coverage.snapshotAt.isNotEmpty())
+    assertTrue(metadata.sourceVersion.isNotEmpty())
    } else {
     assertEquals("",zones.timezoneDatabaseVersion)
-    assertEquals("",metadata.sourceVersion); assertEquals("",coverage.snapshotAt)
+    assertEquals("",metadata.sourceVersion)
     assertNull(time.location?.candidates?.first()?.id); assertNull(time.location?.candidates?.first()?.timezone)
     assertEquals("",time.location?.source)
    }

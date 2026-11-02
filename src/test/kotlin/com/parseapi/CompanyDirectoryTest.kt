@@ -8,7 +8,6 @@ import kotlin.test.*
 
 private const val DIRECTORY_PROFILE = """{"id":"co_222222222222","name":"Example","country":"US","website":null,"listings":[{"exchange":"Future Exchange","symbol":"A/B"}],"address":null,"deep":{"legal_name":"Example Inc.","aliases":[],"jurisdiction":{"country":"US","state":null},"status":"future-status","websites":[{"domain":"example.com","url":null}],"identifiers":[{"type":"registration","authority":"future:registry","value":"0000123"}],"incorporated":null,"addresses":[{"type":"future-role","street":null,"city":"Example City","state":null,"postal":null,"country":"US"}],"industries":[{"type":"future-scheme","code":"001","name":null}],"parent":null,"description":null,"logo":null,"socials":[],"founded":{"value":"2006","precision":"year"},"sources":[{"type":"website","url":"https://example.com/","fields":["founded"],"observed_at":"2026-09-23T17:35:06.956Z","updated_at":null,"future":true}],"future":true},"future":true}"""
 private const val DIRECTORY_SEARCH = """{"companies":[{"id":"co_222222222222","name":"Example","country":"US","website":null,"listings":[{"exchange":"Future Exchange","symbol":"A/B"}],"address":null,"deep":{"legal_name":"Example Inc.","aliases":[],"jurisdiction":{"country":"US","state":null},"status":"future-status","websites":[{"domain":"example.com","url":null}],"identifiers":[{"type":"registration","authority":"future:registry","value":"0000123"}],"incorporated":null,"addresses":[{"type":"future-role","street":null,"city":"Example City","state":null,"postal":null,"country":"US"}],"industries":[{"type":"future-scheme","code":"001","name":null}],"parent":null,"description":null,"logo":null,"socials":[],"founded":{"value":"2006","precision":"year"},"sources":[{"type":"website","url":"https://example.com/","fields":["founded"],"observed_at":"2026-09-23T17:35:06.956Z","updated_at":null,"future":true}],"future":true},"future":true,"match":{"field":"future-field","value":"0000123","type":"future-scheme","authority":null,"exchange":null,"future":true}}],"next":"opaque+/="}"""
-private const val DIRECTORY_COVERAGE = """{"scope":"sample","label":"Company directory","description":"Edition profiles","snapshot_at":"2026-09-23T17:35:06.956Z","companies":0,"countries":[],"with_website":0,"with_listings":0,"with_address":0,"future":true}"""
 
 class CompanyDirectoryTest {
  @OptIn(ExperimentalSerializationApi::class)
@@ -25,7 +24,7 @@ class CompanyDirectoryTest {
    ParseAPIResponse(200,DIRECTORY_PROFILE,emptyMap()),ParseAPIResponse(200,DIRECTORY_PROFILE,emptyMap()),
    ParseAPIResponse(200,DIRECTORY_SEARCH,emptyMap()),ParseAPIResponse(200,DIRECTORY_SEARCH,emptyMap()),
    ParseAPIResponse(200,DIRECTORY_SEARCH,emptyMap()),ParseAPIResponse(200,DIRECTORY_SEARCH,emptyMap()),
-   ParseAPIResponse(200,DIRECTORY_COVERAGE,emptyMap())))
+   ))
   val c=ParseAPI("test_key") {transport=stub;retries=0}
   val profile=c.companyId("co_/ ?") {deep=true}
   assertEquals("0000123",profile.deep?.identifiers?.first()?.value)
@@ -42,13 +41,11 @@ class CompanyDirectoryTest {
   c.companySearch {domain="https://sub.example.com/a?b=1"}
   c.companySearch {ticker="A/B";exchange="Future Exchange"}
   c.companySearch {identifier="0000123";authority="future:registry"}
-  val coverage=c.companyCoverage()
-  assertEquals(0L,coverage.companies);assertTrue(coverage.countries.isEmpty())
   val expected=listOf("/company/id/co_%2F%20%3F?deep=true","/company/id/co_222222222222",
    "/company?q=A%20%26%20B&country=US&limit=2&cursor=opaque%2B%2F%3D&deep=true",
    "/company?domain=https%3A%2F%2Fsub.example.com%2Fa%3Fb%3D1",
    "/company?ticker=A%2FB&exchange=Future%20Exchange",
-   "/company?identifier=0000123&authority=future%3Aregistry","/company/directory/coverage")
+   "/company?identifier=0000123&authority=future%3Aregistry")
   assertEquals(expected.size,stub.requests.size)
   stub.requests.zip(expected).forEach {(request,path)->
    assertEquals("https://api.parseapi.com"+path,request.url)

@@ -131,7 +131,7 @@ typealias CompanyProfileDomain = CompanyProfileWebsite
 @Serializable
 class CompanySocialProfile private constructor(val platform: String? = null, val url: String, val handle: String? = null)
 @Serializable
-class CompanyPhoneNumber private constructor(val number: String, val type: String? = null)
+class CompanyPhoneNumber private constructor(val number: String, val type: String? = null, val country: String? = null, val e164: String? = null)
 @Serializable
 class CompanyEmailAddress private constructor(val address: String, val type: String? = null)
 
@@ -207,18 +207,4 @@ class CompanyCandidate private constructor(
 class CompanySearch private constructor(
 	val companies: List<CompanyCandidate> = emptyList(),
 	val next: String? = null,
-)
-
-/** Counts for this directory edition, not complete country or worldwide coverage. */
-@Serializable
-class CompanyCoverage private constructor(
-	val scope: String,
-	val label: String,
-	val description: String,
-	val snapshotAt: String = "",
-	val companies: Long,
-	val countries: List<String> = emptyList(),
-	val withWebsite: Long,
-	val withListings: Long,
-	val withAddress: Long,
 )
