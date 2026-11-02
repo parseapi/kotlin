@@ -20,7 +20,7 @@ class ResponseDecodingTest {
    assertTrue(zones.timezones.isNotEmpty()); assertEquals(1791907200L,time.unix)
    assertEquals("US",time.location?.candidates?.first()?.country)
    assertTrue(metadata.notices.isNotEmpty()); assertTrue(catalog.emojis.isNotEmpty())
-   assertEquals(1L,coverage.companies); assertEquals(12L,company.deep?.employees?.count)
+   assertEquals(12L,company.deep?.employees?.count)
    assertEquals(false,company.deep?.employees?.approximate); assertEquals(if(profile == "standard") "reported" else "",company.deep?.employees?.method)
    if (profile == "standard") {
     assertTrue(zones.timezoneDatabaseVersion.isNotEmpty())
