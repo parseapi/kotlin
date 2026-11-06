@@ -97,7 +97,7 @@ fun main(): Unit = runBlocking {
 	expectOk("mx", { parse.mx("gmail.com") }) { if (it.mx.isNotEmpty()) null else "no mx" }
 	expectOk("useragent", {
 		parse.useragent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-	}) { if (it.browser == "Chrome") null else "browser ${it.browser}" }
+	}) { if (it.browser?.name == "Chrome") null else "browser ${it.browser?.name}" }
 	expectOk("language", { parse.language("en") }) { if (it.language == "en" && it.name == "English") null else "wrong language" }
 	expectOk("name", { parse.name("BILLY O'SHALL") }) { if (it.name == "Billy O'Shall" && it.valid) null else "wrong name" }
 	expectOk("timezone", { parse.timezone("America/New_York") }) { if (it.offset == "-04:00" || it.offset == "-05:00") null else "offset ${it.offset}" }
@@ -111,15 +111,17 @@ fun main(): Unit = runBlocking {
 	expectOk("emoji", { parse.emoji("rocket") }) { if (it.emoji == "\uD83D\uDE80") null else "wrong emoji" }
 	expectOk("emojiSearch", { parse.emojiSearch("fire") { this.limit = 5 } }) { if (it.emojis.isNotEmpty()) null else "no results" }
 
-	// Deep triad: asked on a free-deep endpoint always yields an object.
-	expectOk("point deep triad", { parse.point(36.0726, -79.792) { this.deep = true } }) { if (it.deep != null) null else "deep missing" }
+	// Requested Point details share the root response with its coordinates.
+	expectOk("point deep root", { parse.point(36.0726, -79.792) { this.deep = true } }) {
+		if (it.latitude == 36.0726 && it.longitude == -79.792 && it.country == "US") null else "wrong root point fields"
+	}
 
 	// Honest 404 and auth errors.
 	expectError("honest 404", { parse.city("notarealcityxyz") }, "not_found")
 	expectError("bogus key 401", { ParseAPI("parse_bogusbogusbogus0") { this.retries = 0 }.country("US") }, "invalid_api_key")
 
 	// App key fence, when an app key is in the env. Good id 200, missing or
-	// wrong id 403, metered core 403, email deep locked to {}.
+	// wrong id 403, metered core 403, explicit email verification 403.
 	val appKey = System.getenv("PARSEAPI_APP_KEY")
 	val goodAppId = System.getenv("PARSEAPI_APP_ID")
 	if (appKey != null && goodAppId != null) {
@@ -135,10 +137,7 @@ fun main(): Unit = runBlocking {
 
 		expectError("app key metered 403", { app.carrier("555-0100") }, "permission_denied")
 
-		expectOk("app key email deep locked", { app.email("hello@gmail.com") { this.deep = true } }) {
-			val deep = it.deep ?: return@expectOk "deep missing"
-			if (deep.deliverable == null && deep.catchall == null) null else "deep not locked"
-		}
+		expectError("app key email verify denied", { app.emailVerify("hello@gmail.com") }, "permission_denied")
 	} else {
 		println("note app key fence checks skipped (set PARSEAPI_APP_KEY + PARSEAPI_APP_ID)")
 	}
