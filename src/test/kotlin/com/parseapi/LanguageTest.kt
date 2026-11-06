@@ -59,7 +59,9 @@ class LanguageTest {
   assertEquals(29, operations.size)
   for (operation in operations) {
    // An API error avoids conflating this URL test with each product decoder.
-   val stub = StubTransport(400, """{"code":"fixture_error","message":"Fixture"}""")
+   val stub = StubTransport(400, """
+{"code":"fixture_error","message":"Fixture"}
+""")
    val parse = ParseAPI("test") { transport = stub; retries = 0; baseUrl = "https://api.parseapi.com" }
    for (language in listOf("fr-CA", null)) {
     val failure = assertFailsWith<ParseAPIException>(operation.name) { operation.call(parse, language) }
@@ -80,8 +82,12 @@ class LanguageTest {
  @Test
  fun languagePreservesNativeNullAndInputControls() = runBlocking {
   val stub = StubTransport(mutableListOf(
-   ParseAPIResponse(200, """{"country":"DE","name":"Allemagne","continent":"EU","name_local":"Deutschland","currency_name":null,"future":true}""", emptyMap()),
-   ParseAPIResponse(200, """{"date":"2026-04-03","valid":true}""", emptyMap()),
+   ParseAPIResponse(200, """
+{"country":"DE","name":"Allemagne","continent":"EU","name_local":"Deutschland","currency_name":null,"future":true}
+""", emptyMap()),
+   ParseAPIResponse(200, """
+{"date":"2026-04-03","valid":true}
+""", emptyMap()),
   ))
   val parse = ParseAPI("test") { transport = stub; retries = 0; baseUrl = "https://api.parseapi.com" }
   val country = parse.country("DE") { lang = "fr" }
@@ -89,7 +95,6 @@ class LanguageTest {
   assertEquals("Allemagne", country.name)
   assertEquals("Deutschland", country.nameLocal)
   assertNull(country.currencyName)
-  assertNull(country.deep)
   val date = parse.date("03/04/2026") { format = "dmy"; lang = "en-US" }
   assertEquals("2026-04-03", date.date)
   assertEquals("https://api.parseapi.com/date/03%2F04%2F2026?format=dmy&lang=en-US", stub.requests[1].url)

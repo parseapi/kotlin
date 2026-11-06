@@ -11,11 +11,15 @@ import kotlinx.coroutines.*
 class FinalContractTest {
     @Test
     fun junkAddressAndCompanyCanEchoNull() = runBlocking {
-        val address = StubTransport(200, """{"address":null,"valid":false}""")
+        val address = StubTransport(200, """
+{"address":null,"valid":false}
+""")
         val a = ParseAPI("test") { transport = address }.address(" ")
         assertNull(a.address)
         assertFalse(a.valid)
-        val company = StubTransport(200, """{"company":null,"valid":false}""")
+        val company = StubTransport(200, """
+{"company":null,"valid":false}
+""")
         val c = ParseAPI("test") { transport = company }.company(" ")
         assertNull(c.company)
         assertFalse(c.valid)
@@ -35,7 +39,9 @@ class FinalContractTest {
         }
         val retryStub = StubTransport(mutableListOf(
             ParseAPIResponse(503, "{}", mapOf("retry-after" to "0")),
-            ParseAPIResponse(200, """{"phone":"junk","valid":false}""", emptyMap()),
+            ParseAPIResponse(200, """
+{"phone":"junk","valid":false}
+""", emptyMap()),
         ))
         ParseAPI("test") { retries = 1; transport = retryStub }.carrier("junk")
         assertEquals(2, retryStub.requests.size)
@@ -46,7 +52,9 @@ class FinalContractTest {
         val stub = StubTransport(mutableListOf(
             ParseAPIResponse(503, "{}", mapOf("retry-after" to "0")),
             ParseAPIResponse(503, "{}", mapOf("retry-after" to "0")),
-            ParseAPIResponse(200, """{"email":"a@example.com","valid":true,"role":false,"disposable":false}""", emptyMap()),
+            ParseAPIResponse(200, """
+{"email":"a@example.com","valid":true,"role":false,"disposable":false}
+""", emptyMap()),
         ))
         ParseAPI("test") { transport = stub }.email("a@example.com")
         assertEquals(3, stub.requests.size)
@@ -74,34 +82,46 @@ class FinalContractTest {
 
     @Test
     fun companyAddressAndSearchDecodeWithoutExtraRequests() = runBlocking {
-        val address = StubTransport(200, """{"address":"123 Main St","valid":true,"registered":false,"country":"US","deep":{}}""")
+        val address = StubTransport(200, """
+{"address":"123 Main St","valid":true,"registered":false,"country":"US"}
+""")
         val a = ParseAPI("test") { transport = address }.address("123 Main St") { country = "US"; deep = true }
         assertTrue(a.valid)
-        assertNotNull(a.deep)
+        a
         assertTrue(address.requests.single().url.endsWith("/address/123%20Main%20St?country=US&deep=true"))
-        val search = StubTransport(200, """{"q":"123 Main","addresses":[{"address":"123 Main St","postal":"28202"}]}""")
+        val search = StubTransport(200, """
+{"q":"123 Main","addresses":[{"address":"123 Main St","postal":"28202"}]}
+""")
         val hits = ParseAPI("test") { transport = search }.addressSearch("123 Main") { postal = "28202"; country = "US" }
         assertEquals("28202", hits.addresses.single().postal)
         assertTrue(search.requests.single().url.contains("q=123%20Main&country=US&postal=28202"))
-        val company = StubTransport(200, """{"company":"01234567","valid":true,"registered":true,"deep":{}}""")
+        val company = StubTransport(200, """
+{"company":"01234567","valid":true,"registered":true}
+""")
         val c = ParseAPI("test") { transport = company }.company("01234567") { country = "GB"; deep = true }
-        assertNull(c.deep!!.activity)
+        assertNull(c.activity)
         assertTrue(company.requests.single().url.endsWith("/company/01234567?country=GB&deep=true"))
     }
 
     @Test
     fun fullWeatherAndTimezoneFieldsAreAccessible() = runBlocking {
-        val weather = StubTransport(200, """{"latitude":40,"longitude":-74,"current":{},"deep":{"minutes":[{"at":"2026-09-05T12:00Z","precipitation":0.2}],"hours":[{"at":"2026-09-05T12:00Z","feels_like":21,"wind_gust":30}],"days":[{"date":"2026-09-06","high":25}],"air":{"pm2_5":7.5},"history":{"date":"2026-09-01","high_f":80}}}""")
+        val weather = StubTransport(200, """{"latitude":40,"longitude":-74,"current":{},"minutes":[{"at":"2026-09-05T12:00Z","precipitation_rate":0.2,"precipitation_rate_in":0.008}],"hours":[{"at":"2026-09-05T12:00Z","feels_like":21,"wind_gust":30}],"days":[{"date":"2026-09-06","high":25}],"air":{"pm2_5":7.5},"history":{"date":"2026-09-01","high_f":80,"precipitation":12.3,"precipitation_in":0.484}}""")
         val result = ParseAPI("test") { transport = weather }.weather(40.0, -74.0) { deep = true; date = "2026-09-01" }
-        assertEquals(21.0, result.deep!!.hours!!.single().feelsLike)
-        assertEquals(30.0, result.deep!!.hours!!.single().windGust)
-        assertEquals(7.5, result.deep!!.air!!.pm25)
-        assertEquals(80.0, result.deep!!.history!!.highF)
+        assertEquals(0.2, result.minutes!!.single().precipitationRate)
+        assertEquals(0.008, result.minutes!!.single().precipitationRateIn)
+        assertEquals(12.3, result.history!!.precipitation)
+        assertEquals(0.484, result.history!!.precipitationIn)
+        assertEquals(21.0, result.hours!!.single().feelsLike)
+        assertEquals(30.0, result.hours!!.single().windGust)
+        assertEquals(7.5, result.air!!.pm25)
+        assertEquals(80.0, result.history!!.highF)
         assertTrue(weather.requests.single().url.contains("date=2026-09-01"))
-        val timezone = StubTransport(200, """{"timezone":"America/New_York","at":"2026-09-05T09:00:00-04:00","to":{"timezone":"Europe/London","offset":"+01:00","dst":true,"at":"2026-09-05T14:00:00+01:00","deep":{"offset_minutes":60}}}""")
+        val timezone = StubTransport(200, """
+{"timezone":"America/New_York","at":"2026-09-05T09:00:00-04:00","to":{"timezone":"Europe/London","offset":"+01:00","dst":true,"at":"2026-09-05T14:00:00+01:00","offset_minutes":60}}
+""")
         val zone = ParseAPI("test") { transport = timezone }.timezone("America/New_York") { at = "2026-09-05T09:00:00"; to = "Europe/London" }
         assertEquals("2026-09-05T14:00:00+01:00", zone.to!!.at)
-        assertEquals(60, zone.to!!.deep?.offsetMinutes)
+        assertEquals(60, zone.to!!?.offsetMinutes)
         assertTrue(timezone.requests.single().url.endsWith("to=Europe%2FLondon"))
     }
 

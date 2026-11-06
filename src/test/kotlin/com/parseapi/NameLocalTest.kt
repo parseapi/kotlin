@@ -10,9 +10,11 @@ import kotlinx.serialization.json.JsonNamingStrategy
 class NameLocalTest {
  @Test fun decodesEveryNativeNameMember() {
   val json = Json { ignoreUnknownKeys = true; namingStrategy = JsonNamingStrategy.SnakeCase }
-  val base = """{"country":"DE","state":"BY","name":"Munich","continent":"EU","language":"de","direction":"ltr","date":"2026-12-25","type":"public","regions":[],"substitute":false,"id":"city_test","distance":0,"distance_mi":0}"""
+  val base = """
+{"country":"DE","state":"BY","name":"Munich","continent":"EU","language":"de","direction":"ltr","date":"2026-12-25","type":"public","regions":[],"substitute":false,"id":"city_test","distance":0,"distance_mi":0}
+"""
   for (suffix in listOf(""","name_local":"München"}""", ""","name_local":null}""", "}")) {
-   val body = base.dropLast(1) + suffix
+   val body = base.trim().dropLast(1) + suffix
    val expected = if (suffix.contains("München")) "München" else null
    assertEquals(expected, json.decodeFromString<Country>(body).nameLocal)
    assertEquals(expected, json.decodeFromString<State>(body).nameLocal)

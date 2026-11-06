@@ -8,14 +8,16 @@ import kotlin.test.assertNotNull
 
 class EmailEnrichmentTest {
 	@Test fun preservesFalseAndFutureCodes() = runBlocking {
-		val stub = StubTransport(200, """{"email":"jane.doe+news@example.com","valid":true,"role":false,"disposable":false,"deep": {"first_name":"Jane","no_reply":false,"tag":"news","mail_provider":"future-provider","deliverable":true,"catchall":false,"status":"future-status","reason":"future_reason"},"future":true}""")
+		val stub = StubTransport(200, """
+{"email":"jane.doe+news@example.com","valid":true,"role":false,"disposable":false,"future":true,"first_name":"Jane","no_reply":false,"tag":"news","mail_provider":"future-provider","deliverable":true,"catchall":false,"status":"future-status","reason":"future_reason"}
+""")
 		val result = ParseAPI("fixture") { transport = stub }.email("jane.doe+news@example.com") { deep = true }
-		assertEquals("Jane", result.deep?.firstName)
-		assertEquals(false, result.deep?.noReply)
-		assertEquals("news", result.deep?.tag)
-		assertEquals("future-provider", result.deep?.mailProvider)
-		assertEquals("future-status", result.deep?.status)
-		assertEquals("future_reason", result.deep?.reason)
+		assertEquals("Jane", result?.firstName)
+		assertEquals(false, result?.noReply)
+		assertEquals("news", result?.tag)
+		assertEquals("future-provider", result?.mailProvider)
+		assertEquals("future-status", result?.status)
+		assertEquals("future_reason", result?.reason)
 	}
 
 	@Test fun oldNullAndLockedResults() = runBlocking {
@@ -23,13 +25,13 @@ class EmailEnrichmentTest {
 			val body = """{"email":"a@example.com","valid":true,"role":false,"disposable":false""" + extra + "}"
 			val stub = StubTransport(200, body)
 			val result = ParseAPI("fixture") { transport = stub }.email("a@example.com")
-			assertNull(result.deep?.firstName)
-			assertNull(result.deep?.noReply)
-			assertNull(result.deep?.tag)
-			assertNull(result.deep?.mailProvider)
-			assertNull(result.deep?.status)
-			assertNull(result.deep?.reason)
-			if (extra.isEmpty()) assertNull(result.deep) else assertNotNull(result.deep)
+			assertNull(result?.firstName)
+			assertNull(result?.noReply)
+			assertNull(result?.tag)
+			assertNull(result?.mailProvider)
+			assertNull(result?.status)
+			assertNull(result?.reason)
+			if (extra.isEmpty()) else result
 		}
 	}
 }

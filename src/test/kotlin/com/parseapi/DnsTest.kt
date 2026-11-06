@@ -8,8 +8,12 @@ import kotlin.test.assertTrue
 class DnsTest {
 	@Test fun recordsAndQuestion() = runBlocking {
 		val stub = StubTransport(mutableListOf(
-			ParseAPIResponse(200, """{"domain":"example.com","records":[{"name":"example.com.","type":"TXT","ttl":0,"value":"\"one\" \"two\"","future":true},{"name":"alias.example.","type":"CNAME","ttl":300,"value":"target.example."}],"future":true}""", emptyMap()),
-			ParseAPIResponse(200, """{"domain":"example.com","records":[]}""", emptyMap())
+			ParseAPIResponse(200, """
+{"domain":"example.com","records":[{"name":"example.com.","type":"TXT","ttl":0,"value":"\"one\" \"two\"","future":true},{"name":"alias.example.","type":"CNAME","ttl":300,"value":"target.example."}],"future":true}
+""", emptyMap()),
+			ParseAPIResponse(200, """
+{"domain":"example.com","records":[]}
+""", emptyMap())
 		))
 		val client = ParseAPI("test_key") { transport = stub; retries = 0 }
 		val result = client.dns("_dmarc.bücher.example.") { type = "txt" }

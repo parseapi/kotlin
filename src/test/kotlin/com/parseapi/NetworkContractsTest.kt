@@ -12,7 +12,7 @@ class NetworkContractsTest {
 
     @Test fun currentAndFrozenNetworkContracts() = runBlocking {
         for (name in listOf("ip_current", "ip_frozen", "ip_locked")) {
-            val deep = codec.decodeFromJsonElement<Ip>(fixtures.getValue(name)).deep!!
+            val deep = codec.decodeFromJsonElement<Ip>(fixtures.getValue(name))
             if (name == "ip_current") {
                 assertEquals("27053", deep.district)
                 assertEquals("Hennepin County", deep.districtName)
@@ -46,7 +46,7 @@ class NetworkContractsTest {
         assertEquals(listOf("America/New_York"), district.timezones)
         assertTrue(districtStub.requests.single().url.endsWith("/district/36061?country=US&state=NY"))
         val domain = codec.decodeFromJsonElement<Domain>(fixtures.getValue("domain_unregistered"))
-        assertEquals(true, domain.available); assertEquals(false, domain.deep?.registration?.registered)
-        assertNull(domain.deep?.registration?.dnssec)
+        assertEquals(true, domain.available)
+        assertNull(domain?.registration?.dnssec)
     }
 }

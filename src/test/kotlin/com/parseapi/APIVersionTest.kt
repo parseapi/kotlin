@@ -11,8 +11,12 @@ class APIVersionTest {
 	@Test
 	fun contractPinSurvivesRetriesAndSelfLookup() = runBlocking {
 		val stub = StubTransport(mutableListOf(
-			ParseAPIResponse(503, """{"code":"unavailable","message":"Try again"}""", mapOf("retry-after" to "0")),
-			ParseAPIResponse(200, """{"ip":"192.0.2.1","country":null,"deep":{"datacenter":null},"future":true}""", emptyMap()),
+			ParseAPIResponse(503, """
+{"code":"unavailable","message":"Try again"}
+""", mapOf("retry-after" to "0")),
+			ParseAPIResponse(200, """
+{"ip":"192.0.2.1","country":null,"future":true,"datacenter":null}
+""", emptyMap()),
 		))
 		val client = ParseAPI("parse_app_version_test") {
 			appId = "com.example.version"
@@ -24,12 +28,13 @@ class APIVersionTest {
 		assertEquals(System.getProperty("parseapi.artifact.version"), ParseAPI.VERSION)
 		assertEquals("192.0.2.1", result.ip)
 		assertNull(result.country)
-		assertNotNull(result.deep)
-		assertNull(result.deep?.datacenter)
+		result
+		assertNull(result?.datacenter)
 		assertEquals(2, stub.requests.size)
 		for (request in stub.requests) {
 			assertEquals("https://api.parseapi.com/ip?deep=true", request.url)
-			assertEquals("2.0.0", request.headers["Parse-Version"])
+			assertEquals("2.1.0", request.headers["X-API-Version"])
+			assertNull(request.headers["Parse-Version"])
 			assertEquals("parse_app_version_test", request.headers["X-API-Key"])
 			assertEquals("com.example.version", request.headers["X-App-Id"])
 			assertEquals("parseapi-kotlin/${ParseAPI.VERSION}", request.headers["User-Agent"])
@@ -38,14 +43,16 @@ class APIVersionTest {
 
 	@Test
 	fun contractPinWithUserAgentInput() = runBlocking {
-		val stub = StubTransport(200, """{"useragent":"Example/1.0","bot":false,"mobile":false,"deep":{}}""")
+		val stub = StubTransport(200, """
+{"useragent":"Example/1.0","bot":false,"mobile":false}
+""")
 		val client = ParseAPI("parse_app_version_test") {
 			appId = "com.example.version"
 			transport = stub
 		}
 		client.useragent("Example/1.0")
 		val request = stub.requests.single()
-		assertEquals("2.0.0", request.headers["Parse-Version"])
+		assertEquals("2.1.0", request.headers["X-API-Version"])
 		assertEquals("Example/1.0", request.headers["User-Agent"])
 		assertEquals("parse_app_version_test", request.headers["X-API-Key"])
 		assertEquals("com.example.version", request.headers["X-App-Id"])
@@ -54,14 +61,16 @@ class APIVersionTest {
 	@Test
 	fun versionErrorsDoNotRetryOrFallBack() = runBlocking {
 		for (status in listOf(400, 410)) {
-			val stub = StubTransport(status, """{"code":"invalid_request","message":"Unsupported API version","request_id":"req_version"}""")
+			val stub = StubTransport(status, """
+{"code":"invalid_request","message":"Unsupported API version","request_id":"req_version"}
+""")
 			val client = ParseAPI("parse_app_version_test") { retries = 2; transport = stub }
 			val error = assertFailsWith<ParseAPIException> { client.ipSelf() }
 			assertEquals(status, error.status)
 			assertEquals("invalid_request", error.code)
 			assertEquals("req_version", error.requestId)
 			assertEquals(1, stub.requests.size)
-			assertEquals("2.0.0", stub.requests.single().headers["Parse-Version"])
+			assertEquals("2.1.0", stub.requests.single().headers["X-API-Version"])
 		}
 	}
 }

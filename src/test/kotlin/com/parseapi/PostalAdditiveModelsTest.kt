@@ -12,14 +12,14 @@ class PostalAdditiveModelsTest {
   val codec = Json { ignoreUnknownKeys = true; namingStrategy = JsonNamingStrategy.SnakeCase }
   val cases = codec.decodeFromString<Map<String, Postal>>(javaClass.getResource("/postal-additive.json")!!.readText())
   for ((name, postal) in cases) {
-   val metro = postal.deep!!.metros!![0]
+   val metro = postal.metros!![0]
    assertEquals(0.125, metro.share, name)
    if (name == "missing" || name == "null") { assertNull(postal.type, name); assertNull(metro.sharePercent, name) }
   }
   assertEquals("standard", cases["current"]!!.type)
-  assertEquals(12.5, cases["current"]!!.deep!!.metros!![0].sharePercent)
-  assertEquals(0.0, cases["zero"]!!.deep!!.metros!![0].sharePercent)
+  assertEquals(12.5, cases["current"]!!.metros!![0].sharePercent)
+  assertEquals(0.0, cases["zero"]!!.metros!![0].sharePercent)
   assertEquals("future_custom", cases["future"]!!.type)
-  assertEquals(100.0, cases["future"]!!.deep!!.metros!![0].sharePercent)
+  assertEquals(100.0, cases["future"]!!.metros!![0].sharePercent)
  }
 }

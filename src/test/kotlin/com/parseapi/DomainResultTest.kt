@@ -9,15 +9,31 @@ class DomainResultTest {
 
 	@Test fun nullableAvailabilityAndPartialDetailUseOneLookup() = runBlocking {
 		val cases = listOf(
-			"""{"domain":"x.example","available":null,"deep":{}}""" to null,
-			"""{"domain":"x.example"}""" to null,
-			"""{"domain":"x.example","available":true,"deep":{"registration":{"registered":false}}}""" to true,
-			"""{"domain":"x.example","available":false,"deep":{"registration":{"registered":true,"created":null,"status":[],"dnssec":false}}}""" to false,
+			"""
+{"domain":"x.example","available":null}
+""" to null,
+			"""
+{"domain":"x.example"}
+""" to null,
+			"""
+{"domain":"x.example","available":true,"registration":{"registered":false}}
+""" to true,
+			"""
+{"domain":"x.example","available":false,"registration":{"registered":true,"created":null,"status":[],"dnssec":false}}
+""" to false,
 			// Tolerant decoding; unavailable current responses normally use deep:{}.
-			"""{"domain":"x.example","available":false,"deep":{"registration":null}}""" to false,
-			"""{"domain":"x.example","available":false,"deep":{"registration":{"registered":true,"status":null,"dnssec":null}}}""" to false,
-			"""{"domain":"x.example","available":false,"deep":{"registration":{}}}""" to false,
-			"""{"domain":"x.example","available":false,"deep":{"registration":{"registered":null}}}""" to false,
+			"""
+{"domain":"x.example","available":false,"registration":null}
+""" to false,
+			"""
+{"domain":"x.example","available":false,"registration":{"registered":true,"status":null,"dnssec":null}}
+""" to false,
+			"""
+{"domain":"x.example","available":false,"registration":{}}
+""" to false,
+			"""
+{"domain":"x.example","available":false,"registration":{"registered":null}}
+""" to false,
 		)
 		for ((index, item) in cases.withIndex()) {
 			val stub = StubTransport(200, item.first)
@@ -29,16 +45,16 @@ class DomainResultTest {
 			assertEquals("x.example", result.domain)
 			assertEquals(1, stub.requests.size)
 			assertEquals("https://api.parseapi.com/domain/b%C3%BCcher.example?deep=true", stub.requests.single().url)
-			assertEquals("2.0.0", stub.requests.single().headers["Parse-Version"])
+			assertEquals("2.1.0", stub.requests.single().headers["X-API-Version"])
 			assertEquals("test_key", stub.requests.single().headers["X-API-Key"])
 			when (index) {
-				0 -> { assertNotNull(result.deep); assertNull(result.deep.registration) }
-				1 -> assertNull(result.deep)
-				2 -> { assertEquals(false, result.deep?.registration?.registered); assertNull(result.deep?.registration?.dnssec); assertNull(result.deep?.registration?.status) }
-				3 -> { assertEquals(true, result.deep?.registration?.registered); assertEquals(false, result.deep?.registration?.dnssec); assertEquals(emptyList(), result.deep?.registration?.status) }
-				4 -> { assertNotNull(result.deep); assertNull(result.deep.registration) }
-				5 -> { assertEquals(true, result.deep?.registration?.registered); assertNull(result.deep?.registration?.dnssec); assertNull(result.deep?.registration?.status) }
-				6, 7 -> { assertNotNull(result.deep?.registration); assertNull(result.deep?.registration?.registered) }
+				0 -> { result; assertNull(result.registration) }
+				1 -> assertNull(result.registration)
+ 2 -> { assertNull(result?.registration?.dnssec); assertNull(result?.registration?.status) }
+				3 -> { assertEquals(false, result?.registration?.dnssec); assertEquals(emptyList(), result?.registration?.status) }
+				4 -> { result; assertNull(result.registration) }
+				5 -> { assertNull(result?.registration?.dnssec); assertNull(result?.registration?.status) }
+				6, 7 -> { assertNotNull(result?.registration); }
 			}
 		}
 	}
@@ -46,7 +62,9 @@ class DomainResultTest {
 	@Test fun existingDomainCallablePreservesUnknownAndKnownAvailability() = runBlocking {
         for ((raw, expected) in listOf("true" to true, "false" to false, "null" to null)) {
             for (signing in listOf("", ",\"dnssec\":null", ",\"dnssec\":false", ",\"dnssec\":true")) {
-                val detail = when (raw) { "null" -> "{}"; "true" -> """{"registration":{"registered":false}}"""; else -> """{"registration":{"registered":true$signing}}""" }
+                val detail = when (raw) { "null" -> "{}"; "true" -> """
+{"registration":{"registered":false}}
+"""; else -> """{"registration":{"registered":true$signing}}""" }
                 val stub = StubTransport(200, """{"domain":"x.example","available":$raw,"deep":$detail}""")
                 val parse = client(stub)
                 val lookup: suspend (String, DomainOptions.() -> Unit) -> Domain = parse::domain
@@ -54,23 +72,26 @@ class DomainResultTest {
                 val available: Boolean? = result.available
                 assertEquals(expected, available)
                 val expectedSigning = when { raw != "false" -> null; signing.contains("false") -> false; signing.contains("true") -> true; else -> null }
-                assertEquals(expectedSigning, result.deep?.registration?.dnssec)
+                assertEquals(expectedSigning, result?.registration?.dnssec)
                 assertEquals(1, stub.requests.size)
             }
         }
-        val stub = StubTransport(200, """{"domain":"x.example","available":"not-a-boolean"}""")
+        val stub = StubTransport(200, """
+{"domain":"x.example","available":"not-a-boolean"}
+""")
         assertFailsWith<SerializationException> { client(stub).domain("x.example") }
         assertEquals(1, stub.requests.size, "A decode failure does not repeat the lookup")
     }
 
 	@Test fun noDeepOverloadsAndExplicitFalseRemainAvailable() = runBlocking {
-		val stub = StubTransport(200, """{"domain":"x.example","available":false}""")
+		val stub = StubTransport(200, """
+{"domain":"x.example","available":false}
+""")
 		val parse = client(stub)
 		val old: suspend (String) -> Domain = parse::domain
 		val lookup: suspend (String) -> DomainResult = parse::domainResult
 		val result = lookup("x.example")
-		assertEquals(false, result.available); assertNull(result.deep)
-		assertEquals(false, old("x.example").available)
+		assertEquals(false, result.available); assertEquals(false, old("x.example").available)
 		assertEquals(2, stub.requests.size)
 		assertTrue(stub.requests.all { it.url == "https://api.parseapi.com/domain/x.example" })
 	}

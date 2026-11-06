@@ -26,50 +26,66 @@ class StabilityTest {
 
 	@Test
 	fun dateEncodingAndCalendarFields() = runBlocking {
-		val stub = StubTransport(200, """{"date":"2026-03-04","valid":true,"unix":1772582400,"to":"2026-03-09","days":5,"deep":{"month_name":"March","week_year":2026,"days_in_month":31}}""")
+		val stub = StubTransport(200, """
+{"date":"2026-03-04","valid":true,"unix":1772582400,"to":"2026-03-09","days":5,"month_name":"March","week_year":2026,"days_in_month":31}
+""")
 		val result = stabilityClient(stub).date("03/04/2026") { this.format = "mdy"; this.to = "2026-03-09" }
 		assertEquals(1, stub.requests.size)
 		assertEquals("https://api.parseapi.com/date/03%2F04%2F2026?format=mdy&to=2026-03-09", stub.requests.single().url)
-		assertEquals("March", result.deep?.monthName)
-		assertEquals(2026, result.deep?.weekYear)
-		assertEquals(31, result.deep?.daysInMonth)
+		assertEquals("March", result?.monthName)
+		assertEquals(2026, result?.weekYear)
+		assertEquals(31, result?.daysInMonth)
 		assertEquals(5, result.days)
 	}
 
 	@Test
 	fun invalidDateAndTodayAreSeparateCalls() = runBlocking {
-		val invalid = StubTransport(200, """{"date":"03/04/2026","valid":false,"deep":{"year":null}}""")
+		val invalid = StubTransport(200, """
+{"date":"03/04/2026","valid":false,"year":null}
+""")
 		val result = stabilityClient(invalid).date("03/04/2026")
 		assertFalse(result.valid)
-		assertNull(result.deep?.year)
-		val today = StubTransport(200, """{"date":"2026-09-05","valid":true}""")
+		assertNull(result?.year)
+		val today = StubTransport(200, """
+{"date":"2026-09-05","valid":true}
+""")
 		stabilityClient(today).dateToday { to = "2026-12-25" }
 		assertEquals("https://api.parseapi.com/date?to=2026-12-25", today.requests.single().url)
 	}
 
 	@Test
 	fun countryStatesIsOneRequest() = runBlocking {
-		val stub = StubTransport(200, """{"country":"US","states":[]}""")
+		val stub = StubTransport(200, """
+{"country":"US","states":[]}
+""")
 		stabilityClient(stub).countryStates("US")
 		assertEquals("https://api.parseapi.com/country/US/states", stub.requests.single().url)
 	}
 
 	@Test
 	fun nullCoreCollectionsDecodeAsEmpty() = runBlocking {
-		val states = StubTransport(200, """{"country":"US","states":null,"future":{"x":1}}""")
+		val states = StubTransport(200, """
+{"country":"US","states":null,"future":{"x":1}}
+""")
 		assertTrue(stabilityClient(states).countryStates("US").states.isEmpty())
-		val country = StubTransport(200, """{"country":"US","name":"United States","continent":"NA","languages":null,"deep":{"iso3":"USA","numeric":840,"borders":null}}""")
+		val country = StubTransport(200, """
+{"country":"US","name":"United States","continent":"NA","languages":null,"iso3":"USA","numeric":840,"borders":null}
+""")
 		val result = stabilityClient(country).country("US")
 		assertTrue(result.languages.isEmpty())
-		assertNull(result.deep?.borders)
+		assertNull(result?.borders)
 	}
 
 	@Test
 	fun malformedCollectionAndNullScalarRemainErrors() {
-		val malformed = StubTransport(200, """{"country":"US","states":"wrong"}""")
+		val malformed = StubTransport(200, """
+{"country":"US","states":"wrong"}
+""")
 		assertFailsWith<SerializationException> { runBlocking { stabilityClient(malformed).countryStates("US") } }
 		assertEquals(1, malformed.requests.size)
-		val invalid = StubTransport(200, """{"date":"2026-09-05","valid":null}""")
+		val invalid = StubTransport(200, """
+{"date":"2026-09-05","valid":null}
+""")
 		assertFailsWith<SerializationException> { runBlocking { stabilityClient(invalid).dateToday() } }
 	}
 

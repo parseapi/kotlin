@@ -4,7 +4,9 @@ import kotlinx.coroutines.runBlocking
 private object BuildConfig { const val APPLICATION_ID="com.fixture" }
 class TimeGeneratedSnippetsTest {
  @Test fun literalCalls()=runBlocking {
- val stub=StubTransport(200,"""{"timezone": null, "at": null, "unix": null, "targets": null, "timezone_database_version": "2026c", "timezones": [], "zones": [], "location": {"input": {"type": "city", "value": "Paris"}, "status": "not_found", "candidates": [], "truncated": false, "source": "fixture"}, "deep": {"season": null}}""")
+ val stub=StubTransport(200,"""
+{"timezone":null,"at":null,"unix":null,"targets":null,"timezone_database_version":"2026c","timezones":[],"zones":[],"location":{"input":{"type":"city","value":"Paris"},"status":"not_found","candidates":[],"truncated":false,"source":"fixture"},"season":null}
+""")
 run {
 
 val parse = ParseAPI("parse_app_...") {

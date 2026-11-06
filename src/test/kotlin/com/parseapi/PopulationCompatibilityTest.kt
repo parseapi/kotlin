@@ -10,7 +10,9 @@ class PopulationCompatibilityTest {
  @Suppress("DEPRECATION")
  @Test fun retiredMemberKeepsSourceCompatibilityWithoutWireOutput() {
   val json=Json { ignoreUnknownKeys=true; encodeDefaults=true }
-  val city=json.decodeFromString<CityDeep>("""{"population":0,"population_period":"2024"}""")
+  val city=json.decodeFromString<CityDeep>("""
+{"population":0,"population_period":"2024"}
+""")
   assertNull(city.populationPeriod)
   assertEquals(0L,city.population)
   assertFalse(json.encodeToString(CityDeep.serializer(),city).contains("population_period"))

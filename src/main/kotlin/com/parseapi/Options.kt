@@ -88,11 +88,11 @@ class CitySearchOptions internal constructor() {
 	var deep: Boolean = false
 	var minPopulation: Long? = null
 	var maxPopulation: Long? = null
-	var timezone: String? = null
+
 	/** west,south,east,north; west greater than east crosses the date line. */
 	var bbox: String? = null
 	var sort: String? = null
-	var order: String? = null
+
 	var page: Boolean = false
 	var cursor: String? = null
 	var countries: List<String>? = null
@@ -119,11 +119,11 @@ class CityNearbyOptions internal constructor() {
 	var deep: Boolean = false
 	var minPopulation: Long? = null
 	var maxPopulation: Long? = null
-	var timezone: String? = null
+
 	/** west,south,east,north; west greater than east crosses the date line. */
 	var bbox: String? = null
 	var sort: String? = null
-	var order: String? = null
+
 	var page: Boolean = false
 	var cursor: String? = null
 	var countries: List<String>? = null
@@ -294,7 +294,7 @@ class PointOptions internal constructor() {
 class WeatherOptions internal constructor() {
 	/** Add specialist current measurements, forecasts and related detail on paid plans. */
 	var deep: Boolean = false
-	/** Past UTC day (YYYY-MM-DD). Requires paid deep and adds deep.history alongside current conditions. */
+	/** Past UTC day (YYYY-MM-DD). Requires paid deep and adds history alongside current conditions. */
 	var date: String? = null
 }
 
@@ -445,9 +445,6 @@ typealias IndustryOptions = NaicsOptions
 typealias IndustrySearchOptions = NaicsSearchOptions
 
 
-class BinOptions internal constructor() {
-	var deep: Boolean = false
-}
 
 
 
@@ -459,8 +456,6 @@ typealias EmojiBrowseOptions = EmojiSearchOptions
 class EmojiParseOptions internal constructor() { var deep: Boolean = false; var lang: String? = null }
 
 class EmojiCatalogOptions internal constructor() {
-	var profile: String? = null
-	var deep: Boolean = true
 	var lang: String? = null
 	var category: String? = null
 	var subcategory: String? = null
@@ -480,11 +475,11 @@ class CityListOptions internal constructor() {
 	var limit: Int? = null
 	var minPopulation: Long? = null
 	var maxPopulation: Long? = null
-	var timezone: String? = null
+
 	/** west,south,east,north; west greater than east crosses the date line. */
 	var bbox: String? = null
 	var sort: String? = null
-	var order: String? = null
+
 	var cursor: String? = null
 	var deep: Boolean = false
 	var lang: String? = null
@@ -508,11 +503,11 @@ class CityNearbyCoordinatesOptions internal constructor() {
 	var limit: Int? = null
 	var minPopulation: Long? = null
 	var maxPopulation: Long? = null
-	var timezone: String? = null
+
 	/** west,south,east,north; west greater than east crosses the date line. */
 	var bbox: String? = null
 	var sort: String? = null
-	var order: String? = null
+
 	var cursor: String? = null
 	var deep: Boolean = false
 	var lang: String? = null

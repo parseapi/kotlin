@@ -28,11 +28,18 @@ class ISONamingTest {
   for(fields in listOf("\"iso\":\"US-CA\"","\"iso_3166_2\":\"US-CA\"","\"iso_subdivision\":\"US-CA\"")) {
    val value=json.decodeFromString<State>("{\"state\":\"CA\",\"name\":\"California\",\"country\":\"US\",$fields}");assertEquals("US-CA",value.iso)
   }
+  for(fields in listOf("\"numeric\":0","\"iso_numeric\":0")) {
+   val value=json.decodeFromString<Currency>("{\"currency\":\"USD\",\"name\":\"US Dollar\",$fields}");assertEquals(0,value.isoNumeric)
+  }
  }
  @Test fun releasedDeepMembersRemainReadable() {
-  val language=json.decodeFromString<LanguageDeep>("""{"iso3":"eng","countries":["US"]}""")
+  val language=json.decodeFromString<LanguageDeep>("""
+{"iso3":"eng","countries":["US"]}
+""")
   assertEquals("eng",language.iso3);assertEquals(listOf("US"),language.countries)
-  val state=json.decodeFromString<StateDeep>("""{"fips":"06","capital":"Sacramento","area_codes":["916"],"tax":"Sales tax","tax_rate":0}""")
+  val state=json.decodeFromString<StateDeep>("""
+{"fips":"06","capital":"Sacramento","area_codes":["916"],"tax":"Sales tax","tax_rate":0}
+""")
   assertEquals("06",state.fips);assertEquals("Sacramento",state.capital);assertEquals(listOf("916"),state.areaCodes)
   assertEquals("Sales tax",state.tax?.name);assertEquals(0.0,state.taxRate)
   val raw=json.parseToJsonElement(json.encodeToString(state)).jsonObject
@@ -43,7 +50,11 @@ class ISONamingTest {
    val value=json.decodeFromString<Country>("{\"country\":\"US\",\"name\":\"United States\",\"continent\":\"NA\",$fields}");assertNull(value.iso3);assertNull(value.numeric)
    val deep=json.decodeFromString<CountryDeep>("{$fields}");assertNull(deep.iso3);assertNull(deep.numeric)
   }
-  val language=json.decodeFromString<Language>("""{"language":"hr","name":"Croatian","direction":"ltr","iso_alpha3":null,"iso3":"hrv"}""");assertNull(language.iso3)
-  val state=json.decodeFromString<State>("""{"state":"CA","name":"California","country":"US","iso_subdivision":null,"iso":"US-CA","iso_3166_2":"US-TX"}""");assertNull(state.iso)
+  val language=json.decodeFromString<Language>("""
+{"language":"hr","name":"Croatian","direction":"ltr","iso_alpha3":null,"iso3":"hrv"}
+""");assertNull(language.iso3)
+  val state=json.decodeFromString<State>("""
+{"state":"CA","name":"California","country":"US","iso_subdivision":null,"iso":"US-CA","iso_3166_2":"US-TX"}
+""");assertNull(state.iso)
  }
 }

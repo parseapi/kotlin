@@ -21,7 +21,7 @@ class PostalMetrosTest {
 			val postal = metroClient(member).postal("12345")
 			val nearby = metroClient("""{"postal":"12345","country":"US","radius":10,"unit":"km","nearby":[$member]$detail}""").postalNearby("12345")
 			val distance = metroClient("""{"country":"US","distance":0,"distance_mi":0,"from":$member,"to":$member}""").postalDistance("12345", "12345")
-			for (value in listOf(postal.deep?.metros, nearby.deep?.metros, nearby.nearby[0].deep?.metros, distance.from.deep?.metros, distance.to.deep?.metros)) {
+			for (value in listOf(postal?.metros, nearby?.metros, nearby.nearby[0]?.metros, distance.from?.metros, distance.to?.metros)) {
 				assertEquals(if (index < 2) null else if (index == 2) 0 else 1, value?.size)
 				value?.firstOrNull()?.let {
 					assertEquals("12345", it.code)
@@ -38,8 +38,10 @@ class PostalMetrosTest {
 
 	@Test
 	fun missingSharesRemainUnknown() = runBlocking {
-		val result = metroClient("""{"postal":"12345","country":"US","deep":{"metros":[{"code":"12345","name":"Example area","type":"metropolitan"}]}}""").postal("12345")
-		val metro = result.deep?.metros!!.single()
+		val result = metroClient("""
+{"postal":"12345","country":"US","metros":[{"code":"12345","name":"Example area","type":"metropolitan"}]}
+""").postal("12345")
+		val metro = result?.metros!!.single()
 		assertNull(metro.share)
 		assertNull(metro.residentialShare)
 		assertNull(metro.businessShare)

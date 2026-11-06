@@ -26,27 +26,45 @@ class PostalWeatherMigrationTest {
             val tax = json.parseToJsonElement(json.encodeToString(value.propertyTax!!)).jsonObject
             assertEquals(setOf("annual_median"), tax.keys)
         }
-        val legacy = """{"property_tax":{"annual_median":0,"currency":"USD","period":"2020-2024"}}"""
+        val legacy = """
+{"property_tax":{"annual_median":0,"currency":"USD","period":"2020-2024"}}
+"""
         val postal = json.decodeFromString<PostalDeep>(legacy)
         assertEquals("USD", postal.propertyTax?.currency)
         assertEquals("2020-2024", postal.propertyTax?.period)
         val district = json.decodeFromString<DistrictDeep>(legacy)
         assertEquals("USD", district.propertyTax?.currency)
         assertEquals("2020-2024", district.propertyTax?.period)
-        for (body in listOf("{}", """{"property_tax":null}""")) {
+        for (body in listOf("{}", """
+{"property_tax":null}
+""")) {
             assertNull(json.decodeFromString<PostalDeep>(body).propertyTax)
         }
     }
 
     @Test fun minuteRateReadersWorkAcrossRolloutAndCanonicalNullWins() {
         val cases = listOf(
-            Triple("""{"precipitation":2.54,"precipitation_in":0.1}""", 2.54, 0.1),
-            Triple("""{"precipitation_rate":0,"precipitation_rate_in":0}""", 0.0, 0.0),
-            Triple("""{"precipitation_rate":-1,"precipitation_rate_in":-0.1}""", -1.0, -0.1),
-            Triple("""{"precipitation":99,"precipitation_in":99,"precipitation_rate":2.54,"precipitation_rate_in":0.1}""", 2.54, 0.1),
-            Triple("""{"precipitation_rate":2.54,"precipitation_rate_in":0.1,"precipitation":99,"precipitation_in":99}""", 2.54, 0.1),
-            Triple("""{"precipitation_rate":null,"precipitation_rate_in":null,"precipitation":99,"precipitation_in":99}""", null, null),
-            Triple("""{"precipitation":99,"precipitation_in":99,"precipitation_rate":null,"precipitation_rate_in":null}""", null, null),
+            Triple("""
+{"precipitation":2.54,"precipitation_in":0.1}
+""", 2.54, 0.1),
+            Triple("""
+{"precipitation_rate":0,"precipitation_rate_in":0}
+""", 0.0, 0.0),
+            Triple("""
+{"precipitation_rate":-1,"precipitation_rate_in":-0.1}
+""", -1.0, -0.1),
+            Triple("""
+{"precipitation":99,"precipitation_in":99,"precipitation_rate":2.54,"precipitation_rate_in":0.1}
+""", 2.54, 0.1),
+            Triple("""
+{"precipitation_rate":2.54,"precipitation_rate_in":0.1,"precipitation":99,"precipitation_in":99}
+""", 2.54, 0.1),
+            Triple("""
+{"precipitation_rate":null,"precipitation_rate_in":null,"precipitation":99,"precipitation_in":99}
+""", null, null),
+            Triple("""
+{"precipitation":99,"precipitation_in":99,"precipitation_rate":null,"precipitation_rate_in":null}
+""", null, null),
             Triple("{}", null, null),
         )
         for ((body, metric, imperial) in cases) {
@@ -58,7 +76,9 @@ class PostalWeatherMigrationTest {
             assertEquals(metric, encoded["precipitation_rate"]?.jsonPrimitive?.doubleOrNull)
             assertEquals(imperial, encoded["precipitation_rate_in"]?.jsonPrimitive?.doubleOrNull)
         }
-        val history = json.decodeFromString<WeatherHistory>("""{"precipitation":2.54,"precipitation_in":0.1}""")
+        val history = json.decodeFromString<WeatherHistory>("""
+{"precipitation":2.54,"precipitation_in":0.1}
+""")
         assertEquals(2.54, history.precipitation)
         assertEquals(0.1, history.precipitationIn)
     }

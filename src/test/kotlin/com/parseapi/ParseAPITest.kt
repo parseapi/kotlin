@@ -18,7 +18,8 @@ class StubTransport(
 
 	override suspend fun execute(request: ParseAPIRequest): ParseAPIResponse {
 		requests.add(request)
-		return if (responses.size > 1) responses.removeFirst() else responses[0]
+		val response = if (responses.size > 1) responses.removeFirst() else responses[0]
+ return ParseAPIResponse(response.status, rootFixture(response.body), response.headers)
 	}
 }
 
@@ -28,8 +29,12 @@ private fun client(
 	retries: Int = 0,
 ): ParseAPI = ParseAPI("parse_testtesttesttest") { this.appId = appId; this.baseUrl = "https://api.parseapi.com"; this.retries = retries; this.transport = stub }
 
-private const val IP_BODY = """{"ip":"8.8.8.8","country":null,"country_name":null,"continent":null,"asn":null,"asn_name":null}"""
-private const val DOMAIN_BODY = """{"domain":"x.com","available":false}"""
+private const val IP_BODY = """
+{"ip":"8.8.8.8","country":null,"country_name":null,"continent":null,"asn":null,"asn_name":null}
+"""
+private const val DOMAIN_BODY = """
+{"domain":"x.com","available":false}
+"""
 
 class UrlMappingTest {
 	@Test
@@ -48,14 +53,18 @@ class UrlMappingTest {
 
 	@Test
 	fun timezoneEncodesSlash() = runBlocking {
-		val stub = StubTransport(200, """{"timezone":"America/New_York"}""")
+		val stub = StubTransport(200, """
+{"timezone":"America/New_York"}
+""")
 		client(stub).timezone("America/New_York")
 		assertEquals("https://api.parseapi.com/timezone/America%2FNew_York", stub.requests[0].url)
 	}
 
 	@Test
 	fun emailEncodesAt() = runBlocking {
-		val stub = StubTransport(200, """{"email":"a@b.com","valid":true,"free":false,"role":false,"disposable":false}""")
+		val stub = StubTransport(200, """
+{"email":"a@b.com","valid":true,"free":false,"role":false,"disposable":false}
+""")
 		client(stub).email("a@b.com")
 		assertEquals("https://api.parseapi.com/email/a%40b.com", stub.requests[0].url)
 	}
@@ -70,35 +79,45 @@ class UrlMappingTest {
 
 	@Test
 	fun phoneEncodesPlus() = runBlocking {
-		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US"}""")
+		val stub = StubTransport(200, """
+{"phone":"+14155552671","valid":true,"country":"US"}
+""")
 		client(stub).phone("+14155552671")
 		assertEquals("https://api.parseapi.com/phone/%2B14155552671", stub.requests[0].url)
 	}
 
 	@Test
 	fun stateSendsCountry() = runBlocking {
-		val stub = StubTransport(200, """{"state":"NC","name":"North Carolina","country":"US"}""")
+		val stub = StubTransport(200, """
+{"state":"NC","name":"North Carolina","country":"US"}
+""")
 		client(stub).state("NC") { this.country = "US" }
 		assertEquals("https://api.parseapi.com/state/NC?country=US", stub.requests[0].url)
 	}
 
 	@Test
 	fun citySearchQuery() = runBlocking {
-		val stub = StubTransport(200, """{"q":"char","cities":[]}""")
+		val stub = StubTransport(200, """
+{"q":"char","cities":[]}
+""")
 		client(stub).citySearch(query = "char") { this.country = "US"; this.limit = 5 }
 		assertEquals("https://api.parseapi.com/city?q=char&country=US&limit=5", stub.requests[0].url)
 	}
 
 	@Test
 	fun cityIdPath() = runBlocking {
-		val stub = StubTransport(200, """{"name":"Charlotte","country":"US","id":"city_abcdefabcdef"}""")
+		val stub = StubTransport(200, """
+{"name":"Charlotte","country":"US","id":"city_abcdefabcdef"}
+""")
 		client(stub).cityId("city_abcdefabcdef")
 		assertEquals("https://api.parseapi.com/city/id/city_abcdefabcdef", stub.requests[0].url)
 	}
 
 	@Test
 	fun pointCoordsAndDeep() = runBlocking {
-		val stub = StubTransport(200, """{"latitude":36.07,"longitude":-79.79,"deep":{}}""")
+		val stub = StubTransport(200, """
+{"latitude":36.07,"longitude":-79.79}
+""")
 		client(stub).point(36.07, -79.79) { this.deep = true }
 		assertEquals("https://api.parseapi.com/point?lat=36.07&lon=-79.79&deep=true", stub.requests[0].url)
 	}
@@ -112,14 +131,18 @@ class UrlMappingTest {
 
 	@Test
 	fun wholeNumberCoordsStayClean() = runBlocking {
-		val stub = StubTransport(200, """{"latitude":40,"longitude":-74}""")
+		val stub = StubTransport(200, """
+{"latitude":40,"longitude":-74}
+""")
 		client(stub).elevation(40.0, -74.0)
 		assertEquals("https://api.parseapi.com/elevation?lat=40&lon=-74", stub.requests[0].url)
 	}
 
 	@Test
 	fun stateByNameOmitsCountry() = runBlocking {
-		val stub = StubTransport(200, """{"state":"CO","name":"Colorado","country":"US"}""")
+		val stub = StubTransport(200, """
+{"state":"CO","name":"Colorado","country":"US"}
+""")
 		client(stub).state("colorado")
 		assertEquals("https://api.parseapi.com/state/colorado", stub.requests[0].url)
 	}
@@ -128,7 +151,9 @@ class UrlMappingTest {
 	fun cityNearbyPath() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"city":"Denver","country":"US","radius":8,"unit":"mi","nearby":[]}""",
+			"""
+{"city":"Denver","country":"US","radius":8,"unit":"mi","nearby":[]}
+""",
 		)
 		client(stub).cityNearby("denver") { this.radius = 8.0; this.unit = "mi"; this.limit = 3 }
 		assertEquals("https://api.parseapi.com/city/denver/nearby?radius=8&unit=mi&limit=3", stub.requests[0].url)
@@ -136,7 +161,9 @@ class UrlMappingTest {
 
 	@Test
 	fun postalBareOmitsCountry() = runBlocking {
-		val stub = StubTransport(200, """{"postal":"SW1A 1AA","country":"GB"}""")
+		val stub = StubTransport(200, """
+{"postal":"SW1A 1AA","country":"GB"}
+""")
 		client(stub).postal("SW1A 1AA")
 		assertEquals("https://api.parseapi.com/postal/SW1A%201AA", stub.requests[0].url)
 	}
@@ -145,7 +172,9 @@ class UrlMappingTest {
 	fun postalDistancePath() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"country":"US","from":{"postal":"28202"},"to":{"postal":"10001"},"distance":1,"distance_mi":1}""",
+			"""
+{"country":"US","from":{"postal":"28202"},"to":{"postal":"10001"},"distance":1,"distance_mi":1}
+""",
 		)
 		client(stub).postalDistance("28202", "10001") { this.country = "US" }
 		assertEquals("https://api.parseapi.com/postal/28202/distance/10001?country=US", stub.requests[0].url)
@@ -172,7 +201,9 @@ class HeadersTest {
 
 	@Test
 	fun useragentReplacesUa() = runBlocking {
-		val stub = StubTransport(200, """{"useragent":"x","bot":false,"mobile":false}""")
+		val stub = StubTransport(200, """
+{"useragent":"x","bot":false,"mobile":false}
+""")
 		client(stub).useragent("SomeAgent/1.0")
 		assertEquals("SomeAgent/1.0", stub.requests[0].headers["User-Agent"])
 	}
@@ -183,7 +214,9 @@ class ErrorsTest {
 	fun honest404() {
 		val stub = StubTransport(
 			404,
-			"""{"code":"not_found","message":"City not found","docs":"https://parseapi.com/docs#not_found","request_id":"req_123"}""",
+			"""
+{"code":"not_found","message":"City not found","docs":"https://parseapi.com/docs#not_found","request_id":"req_123"}
+""",
 		)
 		val error = assertFailsWith<ParseAPIException> {
 			runBlocking { client(stub).city("nowhere") }
@@ -251,7 +284,9 @@ class RetriesTest {
 
 	@Test
 	fun no404Retry() {
-		val stub = StubTransport(404, """{"code":"not_found","message":"nope"}""")
+		val stub = StubTransport(404, """
+{"code":"not_found","message":"nope"}
+""")
 		assertFailsWith<ParseAPIException> {
 			runBlocking { client(stub, retries = 2).country("XX") }
 		}
@@ -278,33 +313,38 @@ class DecodingTest {
 	fun snakeCaseFields() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"ip":"8.8.8.8","country":"US","country_name":"United States","continent":"NA","asn":"AS15169","asn_name":"Google","deep":{"state":"CA","datacenter":true}}""",
+			"""
+{"ip":"8.8.8.8","country":"US","country_name":"United States","continent":"NA","asn":"AS15169","asn_name":"Google","state":"CA","datacenter":true}
+""",
 		)
 		val result = client(stub).ip("8.8.8.8") { this.deep = true }
 		assertEquals("United States", result.countryName)
 		assertEquals("Google", result.asnName)
-		assertEquals("CA", result.deep?.state)
-		assertEquals(true, result.deep?.datacenter)
-		assertNull(result.deep?.vpn)
+		assertEquals("CA", result?.state)
+		assertEquals(true, result?.datacenter)
+		assertNull(result?.vpn)
 	}
 
 	@Test
 	fun deepTriad() = runBlocking {
-		val locked = StubTransport(200, """{"ip":"8.8.8.8","deep":{}}""")
+		val locked = StubTransport(200, """
+{"ip":"8.8.8.8"}
+""")
 		val lockedResult = client(locked).ip("8.8.8.8") { this.deep = true }
-		assertNotNull(lockedResult.deep)
-		assertNull(lockedResult.deep?.datacenter)
+		lockedResult
+		assertNull(lockedResult?.datacenter)
 
 		val omitted = StubTransport(200, IP_BODY)
 		val omittedResult = client(omitted).ip("8.8.8.8")
-		assertNull(omittedResult.deep)
-	}
+		}
 
 	@Test
 	fun nullRegionsArray() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"country":"US","date":"2026-12-25","holiday":{"date":"2026-12-25","name":"Christmas Day","name_local":null,"type":"public","regions":null,"substitute":false}}""",
+			"""
+{"country":"US","date":"2026-12-25","holiday":{"date":"2026-12-25","name":"Christmas Day","name_local":null,"type":"public","regions":null,"substitute":false}}
+""",
 		)
 		val result = client(stub).holidayDate("US", "2026-12-25")
 		assertNull(result.holiday?.regions)
@@ -313,7 +353,9 @@ class DecodingTest {
 
 	@Test
 	fun unknownFieldsIgnored() = runBlocking {
-		val stub = StubTransport(200, """{"domain":"x.com","available":false,"some_future_field":{"a":1}}""")
+		val stub = StubTransport(200, """
+{"domain":"x.com","available":false,"some_future_field":{"a":1}}
+""")
 		val result = client(stub).domain("x.com")
 		assertEquals("x.com", result.domain)
 	}
@@ -322,27 +364,32 @@ class DecodingTest {
 	fun weatherRooms() = runBlocking {
 		val stub = StubTransport(
 			200,
-			"""{"latitude":40.71,"longitude":-74.01,"current":{"temperature":21.7,"temperature_f":71.1,"humidity":63,"observed_at":"2026-08-28T12:51:00Z"},"station":{"id":"KNYC","name":"New York City, Central Park","distance":4.3,"distance_mi":2.7}}""",
+			"""
+{"latitude":40.71,"longitude":-74.01,"current":{"temperature":21.7,"temperature_f":71.1,"humidity":63,"observed_at":"2026-08-28T12:51:00Z"},"station":{"id":"KNYC","name":"New York City, Central Park","distance":4.3,"distance_mi":2.7}}
+""",
 		)
 		val result = client(stub).weather(40.71, -74.01)
 		assertEquals(71.1, result.current.temperatureF)
 		assertEquals("KNYC", result.station?.id)
 		assertEquals("2026-08-28T12:51:00Z", result.current.observedAt)
-		assertNull(result.deep)
-	}
+		}
 
 	@Test
 	fun emptyPhoneDeepDecodes() = runBlocking {
-		val stub = StubTransport(200, """{"phone":"+14155552671","valid":true,"country":"US","deep":{}}""")
+		val stub = StubTransport(200, """
+{"phone":"+14155552671","valid":true,"country":"US"}
+""")
 		val result = client(stub).phone("+14155552671") { this.deep = true }
-		assertNotNull(result.deep)
+		result
 		assertTrue(result.valid)
 	}
 }
 
 class TimeTest {
 	@Test fun targetListsAndDiscoveryKeepTheirShapes() = runBlocking {
-		val stub = StubTransport(200, """{"targets":[{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0},{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0}]}""")
+		val stub = StubTransport(200, """
+{"targets":[{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0},{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0}]}
+""")
 		val parse = client(stub)
 		for (targets in listOf(emptyList(), listOf(""), listOf("UTC,UTC"), List(11) { "UTC" })) {
 			assertFailsWith<IllegalArgumentException> { parse.time("UTC") { this.targets = targets } }
@@ -356,9 +403,15 @@ class TimeTest {
 		assertEquals(0L, result.targets?.last()?.unix)
 		parse.timeAt(0.0, 0.0) { targets = listOf("UTC", "Asia/Tokyo", "UTC") }
 		assertEquals("https://api.parseapi.com/time?lat=0&lon=0&targets=UTC%2CAsia%2FTokyo%2CUTC", stub.requests.last().url)
-		for (body in listOf("{}", """{"targets":null}""")) assertNull(client(StubTransport(200, body)).time("UTC").targets)
-		assertEquals(emptyList(), client(StubTransport(200, """{"targets":[]}""")).time("UTC").targets)
-		val zonesStub = StubTransport(200, """{"timezone_database_version":"2026c","timezones":[]}""")
+		for (body in listOf("{}", """
+{"targets":null}
+""")) assertNull(client(StubTransport(200, body)).time("UTC").targets)
+		assertEquals(emptyList(), client(StubTransport(200, """
+{"targets":[]}
+""")).time("UTC").targets)
+		val zonesStub = StubTransport(200, """
+{"timezone_database_version":"2026c","timezones":[]}
+""")
 		val zonesClient = client(zonesStub)
 		assertEquals("2026c", zonesClient.timeZones().timezoneDatabaseVersion)
 		assertEquals("https://api.parseapi.com/time/zones", zonesStub.requests.last().url)
@@ -376,10 +429,14 @@ class TimeTest {
 		}
 	}
 	@Test fun clocksKeepEpochZeroAndNulls() = runBlocking {
-		val historical = client(StubTransport(200, """{"deep":{"offset_seconds":-17762,"offset_minutes":-296},"at":"1880-01-01T00:00:00-04:56:02"}""")).time("America/New_York")
-		assertEquals(-17762, historical.deep?.offsetSeconds)
-		assertEquals(-296, historical.deep?.offsetMinutes)
-		val stub = StubTransport(200, """{"timezone":"UTC","at":"1970-01-01T00:00:00+00:00","unix":0,"to":{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0,"deep":{"offset_minutes":0}}}""")
+		val historical = client(StubTransport(200, """
+{"at":"1880-01-01T00:00:00-04:56:02","offset_seconds":-17762,"offset_minutes":-296}
+""")).time("America/New_York")
+		assertEquals(-17762, historical?.offsetSeconds)
+		assertEquals(-296, historical?.offsetMinutes)
+		val stub = StubTransport(200, """
+{"timezone":"UTC","at":"1970-01-01T00:00:00+00:00","unix":0,"to":{"timezone":"UTC","offset":"+00:00","dst":false,"at":"1970-01-01T00:00:00+00:00","unix":0,"offset_minutes":0}}
+""")
 		val parse = client(stub)
 		val clock: Time = parse.time()
 		assertEquals("https://api.parseapi.com/time", stub.requests[0].url)
@@ -389,7 +446,9 @@ class TimeTest {
 		assertEquals("https://api.parseapi.com/time/America%2FNew_York?at=2026-09-05T15%3A00%3A00&to=Asia%2FTokyo", stub.requests[1].url)
 		parse.timeAt(0.0, 0.0) { at = "1970-01-01T00:00:00Z"; to = "UTC" }
 		assertEquals("https://api.parseapi.com/time?lat=0&lon=0&at=1970-01-01T00%3A00%3A00Z&to=UTC", stub.requests[2].url)
-		val unknown = client(StubTransport(200, """{"timezone":null,"at":null,"unix":null,"to":null}""")).timeAt(0.0, 0.0)
+		val unknown = client(StubTransport(200, """
+{"timezone":null,"at":null,"unix":null,"to":null}
+""")).timeAt(0.0, 0.0)
 		assertNull(unknown.at)
 		assertNull(unknown.unix)
 		assertNull(unknown.to)
@@ -398,38 +457,50 @@ class TimeTest {
 
 class TimeExcellenceTest {
  @Test fun resolutionAndReservedSourceRoutes() = runBlocking {
-  val stub = StubTransport(200, """{"deep":{"timezone_database_version":"2026c","resolution":{"kind":"gap","policy":"earlier","adjustment_seconds":-1800,"alternatives":[{"at":"1970-01-01T00:00:00.123+00:00","unix":0,"offset":"+00:00"},{"at":"1970-01-01T00:30:00.123+00:00","unix":1800,"offset":"+00:00"}],"future":true}}}""")
+  val stub = StubTransport(200, """
+{"timezone_database_version":"2026c","resolution":{"kind":"gap","policy":"earlier","adjustment_seconds":-1800,"alternatives":[{"at":"1970-01-01T00:00:00.123+00:00","unix":0,"offset":"+00:00"},{"at":"1970-01-01T00:30:00.123+00:00","unix":1800,"offset":"+00:00"}],"future":true}}
+""")
   val parse = client(stub)
   for (zone in listOf("zones", "help", " ZONES ", "Help")) assertFailsWith<IllegalArgumentException> { parse.time(zone) }
   assertTrue(stub.requests.isEmpty())
   val result = parse.time("UTC") { deep = true }
-  assertEquals("2026c", result.deep?.timezoneDatabaseVersion)
-  assertEquals(-1800, result.deep?.resolution?.adjustmentSeconds)
-  assertEquals(0L, result.deep?.resolution?.alternatives?.first()?.unix)
-  for (body in listOf("""{"deep":{}}""", """{"deep":{"resolution":null}}""")) {
-   assertNull(client(StubTransport(200, body)).time("UTC").deep?.resolution)
+  assertEquals("2026c", result?.timezoneDatabaseVersion)
+  assertEquals(-1800, result?.resolution?.adjustmentSeconds)
+  assertEquals(0L, result?.resolution?.alternatives?.first()?.unix)
+  for (body in listOf("""
+{}
+""", """
+{"resolution":null}
+""")) {
+   assertNull(client(StubTransport(200, body)).time("UTC")?.resolution)
   }
-  val unique = client(StubTransport(200, """{"deep":{"resolution":{"kind":"unique","alternatives":[]}}}""")).time("UTC")
-  assertEquals(emptyList(), unique.deep?.resolution?.alternatives)
+  val unique = client(StubTransport(200, """
+{"resolution":{"kind":"unique","alternatives":[]}}
+""")).time("UTC")
+  assertEquals(emptyList(), unique?.resolution?.alternatives)
  }
 }
 
 class TimeGapsTest {
  @Test fun explicitSourceCatalogAndSeasonalEvidence() = runBlocking {
-  val catalog=StubTransport(200,"""{"timezone_database_version": "2026c", "timezones": ["UTC"], "at": "1970-01-01T00:00:00.000Z", "zones": [{"timezone": "UTC", "countries": [], "area": null, "abbreviation": "UTC", "offset": "+00:00", "offset_seconds": 0, "dst": false, "observes_dst": false}]}""")
+  val catalog=StubTransport(200,"""
+{"timezone_database_version":"2026c","timezones":["UTC"],"at":"1970-01-01T00:00:00.000Z","zones":[{"timezone":"UTC","countries":[],"area":null,"abbreviation":"UTC","offset":"+00:00","offset_seconds":0,"dst":false,"observes_dst":false}]}
+""")
   val zones=client(catalog).timeZones { country="US"; area="America"; offset="+00:00"; abbreviation="UTC"; dst=false; observesDst=false; at="1970-01-01T00:00:00Z"; details=true; sort="offset" }
   assertTrue(catalog.requests[0].url.contains("dst=false"))
   assertTrue(catalog.requests[0].url.contains("observes_dst=false"))
   assertEquals(0,zones.zones!!.first().offsetSeconds)
   assertFalse(zones.zones!!.first().dst)
-  val stub=StubTransport(200,"""{"timezone": null, "targets": null, "location": {"input": {"type": "city", "value": "Springfield"}, "status": "ambiguous", "candidates": [{"id": "city_a", "name": "Springfield", "country": "US", "state": "IL", "timezone": "America/Chicago", "latitude": 0, "longitude": 0}], "truncated": false, "source": "city_reference"}, "deep": {"standard_offset": "+01:00", "standard_offset_seconds": 3600, "dst_offset_seconds": -3600, "season": {"start": {"at": "2026-10-25T01:00:00Z", "before": {"offset_seconds": 3600, "dst": false}, "after": {"offset_seconds": 0, "dst": true}, "change_seconds": -3600}, "end": null}}}""")
+  val stub=StubTransport(200,"""
+{"timezone":null,"targets":null,"location":{"input":{"type":"city","value":"Springfield"},"status":"ambiguous","candidates":[{"id":"city_a","name":"Springfield","country":"US","state":"IL","timezone":"America/Chicago","latitude":0,"longitude":0}],"truncated":false,"source":"city_reference"},"standard_offset":"+01:00","standard_offset_seconds":3600,"dst_offset_seconds":-3600,"season":{"start":{"at":"2026-10-25T01:00:00Z","before":{"offset_seconds":3600,"dst":false},"after":{"offset_seconds":0,"dst":true},"change_seconds":-3600},"end":null}}
+""")
   val parse=client(stub)
   val result=parse.time { city="Springfield"; country="US"; state="IL"; targets=listOf("UTC"); deep=true }
   assertNull(result.timezone); assertEquals("ambiguous",result.location!!.status)
   assertEquals(0.0,result.location!!.candidates.first().latitude)
-  assertEquals(-3600,result.deep!!.dstOffsetSeconds)
-  assertEquals(-3600,result.deep!!.season!!.start!!.changeSeconds)
-  assertEquals(false,result.deep!!.season!!.start!!.before!!.dst)
+  assertEquals(-3600,result.dstOffsetSeconds)
+  assertEquals(-3600,result.season!!.start!!.changeSeconds)
+  assertEquals(false,result.season!!.start!!.before!!.dst)
   for (source in listOf<TimeOptions.()->Unit>({ip="2001:db8::1"},{country="US"},{iata="JFK"},{icao="KJFK"},{unlocode="US NYC"},{address="1 Main Street";country="US";state="NY"})) parse.time(configure=source)
   val count=stub.requests.size
   for (source in listOf<TimeOptions.()->Unit>({ip="8.8.8.8";city="Paris"},{ip="8.8.8.8";country="US"},{state="NY"},{city="Paris";state="IDF"},{address="a"},{ip=""})) assertFailsWith<IllegalArgumentException>{parse.time(configure=source)}

@@ -4,7 +4,6 @@ public final class com/parseapi/Address {
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/AddressDeep;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
@@ -35,6 +34,7 @@ public final class com/parseapi/Address$Companion {
 
 public final class com/parseapi/AddressDeep {
 	public static final field Companion Lcom/parseapi/AddressDeep$Companion;
+	public final fun getElectoral ()Lcom/parseapi/PointElectoral;
 }
 
 public synthetic class com/parseapi/AddressDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -150,56 +150,6 @@ public final class com/parseapi/AsnOptions {
 	public final fun setLang (Ljava/lang/String;)V
 }
 
-public final class com/parseapi/Bin {
-	public static final field Companion Lcom/parseapi/Bin$Companion;
-	public final fun getBin ()Ljava/lang/String;
-	public final fun getBrand ()Ljava/lang/String;
-	public final fun getBrandName ()Ljava/lang/String;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/BinDeep;
-	public final fun getIssuer ()Ljava/lang/String;
-	public final fun getPrefix ()Ljava/lang/String;
-	public final fun getPrepaid ()Ljava/lang/Boolean;
-	public final fun getType ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/Bin$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/Bin$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/Bin;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/Bin;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/Bin$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/BinDeep {
-	public static final field Companion Lcom/parseapi/BinDeep$Companion;
-}
-
-public synthetic class com/parseapi/BinDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/BinDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/BinDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/BinDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/BinDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/BinOptions {
-	public final fun getDeep ()Z
-	public final fun setDeep (Z)V
-}
-
 public final class com/parseapi/Caller {
 	public static final field Companion Lcom/parseapi/Caller$Companion;
 	public final fun getCaller ()Ljava/lang/String;
@@ -232,8 +182,12 @@ public final class com/parseapi/Card {
 	public final fun getBin ()Ljava/lang/String;
 	public final fun getBrand ()Ljava/lang/String;
 	public final fun getBrandName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CardDeep;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getIssuer ()Ljava/lang/String;
 	public final fun getLogo ()Ljava/lang/String;
+	public final fun getPrefix ()Ljava/lang/String;
+	public final fun getPrepaid ()Ljava/lang/Boolean;
+	public final fun getType ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/Card$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -282,9 +236,11 @@ public final class com/parseapi/Carrier {
 	public static final field Companion Lcom/parseapi/Carrier$Companion;
 	public final fun getBurner ()Ljava/lang/Boolean;
 	public final fun getCarrier ()Ljava/lang/String;
+	public final fun getCity ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CarrierDeep;
 	public final fun getPhone ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public final fun getValid ()Z
 }
@@ -333,13 +289,17 @@ public final class com/parseapi/CarrierOptions {
 
 public final class com/parseapi/City {
 	public static final field Companion Lcom/parseapi/City$Companion;
+	public final fun getArea ()Ljava/lang/Double;
+	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CityDeep;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getGrain ()Ljava/lang/String;
 	public final fun getId ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getMatch ()Lcom/parseapi/CityMatch;
@@ -347,11 +307,16 @@ public final class com/parseapi/City {
 	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getNameRomanized ()Ljava/lang/String;
 	public final fun getParent ()Lcom/parseapi/CityParent;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationBasis ()Ljava/lang/String;
+	public final fun getPopulationObservedOn ()Ljava/lang/String;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getRomanizationLanguage ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
 public synthetic class com/parseapi/City$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -471,16 +436,13 @@ public final class com/parseapi/CityIdOptions {
 
 public final class com/parseapi/CityList {
 	public static final field Companion Lcom/parseapi/CityList$Companion;
+	public final fun getCities ()Ljava/util/List;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getData ()Ljava/util/List;
 	public final fun getGrain ()Ljava/lang/String;
-	public final fun getHasMore ()Ljava/lang/Boolean;
 	public final fun getNextCursor ()Ljava/lang/String;
-	public final fun getObject ()Ljava/lang/String;
 	public final fun getQ ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
-	public final fun getUrl ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/CityList$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -512,11 +474,9 @@ public final class com/parseapi/CityListOptions {
 	public final fun getMaxPopulation ()Ljava/lang/Long;
 	public final fun getMinElevation ()Ljava/lang/Double;
 	public final fun getMinPopulation ()Ljava/lang/Long;
-	public final fun getOrder ()Ljava/lang/String;
 	public final fun getRomanized ()Z
 	public final fun getSort ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 	public final fun setBbox (Ljava/lang/String;)V
@@ -533,11 +493,9 @@ public final class com/parseapi/CityListOptions {
 	public final fun setMaxPopulation (Ljava/lang/Long;)V
 	public final fun setMinElevation (Ljava/lang/Double;)V
 	public final fun setMinPopulation (Ljava/lang/Long;)V
-	public final fun setOrder (Ljava/lang/String;)V
 	public final fun setRomanized (Z)V
 	public final fun setSort (Ljava/lang/String;)V
 	public final fun setState (Ljava/lang/String;)V
-	public final fun setTimezone (Ljava/lang/String;)V
 	public final fun setTimezones (Ljava/util/List;)V
 	public final fun setType (Ljava/lang/String;)V
 }
@@ -592,15 +550,12 @@ public final class com/parseapi/CityNearby$Companion {
 
 public final class com/parseapi/CityNearbyCoordinates {
 	public static final field Companion Lcom/parseapi/CityNearbyCoordinates$Companion;
-	public final fun getData ()Ljava/util/List;
-	public final fun getHasMore ()Ljava/lang/Boolean;
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
+	public final fun getNearby ()Ljava/util/List;
 	public final fun getNextCursor ()Ljava/lang/String;
-	public final fun getObject ()Ljava/lang/String;
 	public final fun getRadius ()D
 	public final fun getUnit ()Ljava/lang/String;
-	public final fun getUrl ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/CityNearbyCoordinates$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -632,12 +587,10 @@ public final class com/parseapi/CityNearbyCoordinatesOptions {
 	public final fun getMaxPopulation ()Ljava/lang/Long;
 	public final fun getMinElevation ()Ljava/lang/Double;
 	public final fun getMinPopulation ()Ljava/lang/Long;
-	public final fun getOrder ()Ljava/lang/String;
 	public final fun getRadius ()Ljava/lang/Double;
 	public final fun getRomanized ()Z
 	public final fun getSort ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 	public final fun getUnit ()Ljava/lang/String;
@@ -655,12 +608,10 @@ public final class com/parseapi/CityNearbyCoordinatesOptions {
 	public final fun setMaxPopulation (Ljava/lang/Long;)V
 	public final fun setMinElevation (Ljava/lang/Double;)V
 	public final fun setMinPopulation (Ljava/lang/Long;)V
-	public final fun setOrder (Ljava/lang/String;)V
 	public final fun setRadius (Ljava/lang/Double;)V
 	public final fun setRomanized (Z)V
 	public final fun setSort (Ljava/lang/String;)V
 	public final fun setState (Ljava/lang/String;)V
-	public final fun setTimezone (Ljava/lang/String;)V
 	public final fun setTimezones (Ljava/util/List;)V
 	public final fun setType (Ljava/lang/String;)V
 	public final fun setUnit (Ljava/lang/String;)V
@@ -683,13 +634,11 @@ public final class com/parseapi/CityNearbyOptions {
 	public final fun getMaxPopulation ()Ljava/lang/Long;
 	public final fun getMinElevation ()Ljava/lang/Double;
 	public final fun getMinPopulation ()Ljava/lang/Long;
-	public final fun getOrder ()Ljava/lang/String;
 	public final fun getPage ()Z
 	public final fun getRadius ()Ljava/lang/Double;
 	public final fun getRomanized ()Z
 	public final fun getSort ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 	public final fun getUnit ()Ljava/lang/String;
@@ -709,13 +658,11 @@ public final class com/parseapi/CityNearbyOptions {
 	public final fun setMaxPopulation (Ljava/lang/Long;)V
 	public final fun setMinElevation (Ljava/lang/Double;)V
 	public final fun setMinPopulation (Ljava/lang/Long;)V
-	public final fun setOrder (Ljava/lang/String;)V
 	public final fun setPage (Z)V
 	public final fun setRadius (Ljava/lang/Double;)V
 	public final fun setRomanized (Z)V
 	public final fun setSort (Ljava/lang/String;)V
 	public final fun setState (Ljava/lang/String;)V
-	public final fun setTimezone (Ljava/lang/String;)V
 	public final fun setTimezones (Ljava/util/List;)V
 	public final fun setType (Ljava/lang/String;)V
 	public final fun setUnit (Ljava/lang/String;)V
@@ -723,26 +670,35 @@ public final class com/parseapi/CityNearbyOptions {
 
 public final class com/parseapi/CityNearest {
 	public static final field Companion Lcom/parseapi/CityNearest$Companion;
+	public final fun getArea ()Ljava/lang/Double;
+	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CityDeep;
 	public final fun getDistance ()D
 	public final fun getDistanceMi ()D
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getGrain ()Ljava/lang/String;
 	public final fun getId ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getNameRomanized ()Ljava/lang/String;
 	public final fun getParent ()Lcom/parseapi/CityParent;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationBasis ()Ljava/lang/String;
+	public final fun getPopulationObservedOn ()Ljava/lang/String;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getRomanizationLanguage ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
 public synthetic class com/parseapi/CityNearest$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -870,15 +826,19 @@ public final class com/parseapi/CityRelationsOptions {
 
 public final class com/parseapi/CityResource {
 	public static final field Companion Lcom/parseapi/CityResource$Companion;
+	public final fun getArea ()Ljava/lang/Double;
+	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CityDeep;
 	public final fun getDistance ()Ljava/lang/Double;
 	public final fun getDistanceMi ()Ljava/lang/Double;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getGrain ()Ljava/lang/String;
 	public final fun getId ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getMatch ()Lcom/parseapi/CityMatch;
@@ -887,11 +847,16 @@ public final class com/parseapi/CityResource {
 	public final fun getNameRomanized ()Ljava/lang/String;
 	public final fun getObject ()Ljava/lang/String;
 	public final fun getParent ()Lcom/parseapi/CityParent;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationBasis ()Ljava/lang/String;
+	public final fun getPopulationObservedOn ()Ljava/lang/String;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getRomanizationLanguage ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
 public synthetic class com/parseapi/CityResource$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -952,12 +917,10 @@ public final class com/parseapi/CitySearchOptions {
 	public final fun getMaxPopulation ()Ljava/lang/Long;
 	public final fun getMinElevation ()Ljava/lang/Double;
 	public final fun getMinPopulation ()Ljava/lang/Long;
-	public final fun getOrder ()Ljava/lang/String;
 	public final fun getPage ()Z
 	public final fun getRomanized ()Z
 	public final fun getSort ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
-	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 	public final fun setAliases (Z)V
@@ -977,30 +940,37 @@ public final class com/parseapi/CitySearchOptions {
 	public final fun setMaxPopulation (Ljava/lang/Long;)V
 	public final fun setMinElevation (Ljava/lang/Double;)V
 	public final fun setMinPopulation (Ljava/lang/Long;)V
-	public final fun setOrder (Ljava/lang/String;)V
 	public final fun setPage (Z)V
 	public final fun setRomanized (Z)V
 	public final fun setSort (Ljava/lang/String;)V
 	public final fun setState (Ljava/lang/String;)V
-	public final fun setTimezone (Ljava/lang/String;)V
 	public final fun setTimezones (Ljava/util/List;)V
 	public final fun setType (Ljava/lang/String;)V
 }
 
 public final class com/parseapi/Company {
 	public static final field Companion Lcom/parseapi/Company$Companion;
+	public final fun getAcn ()Ljava/lang/String;
 	public final fun getActive ()Ljava/lang/Boolean;
+	public final fun getActivity ()Ljava/lang/String;
 	public final fun getAddress ()Ljava/lang/String;
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getCompany ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CompanyDeep;
+	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getGst ()Ljava/lang/Boolean;
+	public final fun getInvoice ()Ljava/lang/String;
+	public final fun getKind ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getRegistered ()Ljava/lang/Boolean;
+	public final fun getSiege ()Ljava/lang/Boolean;
+	public final fun getSiren ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public final fun getValid ()Z
+	public final fun getVat ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/Company$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1020,13 +990,35 @@ public final class com/parseapi/Company$Companion {
 public final class com/parseapi/CompanyCandidate {
 	public static final field Companion Lcom/parseapi/CompanyCandidate$Companion;
 	public final fun getAddress ()Lcom/parseapi/CompanyProfileAddress;
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getAliases ()Ljava/util/List;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CompanyProfileDeep;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDomains ()Ljava/util/List;
+	public final fun getEmailAddresses ()Ljava/util/List;
+	public final fun getEmails ()Ljava/util/List;
+	public final fun getEmployees ()Lcom/parseapi/CompanyProfileEmployees;
+	public final fun getFounded ()Lcom/parseapi/CompanyProfileFounding;
 	public final fun getId ()Ljava/lang/String;
+	public final fun getIdentifiers ()Ljava/util/List;
+	public final fun getIncorporated ()Ljava/lang/String;
+	public final fun getIndustries ()Ljava/util/List;
+	public final fun getJurisdiction ()Lcom/parseapi/CompanyProfileJurisdiction;
+	public final fun getLegalName ()Ljava/lang/String;
 	public final fun getListings ()Ljava/util/List;
+	public final fun getLogo ()Ljava/lang/String;
 	public final fun getMatch ()Lcom/parseapi/CompanyMatch;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getParent ()Ljava/lang/String;
+	public final fun getPhoneNumbers ()Ljava/util/List;
+	public final fun getPhones ()Ljava/util/List;
+	public final fun getRegistrations ()Ljava/util/List;
+	public final fun getSocialProfiles ()Ljava/util/List;
+	public final fun getSocials ()Ljava/util/List;
+	public final fun getSources ()Ljava/util/List;
+	public final fun getStatus ()Ljava/lang/String;
 	public final fun getWebsite ()Ljava/lang/String;
+	public final fun getWebsites ()Ljava/util/List;
 }
 
 public synthetic class com/parseapi/CompanyCandidate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1061,33 +1053,6 @@ public synthetic class com/parseapi/CompanyCountry$$serializer : kotlinx/seriali
 }
 
 public final class com/parseapi/CompanyCountry$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/CompanyCoverage {
-	public static final field Companion Lcom/parseapi/CompanyCoverage$Companion;
-	public final fun getCompanies ()J
-	public final fun getCountries ()Ljava/util/List;
-	public final fun getDescription ()Ljava/lang/String;
-	public final fun getLabel ()Ljava/lang/String;
-	public final fun getScope ()Ljava/lang/String;
-	public final fun getSnapshotAt ()Ljava/lang/String;
-	public final fun getWithAddress ()J
-	public final fun getWithListings ()J
-	public final fun getWithWebsite ()J
-}
-
-public synthetic class com/parseapi/CompanyCoverage$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/CompanyCoverage$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CompanyCoverage;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CompanyCoverage;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/CompanyCoverage$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
@@ -1178,6 +1143,8 @@ public final class com/parseapi/CompanyOptions {
 
 public final class com/parseapi/CompanyPhoneNumber {
 	public static final field Companion Lcom/parseapi/CompanyPhoneNumber$Companion;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getE164 ()Ljava/lang/String;
 	public final fun getNumber ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 }
@@ -1199,12 +1166,34 @@ public final class com/parseapi/CompanyPhoneNumber$Companion {
 public final class com/parseapi/CompanyProfile {
 	public static final field Companion Lcom/parseapi/CompanyProfile$Companion;
 	public final fun getAddress ()Lcom/parseapi/CompanyProfileAddress;
+	public final fun getAddresses ()Ljava/util/List;
+	public final fun getAliases ()Ljava/util/List;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CompanyProfileDeep;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getDomains ()Ljava/util/List;
+	public final fun getEmailAddresses ()Ljava/util/List;
+	public final fun getEmails ()Ljava/util/List;
+	public final fun getEmployees ()Lcom/parseapi/CompanyProfileEmployees;
+	public final fun getFounded ()Lcom/parseapi/CompanyProfileFounding;
 	public final fun getId ()Ljava/lang/String;
+	public final fun getIdentifiers ()Ljava/util/List;
+	public final fun getIncorporated ()Ljava/lang/String;
+	public final fun getIndustries ()Ljava/util/List;
+	public final fun getJurisdiction ()Lcom/parseapi/CompanyProfileJurisdiction;
+	public final fun getLegalName ()Ljava/lang/String;
 	public final fun getListings ()Ljava/util/List;
+	public final fun getLogo ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getParent ()Ljava/lang/String;
+	public final fun getPhoneNumbers ()Ljava/util/List;
+	public final fun getPhones ()Ljava/util/List;
+	public final fun getRegistrations ()Ljava/util/List;
+	public final fun getSocialProfiles ()Ljava/util/List;
+	public final fun getSocials ()Ljava/util/List;
+	public final fun getSources ()Ljava/util/List;
+	public final fun getStatus ()Ljava/lang/String;
 	public final fun getWebsite ()Ljava/lang/String;
+	public final fun getWebsites ()Ljava/util/List;
 }
 
 public synthetic class com/parseapi/CompanyProfile$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1715,31 +1704,66 @@ public final class com/parseapi/ContinentOptions {
 
 public final class com/parseapi/Country {
 	public static final field Companion Lcom/parseapi/Country$Companion;
+	public final fun getArea ()Ljava/lang/Double;
 	public final fun getBlocs ()Ljava/util/List;
 	public final fun getBorders ()Ljava/util/List;
 	public final fun getCallingCode ()Ljava/lang/String;
 	public final fun getCapital ()Lcom/parseapi/CountryCapital;
 	public final fun getCapitalLat ()Ljava/lang/Double;
 	public final fun getCapitalLon ()Ljava/lang/Double;
+	public final fun getCoastline ()Ljava/lang/Double;
 	public final fun getContinent ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCurrency ()Ljava/lang/String;
 	public final fun getCurrencyName ()Ljava/lang/String;
 	public final fun getCurrencySymbol ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CountryDeep;
 	public final fun getDemonym ()Ljava/lang/String;
+	public final fun getDrivingSide ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationAverage ()Ljava/lang/Double;
+	public final fun getEmergency ()Lcom/parseapi/CountryEmergency;
 	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getFifa ()Ljava/lang/String;
 	public final fun getFlag ()Ljava/lang/String;
+	public final fun getFrequency ()Ljava/lang/Integer;
 	public final fun getFullName ()Ljava/lang/String;
+	public final fun getGdp ()Ljava/lang/Double;
+	public final fun getGdpPerCapita ()Ljava/lang/Double;
+	public final fun getGdpPerCapitaUsd ()Ljava/lang/Double;
+	public final fun getGdpUsd ()Ljava/lang/Double;
+	public final fun getHighestPoint ()Lcom/parseapi/CountryElevationPoint;
+	public final fun getInternetUsers ()Ljava/lang/Double;
+	public final fun getInternetUsersPercent ()Ljava/lang/Double;
+	public final fun getIoc ()Ljava/lang/String;
 	public final fun getIso3 ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLanguages ()Ljava/util/List;
+	public final fun getLowestPoint ()Lcom/parseapi/CountryElevationPoint;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNameFull ()Ljava/lang/String;
 	public final fun getNameLocal ()Ljava/lang/String;
 	public final fun getNumeric ()Ljava/lang/Integer;
+	public final fun getPlate ()Ljava/lang/String;
+	public final fun getPlugs ()Ljava/util/List;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationGrowth ()Ljava/lang/Double;
+	public final fun getPopulationGrowthPercent ()Ljava/lang/Double;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPostalFormat ()Ljava/lang/String;
+	public final fun getPostalRegex ()Ljava/lang/String;
 	public final fun getRegion ()Ljava/lang/String;
 	public final fun getSubregion ()Ljava/lang/String;
+	public final fun getTax ()Lcom/parseapi/CountryTax;
+	public final fun getTaxIdFormat ()Ljava/lang/String;
+	public final fun getTaxIdRegex ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
+	public final fun getTld ()Ljava/lang/String;
+	public final fun getUnits ()Ljava/lang/String;
+	public final fun getUrbanPopulation ()Ljava/lang/Double;
+	public final fun getUrbanPopulationPercent ()Ljava/lang/Double;
+	public final fun getVoltage ()Ljava/lang/Integer;
+	public final fun getWaterArea ()Ljava/lang/Double;
+	public final fun getWeekStart ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/Country$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1961,7 +1985,6 @@ public final class com/parseapi/Currency {
 	public static final field Companion Lcom/parseapi/Currency$Companion;
 	public final fun getCountries ()Ljava/util/List;
 	public final fun getCurrency ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/CurrencyDeep;
 	public final fun getDigits ()Ljava/lang/Integer;
 	public final fun getIsoNumeric ()Ljava/lang/Integer;
 	public final fun getName ()Ljava/lang/String;
@@ -2017,6 +2040,7 @@ public final class com/parseapi/CurrencyRate {
 	public final fun getDate ()Ljava/lang/String;
 	public final fun getQuote ()Ljava/lang/String;
 	public final fun getRate ()D
+	public final fun getSource ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/CurrencyRate$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2043,11 +2067,22 @@ public final class com/parseapi/CurrencyRateOptions {
 public final class com/parseapi/DateInfo {
 	public static final field Companion Lcom/parseapi/DateInfo$Companion;
 	public final fun getDate ()Ljava/lang/String;
+	public final fun getDay ()Ljava/lang/Integer;
+	public final fun getDayOfYear ()Ljava/lang/Integer;
 	public final fun getDays ()Ljava/lang/Integer;
-	public final fun getDeep ()Lcom/parseapi/DateInfoDeep;
+	public final fun getDaysInMonth ()Ljava/lang/Integer;
+	public final fun getLeap ()Ljava/lang/Boolean;
+	public final fun getMonth ()Ljava/lang/Integer;
+	public final fun getMonthName ()Ljava/lang/String;
+	public final fun getQuarter ()Ljava/lang/Integer;
 	public final fun getTo ()Ljava/lang/String;
 	public final fun getUnix ()Ljava/lang/Long;
 	public final fun getValid ()Z
+	public final fun getWeek ()Ljava/lang/Integer;
+	public final fun getWeekYear ()Ljava/lang/Integer;
+	public final fun getWeekday ()Ljava/lang/Integer;
+	public final fun getWeekdayName ()Ljava/lang/String;
+	public final fun getYear ()Ljava/lang/Integer;
 }
 
 public synthetic class com/parseapi/DateInfo$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2116,17 +2151,23 @@ public final class com/parseapi/DateTodayOptions {
 
 public final class com/parseapi/District {
 	public static final field Companion Lcom/parseapi/District$Companion;
+	public final fun getArea ()Ljava/lang/Double;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/DistrictDeep;
 	public final fun getDistrict ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
+	public final fun getSeat ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
 public synthetic class com/parseapi/District$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2229,8 +2270,8 @@ public final class com/parseapi/DnsRecord$Companion {
 public final class com/parseapi/Domain {
 	public static final field Companion Lcom/parseapi/Domain$Companion;
 	public final fun getAvailable ()Ljava/lang/Boolean;
-	public final fun getDeep ()Lcom/parseapi/DomainDeep;
 	public final fun getDomain ()Ljava/lang/String;
+	public final fun getRegistration ()Lcom/parseapi/DomainRegistration;
 }
 
 public synthetic class com/parseapi/Domain$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2276,7 +2317,6 @@ public final class com/parseapi/DomainRegistration {
 	public final fun getCreated ()Ljava/lang/String;
 	public final fun getDnssec ()Ljava/lang/Boolean;
 	public final fun getExpires ()Ljava/lang/String;
-	public final fun getRegistered ()Ljava/lang/Boolean;
 	public final fun getRegistrar ()Ljava/lang/String;
 	public final fun getStatus ()Ljava/util/List;
 	public final fun getUpdated ()Ljava/lang/String;
@@ -2299,8 +2339,8 @@ public final class com/parseapi/DomainRegistration$Companion {
 public final class com/parseapi/DomainResult {
 	public static final field Companion Lcom/parseapi/DomainResult$Companion;
 	public final fun getAvailable ()Ljava/lang/Boolean;
-	public final fun getDeep ()Lcom/parseapi/DomainDeep;
 	public final fun getDomain ()Ljava/lang/String;
+	public final fun getRegistration ()Lcom/parseapi/DomainRegistration;
 }
 
 public synthetic class com/parseapi/DomainResult$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2342,15 +2382,22 @@ public final class com/parseapi/Elevation$Companion {
 
 public final class com/parseapi/Email {
 	public static final field Companion Lcom/parseapi/Email$Companion;
-	public final fun getDeep ()Lcom/parseapi/EmailDeep;
+	public final fun getCatchall ()Ljava/lang/Boolean;
+	public final fun getDeliverable ()Ljava/lang/Boolean;
 	public final fun getDidyoumean ()Ljava/lang/String;
 	public final fun getDisposable ()Z
 	public final fun getDomain ()Ljava/lang/String;
 	public final fun getDomainType ()Ljava/lang/String;
 	public final fun getDomainValid ()Ljava/lang/Boolean;
 	public final fun getEmail ()Ljava/lang/String;
+	public final fun getFirstName ()Ljava/lang/String;
 	public final fun getFree ()Z
+	public final fun getMailProvider ()Ljava/lang/String;
+	public final fun getNoReply ()Ljava/lang/Boolean;
+	public final fun getReason ()Ljava/lang/String;
 	public final fun getRole ()Z
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getTag ()Ljava/lang/String;
 	public final fun getValid ()Z
 }
 
@@ -2401,11 +2448,20 @@ public final class com/parseapi/EmailOptions {
 
 public final class com/parseapi/Emoji {
 	public static final field Companion Lcom/parseapi/Emoji$Companion;
+	public final fun getArtwork ()Ljava/util/Map;
+	public final fun getBase ()Ljava/lang/String;
 	public final fun getCategory ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/EmojiDeep;
+	public final fun getCodepoints ()Ljava/util/List;
 	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getHex ()Ljava/lang/String;
+	public final fun getKeywords ()Ljava/util/List;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getShortcodes ()Ljava/util/List;
+	public final fun getSkins ()Ljava/util/List;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getSubcategory ()Ljava/lang/String;
+	public final fun getVariants ()Ljava/util/List;
+	public final fun getVersion ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/Emoji$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2521,7 +2577,6 @@ public final class com/parseapi/EmojiCatalog {
 	public final fun getLegacy ()Ljava/util/Map;
 	public final fun getLocalization ()Lcom/parseapi/EmojiCatalogLocalization;
 	public final fun getMetadata ()Lcom/parseapi/EmojiMetadata;
-	public final fun getProfile ()Ljava/lang/String;
 	public final fun getScope ()Lcom/parseapi/EmojiCatalogScope;
 	public final fun getSearch ()Lcom/parseapi/EmojiCatalogSearchFacts;
 	public final fun getShortcodes ()Ljava/util/Map;
@@ -2568,19 +2623,15 @@ public final class com/parseapi/EmojiCatalogLocalization$Companion {
 
 public final class com/parseapi/EmojiCatalogOptions {
 	public final fun getCategory ()Ljava/lang/String;
-	public final fun getDeep ()Z
 	public final fun getIncludeSkinTones ()Ljava/lang/Boolean;
 	public final fun getLang ()Ljava/lang/String;
 	public final fun getMaxVersion ()Ljava/lang/String;
-	public final fun getProfile ()Ljava/lang/String;
 	public final fun getSubcategory ()Ljava/lang/String;
 	public final fun getVersion ()Ljava/lang/String;
 	public final fun setCategory (Ljava/lang/String;)V
-	public final fun setDeep (Z)V
 	public final fun setIncludeSkinTones (Ljava/lang/Boolean;)V
 	public final fun setLang (Ljava/lang/String;)V
 	public final fun setMaxVersion (Ljava/lang/String;)V
-	public final fun setProfile (Ljava/lang/String;)V
 	public final fun setSubcategory (Ljava/lang/String;)V
 	public final fun setVersion (Ljava/lang/String;)V
 }
@@ -2666,8 +2717,7 @@ public final class com/parseapi/EmojiCategory$Companion {
 
 public final class com/parseapi/EmojiCompleteness {
 	public static final field Companion Lcom/parseapi/EmojiCompleteness$Companion;
-	public final fun getMissingCount ()I
-	public final fun getUnexpectedCount ()I
+	public final fun getComplete ()Ljava/lang/Boolean;
 }
 
 public synthetic class com/parseapi/EmojiCompleteness$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -2760,7 +2810,6 @@ public final class com/parseapi/EmojiMetadata {
 	public final fun getEdition ()Ljava/lang/String;
 	public final fun getMaxVersion ()Ljava/lang/String;
 	public final fun getNotices ()Ljava/util/List;
-	public final fun getShortcodeSources ()Ljava/util/Map;
 	public final fun getSourceVersion ()Ljava/lang/String;
 	public final fun getSources ()Ljava/util/List;
 	public final fun getTotal ()I
@@ -2852,12 +2901,21 @@ public final class com/parseapi/EmojiParse$Companion {
 
 public final class com/parseapi/EmojiParseItem {
 	public static final field Companion Lcom/parseapi/EmojiParseItem$Companion;
+	public final fun getArtwork ()Ljava/util/Map;
+	public final fun getBase ()Ljava/lang/String;
 	public final fun getCategory ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/EmojiDeep;
+	public final fun getCodepoints ()Ljava/util/List;
 	public final fun getEmoji ()Ljava/lang/String;
+	public final fun getHex ()Ljava/lang/String;
+	public final fun getKeywords ()Ljava/util/List;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPositions ()Ljava/util/List;
 	public final fun getShortcodes ()Ljava/util/List;
+	public final fun getSkins ()Ljava/util/List;
+	public final fun getStatus ()Ljava/lang/String;
+	public final fun getSubcategory ()Ljava/lang/String;
+	public final fun getVariants ()Ljava/util/List;
+	public final fun getVersion ()Ljava/lang/String;
 }
 
 public synthetic class com/parseapi/EmojiParseItem$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -3057,9 +3115,15 @@ public final class com/parseapi/Hlr {
 	public static final field Companion Lcom/parseapi/Hlr$Companion;
 	public final fun getConnected ()Ljava/lang/Boolean;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/HlrDeep;
 	public final fun getLive ()Ljava/lang/Boolean;
+	public final fun getMcc ()Ljava/lang/String;
+	public final fun getMnc ()Ljava/lang/String;
+	public final fun getNetwork ()Ljava/lang/String;
+	public final fun getOriginalNetwork ()Ljava/lang/String;
 	public final fun getPhone ()Ljava/lang/String;
+	public final fun getRoaming ()Ljava/lang/Boolean;
+	public final fun getRoamingCountry ()Ljava/lang/String;
+	public final fun getRoamingNetwork ()Ljava/lang/String;
 	public final fun getValid ()Z
 }
 
@@ -3184,11 +3248,30 @@ public final class com/parseapi/Ip {
 	public static final field Companion Lcom/parseapi/Ip$Companion;
 	public final fun getAsn ()Ljava/lang/String;
 	public final fun getAsnName ()Ljava/lang/String;
+	public final fun getAsnType ()Ljava/lang/String;
+	public final fun getCensusDivision ()Ljava/lang/String;
+	public final fun getCensusRegion ()Ljava/lang/String;
+	public final fun getCity ()Ljava/lang/String;
 	public final fun getContinent ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/IpDeep;
+	public final fun getDatacenter ()Ljava/lang/Boolean;
+	public final fun getDistrict ()Ljava/lang/String;
+	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getIp ()Ljava/lang/String;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getNetwork ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
+	public final fun getProvider ()Ljava/lang/String;
+	public final fun getProxy ()Ljava/lang/Boolean;
+	public final fun getRegistry ()Ljava/lang/String;
+	public final fun getRelay ()Ljava/lang/Boolean;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getTor ()Ljava/lang/Boolean;
+	public final fun getVpn ()Ljava/lang/Boolean;
 }
 
 public synthetic class com/parseapi/Ip$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -3207,16 +3290,24 @@ public final class com/parseapi/Ip$Companion {
 
 public final class com/parseapi/IpDeep {
 	public static final field Companion Lcom/parseapi/IpDeep$Companion;
+	public final fun getAsnType ()Ljava/lang/String;
 	public final fun getCensusDivision ()Ljava/lang/String;
 	public final fun getCensusRegion ()Ljava/lang/String;
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getDatacenter ()Ljava/lang/Boolean;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getNetwork ()Ljava/lang/String;
+	public final fun getPostal ()Ljava/lang/String;
 	public final fun getProvider ()Ljava/lang/String;
+	public final fun getProxy ()Ljava/lang/Boolean;
 	public final fun getRegistry ()Ljava/lang/String;
 	public final fun getRelay ()Ljava/lang/Boolean;
 	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getTor ()Ljava/lang/Boolean;
 	public final fun getVpn ()Ljava/lang/Boolean;
 }
@@ -3252,7 +3343,6 @@ public final class com/parseapi/IpSelfOptions {
 public final class com/parseapi/Language {
 	public static final field Companion Lcom/parseapi/Language$Companion;
 	public final fun getCountries ()Ljava/util/List;
-	public final fun getDeep ()Lcom/parseapi/LanguageDeep;
 	public final fun getDirection ()Ljava/lang/String;
 	public final fun getIso3 ()Ljava/lang/String;
 	public final fun getLanguage ()Ljava/lang/String;
@@ -3344,8 +3434,10 @@ public final class com/parseapi/MxRecord$Companion {
 
 public final class com/parseapi/NAICS {
 	public static final field Companion Lcom/parseapi/NAICS$Companion;
+	public final fun getChildren ()Ljava/util/List;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/NAICSDeep;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getExclusions ()Ljava/util/List;
 	public final fun getLevel ()I
 	public final fun getMatch ()Lcom/parseapi/NAICSMatch;
 	public final fun getNaics ()Ljava/lang/String;
@@ -3495,7 +3587,9 @@ public final class com/parseapi/NAICSSearch$Companion {
 
 public final class com/parseapi/NAICSSearchResult {
 	public static final field Companion Lcom/parseapi/NAICSSearchResult$Companion;
-	public final fun getDeep ()Lcom/parseapi/NAICSDeep;
+	public final fun getChildren ()Ljava/util/List;
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getExclusions ()Ljava/util/List;
 	public final fun getLevel ()I
 	public final fun getMatch ()Lcom/parseapi/NAICSMatch;
 	public final fun getNaics ()Ljava/lang/String;
@@ -3532,12 +3626,16 @@ public final class com/parseapi/NaicsSearchOptions {
 
 public final class com/parseapi/Name {
 	public static final field Companion Lcom/parseapi/Name$Companion;
-	public final fun getDeep ()Lcom/parseapi/NameDeep;
+	public final fun getDirectory ()Ljava/lang/String;
 	public final fun getFirst ()Ljava/lang/String;
+	public final fun getGender ()Ljava/lang/String;
+	public final fun getInitials ()Ljava/lang/String;
 	public final fun getLast ()Ljava/lang/String;
 	public final fun getMiddle ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPrefix ()Ljava/lang/String;
+	public final fun getSalutation ()Ljava/lang/String;
+	public final fun getShort ()Ljava/lang/String;
 	public final fun getSuffix ()Ljava/lang/String;
 	public final fun getValid ()Z
 }
@@ -3561,7 +3659,6 @@ public final class com/parseapi/NameDeep {
 	public final fun getDirectory ()Ljava/lang/String;
 	public final fun getGender ()Ljava/lang/String;
 	public final fun getInitials ()Ljava/lang/String;
-	public final fun getSalutation ()Ljava/lang/String;
 	public final fun getShort ()Ljava/lang/String;
 }
 
@@ -3601,8 +3698,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun addressSearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun asn (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun asn (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun bin (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun bin (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun caller (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun caller (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun card (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3618,31 +3713,20 @@ public final class com/parseapi/ParseAPI {
 	public final fun cityDistance (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityId (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun cityIdResource (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun cityIdResource$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun cityList (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityList (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityNearby (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityNearby (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityNearbyCoordinates (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityNearbyCoordinates (DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun cityNearbyList (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun cityNearbyList$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun cityNearest (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun cityNearest (DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun cityNearestResource (DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun cityNearestResource$default (Lcom/parseapi/ParseAPI;DDLkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public final fun cityResource (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun cityResource$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun citySearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun citySearch (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun citySearchList (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun citySearchList$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun citySiblings (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun citySiblings$default (Lcom/parseapi/ParseAPI;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun company (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun companyCoverage (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companyId (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companyId (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun companySearch (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3674,6 +3758,7 @@ public final class com/parseapi/ParseAPI {
 	public final fun elevation (DDLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun email (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun email (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun emailVerify (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emoji (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emoji (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiBrowse (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3682,7 +3767,6 @@ public final class com/parseapi/ParseAPI {
 	public final fun emojiCatalog (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiCategories (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiConvert (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun emojiMetadata (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiParse (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiParse (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun emojiSearch (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3795,10 +3879,12 @@ public abstract interface class com/parseapi/ParseAPITransport {
 public final class com/parseapi/Phone {
 	public static final field Companion Lcom/parseapi/Phone$Companion;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PhoneDeep;
 	public final fun getInternational ()Ljava/lang/String;
 	public final fun getNational ()Ljava/lang/String;
 	public final fun getPhone ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public final fun getValid ()Z
 }
@@ -3847,13 +3933,17 @@ public final class com/parseapi/PhoneOptions {
 
 public final class com/parseapi/Point {
 	public static final field Companion Lcom/parseapi/Point$Companion;
+	public final fun getCity ()Lcom/parseapi/PointCity;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PointDeep;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
+	public final fun getElectoral ()Lcom/parseapi/PointElectoral;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationFt ()Ljava/lang/Double;
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
+	public final fun getResolution ()Ljava/lang/Double;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getTimezone ()Ljava/lang/String;
@@ -3956,23 +4046,34 @@ public final class com/parseapi/PointOptions {
 
 public final class com/parseapi/Postal {
 	public static final field Companion Lcom/parseapi/Postal$Companion;
+	public final fun getArea ()Ljava/lang/Double;
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getCityLocal ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PostalDeep;
+	public final fun getCurrency ()Ljava/lang/String;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getDistrictNameLocal ()Ljava/lang/String;
+	public final fun getElevation ()Ljava/lang/Double;
+	public final fun getElevationFt ()Ljava/lang/Double;
+	public final fun getLandArea ()Ljava/lang/Double;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLocalities ()Ljava/util/List;
 	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getMetros ()Ljava/util/List;
+	public final fun getNeighbors ()Ljava/util/List;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getPostal ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PostalPropertyTax;
 	public final fun getState ()Ljava/lang/String;
 	public final fun getStateName ()Ljava/lang/String;
 	public final fun getStateNameLocal ()Ljava/lang/String;
+	public final fun getTax ()Lcom/parseapi/PostalTax;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
 public synthetic class com/parseapi/Postal$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -4001,12 +4102,7 @@ public final class com/parseapi/PostalDeep {
 	public final fun getPopulation ()Ljava/lang/Long;
 	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getPropertyTax ()Lcom/parseapi/PostalPropertyTax;
-	public final fun getTax ()Ljava/lang/String;
-	public final fun getTaxRate ()Ljava/lang/Double;
-	public final fun getTaxRateCity ()Ljava/lang/Double;
-	public final fun getTaxRateCounty ()Ljava/lang/Double;
-	public final fun getTaxRateSpecial ()Ljava/lang/Double;
-	public final fun getTaxRateState ()Ljava/lang/Double;
+	public final fun getTax ()Lcom/parseapi/PostalTax;
 	public final fun getWaterArea ()Ljava/lang/Double;
 }
 
@@ -4050,7 +4146,7 @@ public final class com/parseapi/PostalDistance$Companion {
 public final class com/parseapi/PostalDistanceEnd {
 	public static final field Companion Lcom/parseapi/PostalDistanceEnd$Companion;
 	public final fun getCity ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PostalMetroDeep;
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 }
 
@@ -4146,7 +4242,7 @@ public final class com/parseapi/PostalMetroDeep$Companion {
 public final class com/parseapi/PostalNearby {
 	public static final field Companion Lcom/parseapi/PostalNearby$Companion;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PostalMetroDeep;
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getNearby ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getRadius ()D
@@ -4171,9 +4267,9 @@ public final class com/parseapi/PostalNearbyItem {
 	public static final field Companion Lcom/parseapi/PostalNearbyItem$Companion;
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/PostalMetroDeep;
 	public final fun getDistance ()D
 	public final fun getDistanceMi ()D
+	public final fun getMetros ()Ljava/util/List;
 	public final fun getPostal ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
 }
@@ -4235,6 +4331,30 @@ public final class com/parseapi/PostalPropertyTax$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/PostalTax {
+	public static final field Companion Lcom/parseapi/PostalTax$Companion;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRate ()Ljava/lang/Double;
+	public final fun getRateCity ()Ljava/lang/Double;
+	public final fun getRateCounty ()Ljava/lang/Double;
+	public final fun getRateSpecial ()Ljava/lang/Double;
+	public final fun getRateState ()Ljava/lang/Double;
+}
+
+public synthetic class com/parseapi/PostalTax$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/PostalTax$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/PostalTax;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/PostalTax;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/PostalTax$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/PropertyTax {
 	public static final field Companion Lcom/parseapi/PropertyTax$Companion;
 	public final fun getAnnualMedian ()D
@@ -4262,7 +4382,6 @@ public final class com/parseapi/Stack {
 	public final fun getChat ()Ljava/util/List;
 	public final fun getCheckedAt ()Ljava/lang/String;
 	public final fun getCms ()Ljava/util/List;
-	public final fun getDeep ()Lcom/parseapi/StackDeep;
 	public final fun getDomain ()Ljava/lang/String;
 	public final fun getEcommerce ()Ljava/util/List;
 	public final fun getFrameworks ()Ljava/util/List;
@@ -4334,11 +4453,11 @@ public final class com/parseapi/StackTechnology$Companion {
 
 public final class com/parseapi/State {
 	public static final field Companion Lcom/parseapi/State$Companion;
+	public final fun getArea ()Ljava/lang/Double;
 	public final fun getAreaCodes ()Ljava/util/List;
 	public final fun getCapital ()Lcom/parseapi/StateCapital;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/StateDeep;
 	public final fun getFips ()Ljava/lang/String;
 	public final fun getIso ()Ljava/lang/String;
 	public final fun getIso31662 ()Ljava/lang/String;
@@ -4346,7 +4465,10 @@ public final class com/parseapi/State {
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
 	public final fun getNameLocal ()Ljava/lang/String;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getState ()Ljava/lang/String;
+	public final fun getTax ()Lcom/parseapi/StateTax;
 	public final fun getTimezones ()Ljava/util/List;
 	public final fun getType ()Ljava/lang/String;
 }
@@ -4414,9 +4536,10 @@ public final class com/parseapi/StateDeep$Companion {
 
 public final class com/parseapi/StateDistrictItem {
 	public static final field Companion Lcom/parseapi/StateDistrictItem$Companion;
-	public final fun getDeep ()Lcom/parseapi/StateDistrictItemDeep;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getName ()Ljava/lang/String;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 }
 
@@ -4533,8 +4656,14 @@ public final class com/parseapi/TimeAtOptions {
 public final class com/parseapi/TimeLocation {
 	public static final field Companion Lcom/parseapi/TimeLocation$Companion;
 	public final fun getCandidates ()Ljava/util/List;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getId ()Ljava/lang/String;
 	public final fun getInput ()Lcom/parseapi/TimeLocationInput;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
 	public final fun getSource ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
 	public final fun getStatus ()Ljava/lang/String;
 	public final fun getTruncated ()Z
 }
@@ -4810,14 +4939,23 @@ public final class com/parseapi/Timezone {
 	public static final field Companion Lcom/parseapi/Timezone$Companion;
 	public final fun getAbbreviation ()Ljava/lang/String;
 	public final fun getAt ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/TimezoneDeep;
 	public final fun getDst ()Ljava/lang/Boolean;
+	public final fun getDstOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLocation ()Lcom/parseapi/TimeLocation;
 	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNextDst ()Lcom/parseapi/TimezoneNextDst;
 	public final fun getOffset ()Ljava/lang/String;
+	public final fun getOffsetMinutes ()Ljava/lang/Integer;
+	public final fun getOffsetSeconds ()Ljava/lang/Integer;
+	public final fun getResolution ()Lcom/parseapi/TimeResolution;
+	public final fun getSeason ()Lcom/parseapi/TimeSeason;
+	public final fun getStandardOffset ()Ljava/lang/String;
+	public final fun getStandardOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getTargets ()Ljava/util/List;
 	public final fun getTimezone ()Ljava/lang/String;
+	public final fun getTimezoneDatabaseVersion ()Ljava/lang/String;
 	public final fun getTo ()Lcom/parseapi/TimezoneConversionTarget;
 	public final fun getUnix ()Ljava/lang/Long;
 }
@@ -4849,9 +4987,11 @@ public final class com/parseapi/TimezoneConversionTarget {
 	public static final field Companion Lcom/parseapi/TimezoneConversionTarget$Companion;
 	public final fun getAbbreviation ()Ljava/lang/String;
 	public final fun getAt ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/TimezoneConversionTargetDeep;
 	public final fun getDst ()Z
+	public final fun getName ()Ljava/lang/String;
 	public final fun getOffset ()Ljava/lang/String;
+	public final fun getOffsetMinutes ()Ljava/lang/Integer;
+	public final fun getOffsetSeconds ()Ljava/lang/Integer;
 	public final fun getTimezone ()Ljava/lang/String;
 	public final fun getUnix ()Ljava/lang/Long;
 }
@@ -4954,12 +5094,15 @@ public final class com/parseapi/TimezoneOptions {
 
 public final class com/parseapi/Useragent {
 	public static final field Companion Lcom/parseapi/Useragent$Companion;
+	public final fun getAi ()Ljava/lang/Boolean;
 	public final fun getBot ()Z
-	public final fun getBrowser ()Ljava/lang/String;
-	public final fun getDeep ()Lcom/parseapi/UseragentDeep;
-	public final fun getDevice ()Ljava/lang/String;
+	public final fun getBotDetails ()Lcom/parseapi/UseragentBot;
+	public final fun getBrowser ()Lcom/parseapi/UseragentBrowserDeep;
+	public final fun getDevice ()Lcom/parseapi/UseragentDeviceDeep;
+	public final fun getEngine ()Lcom/parseapi/UseragentEngineDeep;
+	public final fun getHeadless ()Ljava/lang/Boolean;
 	public final fun getMobile ()Z
-	public final fun getOs ()Ljava/lang/String;
+	public final fun getOs ()Lcom/parseapi/UseragentOsDeep;
 	public final fun getUseragent ()Ljava/lang/String;
 }
 
@@ -5137,10 +5280,16 @@ public final class com/parseapi/UseragentOsDeep$Companion {
 
 public final class com/parseapi/Weather {
 	public static final field Companion Lcom/parseapi/Weather$Companion;
+	public final fun getAir ()Lcom/parseapi/WeatherAir;
+	public final fun getAlerts ()Ljava/util/List;
 	public final fun getCurrent ()Lcom/parseapi/WeatherCurrent;
-	public final fun getDeep ()Lcom/parseapi/WeatherDeep;
+	public final fun getDays ()Ljava/util/List;
+	public final fun getForecast ()Ljava/util/List;
+	public final fun getHistory ()Lcom/parseapi/WeatherHistory;
+	public final fun getHours ()Ljava/util/List;
 	public final fun getLatitude ()D
 	public final fun getLongitude ()D
+	public final fun getMinutes ()Ljava/util/List;
 	public final fun getStation ()Lcom/parseapi/WeatherStation;
 }
 
@@ -5209,13 +5358,21 @@ public final class com/parseapi/WeatherCurrent {
 	public final fun getCondition ()Ljava/lang/String;
 	public final fun getConditionEmoji ()Ljava/lang/String;
 	public final fun getConditionName ()Ljava/lang/String;
+	public final fun getDewpoint ()Ljava/lang/Double;
+	public final fun getDewpointF ()Ljava/lang/Double;
 	public final fun getFeelsLike ()Ljava/lang/Double;
 	public final fun getFeelsLikeF ()Ljava/lang/Double;
 	public final fun getHumidity ()Ljava/lang/Double;
 	public final fun getObservedAt ()Ljava/lang/String;
+	public final fun getPressure ()Ljava/lang/Double;
+	public final fun getPressureInhg ()Ljava/lang/Double;
 	public final fun getTemperature ()Ljava/lang/Double;
 	public final fun getTemperatureF ()Ljava/lang/Double;
+	public final fun getVisibility ()Ljava/lang/Double;
+	public final fun getVisibilityMi ()Ljava/lang/Double;
 	public final fun getWindDirection ()Ljava/lang/Double;
+	public final fun getWindGust ()Ljava/lang/Double;
+	public final fun getWindGustMph ()Ljava/lang/Double;
 	public final fun getWindSpeed ()Ljava/lang/Double;
 	public final fun getWindSpeedMph ()Ljava/lang/Double;
 }

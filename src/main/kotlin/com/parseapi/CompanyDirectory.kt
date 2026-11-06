@@ -131,7 +131,7 @@ typealias CompanyProfileDomain = CompanyProfileWebsite
 @Serializable
 class CompanySocialProfile private constructor(val platform: String? = null, val url: String, val handle: String? = null)
 @Serializable
-class CompanyPhoneNumber private constructor(val number: String, val type: String? = null)
+class CompanyPhoneNumber private constructor(val number: String, val type: String? = null, val country: String? = null, val e164: String? = null)
 @Serializable
 class CompanyEmailAddress private constructor(val address: String, val type: String? = null)
 
@@ -186,7 +186,29 @@ class CompanyProfile private constructor(
 	val website: String? = null,
 	val listings: List<CompanyProfileListing> = emptyList(),
 	val address: CompanyProfileAddress? = null,
-	val deep: CompanyProfileDeep? = null,
+	val domains: List<CompanyProfileDomain>? = null,
+	val socialProfiles: List<CompanySocialProfile>? = null,
+	val phoneNumbers: List<CompanyPhoneNumber>? = null,
+	val emailAddresses: List<CompanyEmailAddress>? = null,
+	val legalName: String? = null,
+	val aliases: List<String>? = null,
+	val jurisdiction: CompanyProfileJurisdiction? = null,
+	val status: String? = null,
+	val websites: List<CompanyProfileWebsite>? = null,
+	val identifiers: List<CompanyProfileIdentifier>? = null,
+	val incorporated: String? = null,
+	val addresses: List<CompanyProfileAddress>? = null,
+	val industries: List<CompanyProfileIndustry>? = null,
+	val parent: String? = null,
+	val description: String? = null,
+	val logo: String? = null,
+	val socials: List<String>? = null,
+	val phones: List<CompanyProfilePhone>? = null,
+	val emails: List<CompanyProfileEmail>? = null,
+	val founded: CompanyProfileFounding? = null,
+	val employees: CompanyProfileEmployees? = null,
+	val registrations: List<CompanyProfileRegistration>? = null,
+	val sources: List<CompanyProfileSource>? = null,
 )
 
 /** A directory search profile with match evidence; a match is not proof of legal identity. */
@@ -198,8 +220,31 @@ class CompanyCandidate private constructor(
 	val website: String? = null,
 	val listings: List<CompanyProfileListing> = emptyList(),
 	val address: CompanyProfileAddress? = null,
-	val deep: CompanyProfileDeep? = null,
+
 	val match: CompanyMatch,
+	val domains: List<CompanyProfileDomain>? = null,
+	val socialProfiles: List<CompanySocialProfile>? = null,
+	val phoneNumbers: List<CompanyPhoneNumber>? = null,
+	val emailAddresses: List<CompanyEmailAddress>? = null,
+	val legalName: String? = null,
+	val aliases: List<String>? = null,
+	val jurisdiction: CompanyProfileJurisdiction? = null,
+	val status: String? = null,
+	val websites: List<CompanyProfileWebsite>? = null,
+	val identifiers: List<CompanyProfileIdentifier>? = null,
+	val incorporated: String? = null,
+	val addresses: List<CompanyProfileAddress>? = null,
+	val industries: List<CompanyProfileIndustry>? = null,
+	val parent: String? = null,
+	val description: String? = null,
+	val logo: String? = null,
+	val socials: List<String>? = null,
+	val phones: List<CompanyProfilePhone>? = null,
+	val emails: List<CompanyProfileEmail>? = null,
+	val founded: CompanyProfileFounding? = null,
+	val employees: CompanyProfileEmployees? = null,
+	val registrations: List<CompanyProfileRegistration>? = null,
+	val sources: List<CompanyProfileSource>? = null,
 )
 
 /** One page of company candidates. Reuse next with the same selector, filters and limit. */
@@ -209,16 +254,5 @@ class CompanySearch private constructor(
 	val next: String? = null,
 )
 
-/** Counts for this directory edition, not complete country or worldwide coverage. */
-@Serializable
-class CompanyCoverage private constructor(
-	val scope: String,
-	val label: String,
-	val description: String,
-	val snapshotAt: String = "",
-	val companies: Long,
-	val countries: List<String> = emptyList(),
-	val withWebsite: Long,
-	val withListings: Long,
-	val withAddress: Long,
-)
+
+

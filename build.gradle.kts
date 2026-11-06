@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.parseapi"
-version = "1.11.4"
+version = "1.12.0"
 
 repositories {
 	mavenCentral()
@@ -33,6 +33,7 @@ java {
 
 tasks.test {
 	useJUnitPlatform()
+ testLogging { exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL; events("failed") }
 	systemProperty("parseapi.artifact.version", project.version.toString())
 }
 
