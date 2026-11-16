@@ -33,7 +33,7 @@ class APIVersionTest {
 		assertEquals(2, stub.requests.size)
 		for (request in stub.requests) {
 			assertEquals("https://api.parseapi.com/ip?deep=true", request.url)
-			assertEquals("2.1.0", request.headers["X-API-Version"])
+			assertEquals("2.2.0", request.headers["X-API-Version"])
 			assertNull(request.headers["Parse-Version"])
 			assertEquals("parse_app_version_test", request.headers["X-API-Key"])
 			assertEquals("com.example.version", request.headers["X-App-Id"])
@@ -52,7 +52,7 @@ class APIVersionTest {
 		}
 		client.useragent("Example/1.0")
 		val request = stub.requests.single()
-		assertEquals("2.1.0", request.headers["X-API-Version"])
+		assertEquals("2.2.0", request.headers["X-API-Version"])
 		assertEquals("Example/1.0", request.headers["User-Agent"])
 		assertEquals("parse_app_version_test", request.headers["X-API-Key"])
 		assertEquals("com.example.version", request.headers["X-App-Id"])
@@ -70,7 +70,7 @@ class APIVersionTest {
 			assertEquals("invalid_request", error.code)
 			assertEquals("req_version", error.requestId)
 			assertEquals(1, stub.requests.size)
-			assertEquals("2.1.0", stub.requests.single().headers["X-API-Version"])
+			assertEquals("2.2.0", stub.requests.single().headers["X-API-Version"])
 		}
 	}
 }

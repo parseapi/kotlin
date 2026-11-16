@@ -29,7 +29,7 @@ class StackTest {
 			val client = ParseAPI("test_key") { transport = stub; retries = 0; baseUrl = "https://api.parseapi.com" }
 			val result = client.stack("bücher.example") { deep = true; pretty = true }
 			assertEquals("https://api.parseapi.com/stack/b%C3%BCcher.example?deep=true&pretty=true", stub.requests[0].url)
-			assertEquals("2.1.0", stub.requests[0].headers["X-API-Version"])
+			assertEquals("2.2.0", stub.requests[0].headers["X-API-Version"])
 			if (i == 0 || i == 3) { assertNull(result.cms); assertNull(result.servers); }
 			else if (i != 2) { assertTrue(result.cms!!.isEmpty()); assertTrue(result.servers!!.isEmpty()) }
 			for (group in listOf(result.ecommerce, result.analytics, result.chat, result.payments, result.hosting)) {

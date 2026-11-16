@@ -45,7 +45,7 @@ class DomainResultTest {
 			assertEquals("x.example", result.domain)
 			assertEquals(1, stub.requests.size)
 			assertEquals("https://api.parseapi.com/domain/b%C3%BCcher.example?deep=true", stub.requests.single().url)
-			assertEquals("2.1.0", stub.requests.single().headers["X-API-Version"])
+			assertEquals("2.2.0", stub.requests.single().headers["X-API-Version"])
 			assertEquals("test_key", stub.requests.single().headers["X-API-Key"])
 			when (index) {
 				0 -> { result; assertNull(result.registration) }

@@ -40,7 +40,7 @@ class EmojiTest {
   assertEquals("POST",parse.requests[0].method)
   assertEquals("x 👍🏿 👍🏿",Json.parseToJsonElement(parse.requests[0].body!!).jsonObject["text"]!!.jsonPrimitive.content)
   assertEquals("https://api.parseapi.com/emoji/parse?deep=true&lang=fr",parse.requests[0].url)
-  assertEquals("2.1.0",parse.requests[0].headers["X-API-Version"])
+  assertEquals("2.2.0",parse.requests[0].headers["X-API-Version"])
   val categories=ParseAPI("test") {transport=StubTransport(200,"""
 {"categories":[{"category":"People & Body","subcategories":["hand-fingers-closed"]}]}
 """)}.emojiCategories()

@@ -359,7 +359,7 @@ class ADPTest {
 """)
   val state = ParseAPI("test") { transport=rows }.stateDistricts("NC") { country="US"; deep=true }
   assertEquals(0L,state.districts.single()?.population)
-  assertEquals("https://api.parseapi.com/state/NC/districts?country=US&deep=true",rows.requests.single().url)
+  assertEquals("https://api.parseapi.com/state/NC/counties?country=US&deep=true",rows.requests.single().url)
   val cityBody = """
 {"name":"Place","country":"US","id":"city_123","distance":0,"distance_mi":0,"population":0}
 """

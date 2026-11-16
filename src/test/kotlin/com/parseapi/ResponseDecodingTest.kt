@@ -41,14 +41,14 @@ class ResponseDecodingTest {
   val parse=ParseAPI("fixture") { retries=0; transport=stub }
   assertTrue(parse.timeZones().timezones?.isNotEmpty() == true)
   assertEquals(1,sent.size); assertFalse(sent[0].headers.keys.any { it.equals("Parse-Response",ignoreCase=true) })
-  assertEquals("2.1.0",sent[0].headers["X-API-Version"])
+  assertEquals("2.2.0",sent[0].headers["X-API-Version"])
  }
  @Test fun ordinaryClientDecodesCleanResponse() = runBlocking {
   val sent=mutableListOf<ParseAPIRequest>()
   val stub=ParseAPITransport { req -> sent.add(req); ParseAPIResponse(200,body("clean","timezones"),emptyMap()) }
   val parse=ParseAPI("fixture") { retries=0; transport=stub }
   assertTrue(parse.timeZones().timezones?.isNotEmpty() == true); assertEquals(1,sent.size)
-  assertFalse(sent[0].headers.containsKey("Parse-Response")); assertEquals("2.1.0",sent[0].headers["X-API-Version"])
+  assertFalse(sent[0].headers.containsKey("Parse-Response")); assertEquals("2.2.0",sent[0].headers["X-API-Version"])
  }
 
  @Test fun retiredNullMetadataDoesNotChangeMeaningfulUnknowns() = runBlocking {

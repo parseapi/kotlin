@@ -1,10 +1,12 @@
+@file:OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+
 package com.parseapi
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 // Response types for the ParseAPI public API. Nullable fields default to null.
-// Optional 2.1 detail belongs to its owning resource. Missing and null remain unknown.
+// Optional 2.2 detail belongs to its owning resource. Missing and null remain unknown.
 
 @Serializable
 class IpDeep private constructor(
@@ -25,12 +27,19 @@ class IpDeep private constructor(
 	val tor: Boolean? = null,
 	val vpn: Boolean? = null,
 	val provider: String? = null,
-	/** Present only when supported. District is qualified by the response country. */
-	val district: String? = null,
-	val districtName: String? = null,
+	/** Present only when supported. County is qualified by the response country. */
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 	val censusDivision: String? = null,
 	val censusRegion: String? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class Ip private constructor(
@@ -56,11 +65,18 @@ class Ip private constructor(
 	val tor: Boolean? = null,
 	val vpn: Boolean? = null,
 	val provider: String? = null,
-	val district: String? = null,
-	val districtName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 	val censusDivision: String? = null,
 	val censusRegion: String? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class Continent private constructor(
@@ -259,8 +275,8 @@ class State private constructor(
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	val timezones: List<String> = emptyList(),
-	@SerialName("iso_subdivision")
-	val iso: String? = null,
+	@SerialName("iso_code")
+	val isoCode: String? = null,
 	val fips: String? = null,
 	val areaCodes: List<String>? = null,
 	val capital: StateCapital? = null,
@@ -268,11 +284,14 @@ class State private constructor(
 	val populationPeriod: String? = null,
 	val area: Double? = null,
 	val tax: StateTax? = null,
-) { val iso31662:String? get()=iso }
+) {
+ @Deprecated("Use isoCode") val iso:String? get()=isoCode
+ @Deprecated("Use isoCode") val iso31662:String? get()=isoCode
+}
 @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 private object StateISOWireSerializer:kotlinx.serialization.json.JsonTransformingSerializer<State>(State.generatedSerializer()) {
  override fun transformDeserialize(element:kotlinx.serialization.json.JsonElement):kotlinx.serialization.json.JsonElement {
-  val record=(isoWireShape(element,"iso_subdivision","iso","iso_3166_2") as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
+  val record=(isoWireShape(element,"iso_code","iso_subdivision","iso","iso_3166_2") as? kotlinx.serialization.json.JsonObject)?.toMutableMap() ?: return element
   val capital=record["capital"]
   if(capital is kotlinx.serialization.json.JsonObject) record["capital"]=isoWireShape(isoWireShape(capital,"latitude","lat"),"longitude","lon")
   return kotlinx.serialization.json.JsonObject(record)
@@ -281,26 +300,37 @@ private object StateISOWireSerializer:kotlinx.serialization.json.JsonTransformin
 
 
 @Serializable
-class StateDistrictItem private constructor(
-	val district: String,
+class StateCountyItem private constructor(
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String,
+	val isoCode: String? = null,
 	val name: String,
 	val type: String? = null,
 	val population: Long? = null,
 	val populationPeriod: String? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String get() = county
+}
 
 @Serializable
-class StateDistricts private constructor(
+class StateCounties private constructor(
 	val state: String,
 	val stateName: String? = null,
 	val country: String,
 	val countryName: String? = null,
-	val districts: List<StateDistrictItem> = emptyList(),
-)
+	@kotlinx.serialization.json.JsonNames("districts")
+	val counties: List<StateCountyItem> = emptyList(),
+) {
+    @Deprecated("Use counties")
+    val districts: List<StateCountyItem> get() = counties
+}
 
 @Serializable
-class District private constructor(
-	val district: String,
+class County private constructor(
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String,
+	val isoCode: String? = null,
 	val name: String,
 	val type: String? = null,
 	val state: String? = null,
@@ -317,7 +347,10 @@ class District private constructor(
 	val waterArea: Double? = null,
 	val seat: String? = null,
 	val propertyTax: PropertyTax? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String get() = county
+}
 
 @Serializable
 class City private constructor(
@@ -329,8 +362,10 @@ class City private constructor(
 	val type: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
-	val district: String? = null,
-	val districtName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 	val country: String,
 	val countryName: String? = null,
 	val latitude: Double? = null,
@@ -351,7 +386,12 @@ class City private constructor(
 	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 /** Nearest-city lookups add the distance from the query point. */
 @Serializable
@@ -363,8 +403,10 @@ class CityNearest private constructor(
 	val type: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
-	val district: String? = null,
-	val districtName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 	val country: String,
 	val countryName: String? = null,
 	val latitude: Double? = null,
@@ -386,7 +428,12 @@ class CityNearest private constructor(
 	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class CitySearch private constructor(
@@ -438,9 +485,12 @@ class Postal private constructor(
 	val cityLocal: String? = null,
 	/** Null is unknown. An empty list has no eligible choices. One choice does not imply city. */
 	val localities: List<PostalLocality>? = null,
-	val district: String? = null,
-	val districtName: String? = null,
-	val districtNameLocal: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name_local","districtNameLocal")
+	val countyNameLocal: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val stateNameLocal: String? = null,
@@ -464,7 +514,14 @@ class Postal private constructor(
 	val metros: List<PostalMetro>? = null,
 	val propertyTax: PostalPropertyTax? = null,
 	val tax: PostalTax? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+    @Deprecated("Use countyNameLocal")
+    val districtNameLocal: String? get() = countyNameLocal
+}
 
 @Serializable
 class PostalNearbyItem private constructor(
@@ -1029,8 +1086,10 @@ class Point private constructor(
 	val countryName: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
-	val district: String? = null,
-	val districtName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 
 	val timezone: String? = null,
 	val city: PointCity? = null,
@@ -1038,7 +1097,12 @@ class Point private constructor(
 	val elevationFt: Double? = null,
 	val resolution: Double? = null,
 	val electoral: PointElectoral? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class WeatherForecastPeriod private constructor(
@@ -1264,8 +1328,10 @@ class Address private constructor(
 	val street: String? = null,
 	val unit: String? = null,
 	val city: String? = null,
-	val district: String? = null,
-	val districtName: String? = null,
+	@kotlinx.serialization.json.JsonNames("district")
+	val county: String? = null,
+	@kotlinx.serialization.json.JsonNames("district_name","districtName")
+	val countyName: String? = null,
 	val state: String? = null,
 	val stateName: String? = null,
 	val postal: String? = null,
@@ -1274,7 +1340,12 @@ class Address private constructor(
 	val latitude: Double? = null,
 	val longitude: Double? = null,
 	
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class AddressSuggestion private constructor(
@@ -1563,7 +1634,7 @@ private object StateDeepWireSerializer:kotlinx.serialization.json.JsonTransformi
 
 
 @Serializable
-class DistrictDeep private constructor(
+class CountyDeep private constructor(
 	val population: Long? = null,
 	@Deprecated("No longer returned; retained for source compatibility")
 	@kotlinx.serialization.Transient
@@ -1788,7 +1859,7 @@ class PostalMetroDeep private constructor(
 
 
 @Serializable
-class StateDistrictItemDeep private constructor(
+class StateCountyItemDeep private constructor(
 	val population: Long? = null,
 	@Deprecated("No longer returned; retained for source compatibility")
 	@kotlinx.serialization.Transient
@@ -2112,8 +2183,10 @@ class CityResource private constructor(
     val countryName: String? = null,
     val state: String? = null,
     val stateName: String? = null,
-    val district: String? = null,
-    val districtName: String? = null,
+    @kotlinx.serialization.json.JsonNames("district")
+    val county: String? = null,
+    @kotlinx.serialization.json.JsonNames("district_name","districtName")
+    val countyName: String? = null,
     val type: String? = null,
     val grain: String? = null,
     val latitude: Double? = null,
@@ -2132,7 +2205,12 @@ class CityResource private constructor(
 	val area: Double? = null,
 	val landArea: Double? = null,
 	val waterArea: Double? = null,
-)
+) {
+    @Deprecated("Use county")
+    val district: String? get() = county
+    @Deprecated("Use countyName")
+    val districtName: String? get() = countyName
+}
 
 @Serializable
 class CityList private constructor(
@@ -2233,3 +2311,18 @@ class CurrencyRate private constructor(
 class CurrencyDeep private constructor()
 
 
+
+/** Legacy type spelling; use StateCountyItem. */
+typealias StateDistrictItem = StateCountyItem
+
+/** Legacy type spelling; use StateCounties. */
+typealias StateDistricts = StateCounties
+
+/** Legacy type spelling; use County. */
+typealias District = County
+
+/** Legacy type spelling; use CountyDeep. */
+typealias DistrictDeep = CountyDeep
+
+/** Legacy type spelling; use StateCountyItemDeep. */
+typealias StateDistrictItemDeep = StateCountyItemDeep

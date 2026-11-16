@@ -44,7 +44,7 @@ class NetworkContractsTest {
         val districtStub = StubTransport(200, fixtures.getValue("district_current").toString())
         val district = ParseAPI("test") { transport = districtStub }.district("36061") { country = "US"; this.state = "NY" }
         assertEquals(listOf("America/New_York"), district.timezones)
-        assertTrue(districtStub.requests.single().url.endsWith("/district/36061?country=US&state=NY"))
+        assertTrue(districtStub.requests.single().url.endsWith("/county/36061?country=US&state=NY"))
         val domain = codec.decodeFromJsonElement<Domain>(fixtures.getValue("domain_unregistered"))
         assertEquals(true, domain.available)
         assertNull(domain?.registration?.dnssec)

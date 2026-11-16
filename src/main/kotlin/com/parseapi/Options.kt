@@ -42,14 +42,14 @@ class StateOptions internal constructor() {
 	var deep: Boolean = false
 }
 
-class StateDistrictsOptions internal constructor() {
+class StateCountiesOptions internal constructor() {
 	/** Display language for this request. */
 	var lang: String? = null
 	var country: String? = null
 	var deep: Boolean = false
 }
 
-class DistrictOptions internal constructor() {
+class CountyOptions internal constructor() {
 	/** Display language for this request. */
 	var lang: String? = null
 	var country: String? = null
@@ -547,3 +547,8 @@ class CurrencyOptions internal constructor() {
 	var lang: String? = null
 	var deep: Boolean = false
 }
+
+/** Legacy option spelling; use CountyOptions. */
+typealias DistrictOptions = CountyOptions
+/** Legacy option spelling; use StateCountiesOptions. */
+typealias StateDistrictsOptions = StateCountiesOptions

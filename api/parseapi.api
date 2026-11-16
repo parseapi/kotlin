@@ -4,6 +4,8 @@ public final class com/parseapi/Address {
 	public final fun getCity ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
@@ -293,6 +295,8 @@ public final class com/parseapi/City {
 	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getElevation ()Ljava/lang/Double;
@@ -674,6 +678,8 @@ public final class com/parseapi/CityNearest {
 	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDistance ()D
 	public final fun getDistanceMi ()D
 	public final fun getDistrict ()Ljava/lang/String;
@@ -830,6 +836,8 @@ public final class com/parseapi/CityResource {
 	public final fun getCapitalOf ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDistance ()Ljava/lang/Double;
 	public final fun getDistanceMi ()Ljava/lang/Double;
 	public final fun getDistrict ()Ljava/lang/String;
@@ -1981,6 +1989,79 @@ public final class com/parseapi/CountryTax$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/County {
+	public static final field Companion Lcom/parseapi/County$Companion;
+	public final fun getArea ()Ljava/lang/Double;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getDistrict ()Ljava/lang/String;
+	public final fun getIsoCode ()Ljava/lang/String;
+	public final fun getLandArea ()Ljava/lang/Double;
+	public final fun getLatitude ()Ljava/lang/Double;
+	public final fun getLongitude ()Ljava/lang/Double;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
+	public final fun getSeat ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+	public final fun getTimezones ()Ljava/util/List;
+	public final fun getType ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
+}
+
+public synthetic class com/parseapi/County$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/County$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/County;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/County;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/County$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CountyDeep {
+	public static final field Companion Lcom/parseapi/CountyDeep$Companion;
+	public final fun getArea ()Ljava/lang/Double;
+	public final fun getLandArea ()Ljava/lang/Double;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
+	public final fun getSeat ()Ljava/lang/String;
+	public final fun getWaterArea ()Ljava/lang/Double;
+}
+
+public synthetic class com/parseapi/CountyDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/CountyDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/CountyDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/CountyDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/CountyDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/CountyOptions {
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Z
+	public final fun getLang ()Ljava/lang/String;
+	public final fun getState ()Ljava/lang/String;
+	public final fun setCountry (Ljava/lang/String;)V
+	public final fun setDeep (Z)V
+	public final fun setLang (Ljava/lang/String;)V
+	public final fun setState (Ljava/lang/String;)V
+}
+
 public final class com/parseapi/Currency {
 	public static final field Companion Lcom/parseapi/Currency$Companion;
 	public final fun getCountries ()Ljava/util/List;
@@ -2147,77 +2228,6 @@ public final class com/parseapi/DateTodayOptions {
 	public final fun setDeep (Z)V
 	public final fun setLang (Ljava/lang/String;)V
 	public final fun setTo (Ljava/lang/String;)V
-}
-
-public final class com/parseapi/District {
-	public static final field Companion Lcom/parseapi/District$Companion;
-	public final fun getArea ()Ljava/lang/Double;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDistrict ()Ljava/lang/String;
-	public final fun getLandArea ()Ljava/lang/Double;
-	public final fun getLatitude ()Ljava/lang/Double;
-	public final fun getLongitude ()Ljava/lang/Double;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getPopulation ()Ljava/lang/Long;
-	public final fun getPopulationPeriod ()Ljava/lang/String;
-	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
-	public final fun getSeat ()Ljava/lang/String;
-	public final fun getState ()Ljava/lang/String;
-	public final fun getStateName ()Ljava/lang/String;
-	public final fun getTimezones ()Ljava/util/List;
-	public final fun getType ()Ljava/lang/String;
-	public final fun getWaterArea ()Ljava/lang/Double;
-}
-
-public synthetic class com/parseapi/District$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/District$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/District;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/District;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/District$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/DistrictDeep {
-	public static final field Companion Lcom/parseapi/DistrictDeep$Companion;
-	public final fun getArea ()Ljava/lang/Double;
-	public final fun getLandArea ()Ljava/lang/Double;
-	public final fun getPopulation ()Ljava/lang/Long;
-	public final fun getPopulationPeriod ()Ljava/lang/String;
-	public final fun getPropertyTax ()Lcom/parseapi/PropertyTax;
-	public final fun getSeat ()Ljava/lang/String;
-	public final fun getWaterArea ()Ljava/lang/Double;
-}
-
-public synthetic class com/parseapi/DistrictDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/DistrictDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/DistrictDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/DistrictDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/DistrictDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/DistrictOptions {
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Z
-	public final fun getLang ()Ljava/lang/String;
-	public final fun getState ()Ljava/lang/String;
-	public final fun setCountry (Ljava/lang/String;)V
-	public final fun setDeep (Z)V
-	public final fun setLang (Ljava/lang/String;)V
-	public final fun setState (Ljava/lang/String;)V
 }
 
 public final class com/parseapi/Dns {
@@ -3255,6 +3265,8 @@ public final class com/parseapi/Ip {
 	public final fun getContinent ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDatacenter ()Ljava/lang/Boolean;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
@@ -3294,6 +3306,8 @@ public final class com/parseapi/IpDeep {
 	public final fun getCensusDivision ()Ljava/lang/String;
 	public final fun getCensusRegion ()Ljava/lang/String;
 	public final fun getCity ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDatacenter ()Ljava/lang/Boolean;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
@@ -3739,6 +3753,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun country (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun countryStates (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun county (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun county (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun currency (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun currency (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun currencyRate (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3807,6 +3823,8 @@ public final class com/parseapi/ParseAPI {
 	public final fun stack (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun state (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun state (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun stateCounties (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun stateCounties (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stateDistricts (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun stateDistricts (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun time (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -3936,6 +3954,8 @@ public final class com/parseapi/Point {
 	public final fun getCity ()Lcom/parseapi/PointCity;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
 	public final fun getElectoral ()Lcom/parseapi/PointElectoral;
@@ -4051,6 +4071,9 @@ public final class com/parseapi/Postal {
 	public final fun getCityLocal ()Ljava/lang/String;
 	public final fun getCountry ()Ljava/lang/String;
 	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getCountyName ()Ljava/lang/String;
+	public final fun getCountyNameLocal ()Ljava/lang/String;
 	public final fun getCurrency ()Ljava/lang/String;
 	public final fun getDistrict ()Ljava/lang/String;
 	public final fun getDistrictName ()Ljava/lang/String;
@@ -4461,6 +4484,7 @@ public final class com/parseapi/State {
 	public final fun getFips ()Ljava/lang/String;
 	public final fun getIso ()Ljava/lang/String;
 	public final fun getIso31662 ()Ljava/lang/String;
+	public final fun getIsoCode ()Ljava/lang/String;
 	public final fun getLatitude ()Ljava/lang/Double;
 	public final fun getLongitude ()Ljava/lang/Double;
 	public final fun getName ()Ljava/lang/String;
@@ -4508,6 +4532,84 @@ public final class com/parseapi/StateCapital$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/parseapi/StateCounties {
+	public static final field Companion Lcom/parseapi/StateCounties$Companion;
+	public final fun getCounties ()Ljava/util/List;
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getCountryName ()Ljava/lang/String;
+	public final fun getDistricts ()Ljava/util/List;
+	public final fun getState ()Ljava/lang/String;
+	public final fun getStateName ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/StateCounties$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StateCounties$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateCounties;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateCounties;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StateCounties$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/StateCountiesOptions {
+	public final fun getCountry ()Ljava/lang/String;
+	public final fun getDeep ()Z
+	public final fun getLang ()Ljava/lang/String;
+	public final fun setCountry (Ljava/lang/String;)V
+	public final fun setDeep (Z)V
+	public final fun setLang (Ljava/lang/String;)V
+}
+
+public final class com/parseapi/StateCountyItem {
+	public static final field Companion Lcom/parseapi/StateCountyItem$Companion;
+	public final fun getCounty ()Ljava/lang/String;
+	public final fun getDistrict ()Ljava/lang/String;
+	public final fun getIsoCode ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+	public final fun getType ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/StateCountyItem$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StateCountyItem$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateCountyItem;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateCountyItem;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StateCountyItem$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/parseapi/StateCountyItemDeep {
+	public static final field Companion Lcom/parseapi/StateCountyItemDeep$Companion;
+	public final fun getPopulation ()Ljava/lang/Long;
+	public final fun getPopulationPeriod ()Ljava/lang/String;
+}
+
+public synthetic class com/parseapi/StateCountyItemDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/parseapi/StateCountyItemDeep$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateCountyItemDeep;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateCountyItemDeep;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/parseapi/StateCountyItemDeep$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/parseapi/StateDeep {
 	public static final field Companion Lcom/parseapi/StateDeep$Companion;
 	public final fun getArea ()Ljava/lang/Double;
@@ -4532,81 +4634,6 @@ public synthetic class com/parseapi/StateDeep$$serializer : kotlinx/serializatio
 
 public final class com/parseapi/StateDeep$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/StateDistrictItem {
-	public static final field Companion Lcom/parseapi/StateDistrictItem$Companion;
-	public final fun getDistrict ()Ljava/lang/String;
-	public final fun getName ()Ljava/lang/String;
-	public final fun getPopulation ()Ljava/lang/Long;
-	public final fun getPopulationPeriod ()Ljava/lang/String;
-	public final fun getType ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/StateDistrictItem$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/StateDistrictItem$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateDistrictItem;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateDistrictItem;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/StateDistrictItem$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/StateDistrictItemDeep {
-	public static final field Companion Lcom/parseapi/StateDistrictItemDeep$Companion;
-	public final fun getPopulation ()Ljava/lang/Long;
-	public final fun getPopulationPeriod ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/StateDistrictItemDeep$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/StateDistrictItemDeep$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateDistrictItemDeep;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateDistrictItemDeep;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/StateDistrictItemDeep$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/StateDistricts {
-	public static final field Companion Lcom/parseapi/StateDistricts$Companion;
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getCountryName ()Ljava/lang/String;
-	public final fun getDistricts ()Ljava/util/List;
-	public final fun getState ()Ljava/lang/String;
-	public final fun getStateName ()Ljava/lang/String;
-}
-
-public synthetic class com/parseapi/StateDistricts$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
-	public static final field INSTANCE Lcom/parseapi/StateDistricts$$serializer;
-	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
-	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/parseapi/StateDistricts;
-	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
-	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
-	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/parseapi/StateDistricts;)V
-	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
-}
-
-public final class com/parseapi/StateDistricts$Companion {
-	public final fun serializer ()Lkotlinx/serialization/KSerializer;
-}
-
-public final class com/parseapi/StateDistrictsOptions {
-	public final fun getCountry ()Ljava/lang/String;
-	public final fun getDeep ()Z
-	public final fun getLang ()Ljava/lang/String;
-	public final fun setCountry (Ljava/lang/String;)V
-	public final fun setDeep (Z)V
-	public final fun setLang (Ljava/lang/String;)V
 }
 
 public final class com/parseapi/StateOptions {

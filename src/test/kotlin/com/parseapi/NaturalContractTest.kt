@@ -22,7 +22,9 @@ class NaturalContractTest {
 else->error("Unknown fixture")}
    assertFalse(encoded.jsonObject.containsKey("deep"))
    for(path in obj.getValue("fields").jsonArray.map{it.jsonPrimitive.content}) {
-    val want=field(body,path);val got=field(encoded,path);val message=obj.getValue("id").toString()+":"+path
+    // Historical State ISO inputs re-encode using the current canonical key.
+    val encodedPath=if(obj.getValue("product").jsonPrimitive.content=="state" && path=="iso_subdivision") "iso_code" else path
+    val want=field(body,path);val got=field(encoded,encodedPath);val message=obj.getValue("id").toString()+":"+path
     if(want is JsonPrimitive && !want.isString && want.doubleOrNull!=null && got is JsonPrimitive && !got.isString)assertEquals(want.doubleOrNull,got.doubleOrNull,message) else assertEquals(want,got,message)
    }
   }

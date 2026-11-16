@@ -1,5 +1,7 @@
+
+County migration: this SDK selects HTTP API `2.2.0`. Use County methods and the `county`, `county_name`, `county_name_local`, `counties` and State `iso_code` fields. This is a breaking field-read migration. Earlier published packages retain their documented contract and saved account defaults stay unchanged.
 ```sh
-git clone --branch 1.12.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 1.13.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -11,7 +13,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:1.12.0")
+implementation("com.parseapi:parseapi:1.13.0")
 ```
 
 ```kotlin
@@ -25,13 +27,15 @@ Get a key at [parseapi.com](https://parseapi.com). In an app, mint an App key on
 
 ## API versions
 
-This SDK sends `X-API-Version: 2.1.0` on every request, including retries. Its response types match API `2.1.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release. The API still accepts earlier `Parse-Version` request pins.
+State and County use `iso_code` for the full ISO 3166-2 code of the exact returned place, including County items in State lists. A null means unassigned or unknown. National `state` and `county` identifiers are unchanged. Earlier State ISO wire spellings remain readable. Native legacy read adapters use the canonical value, and encoding uses only `iso_code`.
+
+This SDK sends `X-API-Version: 2.2.0` on every request, including retries. Its response types match API `2.2.0`, and the client selects that contract automatically. No extra constructor setting or key change is needed. This behavior requires the matching API request-version release. The API still accepts earlier `Parse-Version` request pins.
 
 The team setting in [Dashboard API version](https://parseapi.com/dashboard/versions) is the default for requests without a version header. This SDK's header takes precedence without changing that saved default. Existing published packages keep their documented behavior.
 
 Test the new SDK dependency in staging, then deploy the same locked dependency with your application code and existing production key. Future major SDK upgrades can deliberately select a newer API contract, so review their migration notes before upgrading. Rolling back the code and dependency restores the contract selected by that SDK release. If the older SDK does not send a version header, its requests use the team default, which must stay unchanged through that rollback window.
 
-Keep the package version locked in your dependency configuration or lockfile. The selected API contract stays fixed across releases within this planned SDK major. See [API versions and migration](https://parseapi.com/docs/versioning).
+Keep the package version locked in your dependency configuration or lockfile. Each published SDK version selects its documented API contract. Review the migration notes before upgrading. See [API versions and migration](https://parseapi.com/docs/versioning).
 
 ## Weather from a postal code
 
@@ -97,8 +101,8 @@ parse.country("US")
 parse.countryStates("US")
 parse.state("colorado")
 parse.state("NC") { country = "US" }
-parse.stateDistricts("NC") { country = "US" }
-parse.district("37081")
+parse.stateCounties("NC") { country = "US" }
+parse.county("37081")
 parse.continent("NA")
 parse.continentCountries("NA")
 parse.currency("USD")
@@ -165,7 +169,7 @@ first.next?.let { nextCursor ->
 
 Directory `deep` adds detail to each profile on paid plans in the same pooled request. Existing accounts retain their current Deep access. Omitted deep, empty deep and partial detail remain distinct; description, logo, social_profiles, phone_numbers, email_addresses, domains, founded, employees, registrations and sources may be absent on older server releases. Sources attribute only their listed selected enrichment fields. Founding precision is preserved separately from incorporation. Missing listings do not establish private ownership, and a domain match does not prove legal identity. Coverage describes the returned edition, not every company worldwide.
 
-The public-directory service retires national-number Company lookups in both API versions. Use the directory methods with API 2.1.0.
+The public-directory service retires national-number Company lookups in both API versions. Use the directory methods with API 2.2.0.
 
 Company directory social profiles include `platform` and `url`. Known handles are included when available; unknown handles may be omitted or returned as null by older servers. Phone and email records use `type` for the source-reported purpose. Earlier response fields remain readable by the client.
 
@@ -232,14 +236,14 @@ Australian postal lookups include core `localities` with suburb choices (`city`,
 
 Postal paid Deep includes `currency`, `neighbors`, grouped `tax` and `property_tax: { annual_median }`. Property-tax amounts use `currency`. Tax contains `name`, `rate` and the `rate_state`, `rate_county`, `rate_city` and `rate_special` components in percent. Core provides the postal location answer.
 
-District paid profiles include `property_tax` where supported. It contains `annual_median`, `currency` and `period`: median annual property tax payable on owner-occupied homes in the statistical area. The amount is adjusted to the final year of the reporting period (`YYYY-YYYY`). This is an area statistic, not a rate or an individual property bill. Unsupported, missing and censored estimates are null.
+County paid profiles include `property_tax` where supported. It contains `annual_median`, `currency` and `period`: median annual property tax payable on owner-occupied homes in the statistical area. The amount is adjusted to the final year of the reporting period (`YYYY-YYYY`). This is an area statistic, not a rate or an individual property bill. Unsupported, missing and censored estimates are null.
 
 ```kotlin
 val place = parse.postal("28202") { country = "US"; deep = true }
 val propertyTax = place?.propertyTax
 ```
 
-Read `population` as the source’s count for that place boundary. Keep missing or null values unknown and preserve a known zero. State district lists include each district’s population. Postal nearby and distance detail remains metropolitan associations only. Continent population stays in core.
+Read `population` as the source’s count for that place boundary. Keep missing or null values unknown and preserve a known zero. State county lists include each county’s population. Postal nearby and distance detail remains metropolitan associations only. Continent population stays in core.
 
 Point returns the timezone ID with the core location. Its optional Deep adds terrain, compact nearest-city context and supported electoral detail on paid plans. Existing accounts retain their current Deep access. A nearest city is null when none is within 200 km.
 
@@ -265,7 +269,7 @@ Country includes `postal_format` and `postal_regex` on every plan without reques
 | IP | Richer IP fields included with a paid plan. No separate check meter. |
 | Domain | Registration dates, registrar, status and DNSSEC, included with a paid plan. Use `dns` for DNS records and `mx` for mail routing. |
 | Email | Basic validation is separate. Call the explicit verification method for a metered mailbox check. |
-| Country, State, City, District, Postal | Reference profiles included with a paid plan; place identity and coordinates stay core. |
+| Country, State, City, County, Postal | Reference profiles included with a paid plan; place identity and coordinates stay core. |
 | Industry | Definition, named children and exclusions on paid plans. The immediate parent stays in Core. |
 | Name, Weather | Paid name context or weather detail; parsing and current conditions stay core. |
 | Phone | Numbering-plan state and timezone on paid plans in the same pooled request. Existing accounts retain their current Deep access. |
@@ -374,7 +378,7 @@ Pass a public hostname without a scheme, path, port or IP address. Stack returns
 
 Stack checks static homepage HTML and response headers. Detections describe the checked homepage.
 
-The complete technology result is included in the core response. The generic `deep=true` option adds only an empty object and is unnecessary for Stack. Successful checks may be reused for up to 24 hours. `pretty` optionally formats the wire JSON. Each lookup uses one request and API version 2.1.0 selected by this client.
+The complete technology result is included in the core response. The generic `deep=true` option adds only an empty object and is unnecessary for Stack. Successful checks may be reused for up to 24 hours. `pretty` optionally formats the wire JSON. Each lookup uses one request and API version 2.2.0 selected by this client.
 
 Stack defaults to a 35-second transport timeout so a first scan has time to finish. Other lookups retain their 10-second default. An explicit client timeout takes precedence.
 
@@ -456,7 +460,7 @@ compatibility through these wire mappings:
 | --- | --- | --- |
 | Country or Language three-letter code | `iso_alpha3` | `iso3` |
 | Country numeric code | `iso_numeric` | `numeric` |
-| Full subdivision code, such as `US-CA` | `iso_subdivision` | `iso` |
+| Full subdivision code, such as `US-CA` | `iso_code` | `isoCode` |
 | Currency numeric code | `iso_numeric` | `isoNumeric` |
 
 Response decoders accept the current and earlier wire spellings. An explicit
@@ -476,7 +480,7 @@ Country and State capital coordinates use `latitude` and `longitude`. Update
 Postal `property_tax` uses `PostalPropertyTax`. Its known `annual_median`
 remains available when currency and period are absent. Update explicit tax-type
 annotations; optional legacy currency/period members retain supplied older facts.
-Currency context stays on Postal Deep. District's full tax model is unchanged.
+Currency context stays on Postal Deep. County's full tax model is unchanged.
 
 Weather minute rates use `precipitation_rate` / `precipitation_rate_in` in JSON
 and `precipitationRate` / `precipitationRateIn` in this SDK (mm/hour and inches/hour).
@@ -492,7 +496,7 @@ Replacing the package alone does not preserve that getter's binary signature.
 
 API 2.1 Time returns the clock first and the matched place in `location`. Read that place directly; `location.candidates` is for unresolved choices. Unused `resolution` is absent. City matches keep the match kind, text and language without the source category or spelling score. Holiday JSON keeps scope and completeness without calendar hashes; explicitly selected work-profile pins remain.
 
-This client targets ParseAPI 2.1.0. Upgrading requires response-reader changes: optional detail now lives on its resource. Read `population` instead of `deep.population`. Deep remains an explicit request for optional detail. Without the request or access, optional fields are absent. A returned null still means unknown. User-Agent device, OS and browser are objects in every mode. Postal tax is one `tax` object. Specialist Weather measurements live in `current`. Metered Carrier and HLR return the complete purchased result without a Deep switch.
+This client targets ParseAPI 2.2.0. Upgrading requires response-reader changes: optional detail now lives on its resource. Read `population` instead of `deep.population`. Deep remains an explicit request for optional detail. Without the request or access, optional fields are absent. A returned null still means unknown. User-Agent device, OS and browser are objects in every mode. Postal tax is one `tax` object. Specialist Weather measurements live in `current`. Metered Carrier and HLR return the complete purchased result without a Deep switch.
 
 Use `parse.emailVerify(email)` for mailbox verification. It sends POST `/email/verify` with `{ "email": "person@example.com" }` and defaults to no automatic retries. The earlier Email deep argument is accepted only as a migration alias for that same operation. App keys receive `permission_denied`. Bulk exports retain their existing column names and saved-job recovery.
 
@@ -500,6 +504,6 @@ The 2.0 API is a temporary migration bridge for older installed clients. There i
 
 ## Upgrade to API 2.1
 
-This version selects API `2.1.0`. Update existing `.deep` property reads to the fields at their natural homes, such as `country.population`. User-Agent identities are objects; Postal tax and Weather observations keep their documented object homes. Paid plans include their profile detail automatically in API 2.1. Free keeps its complete routine answer, and existing explicit `deep` options remain supported. Mailbox verification stays explicit.
+This version selects API `2.2.0`. Update existing `.deep` property reads to the fields at their natural homes, such as `country.population`. User-Agent identities are objects; Postal tax and Weather observations keep their documented object homes. Paid plans include their profile detail automatically in API 2.1. Free keeps its complete routine answer, and existing explicit `deep` options remain supported. Mailbox verification stays explicit.
 
 **This minor version changes existing field reads.** Upgrade the SDK and your application reads together. Existing factories remain. Email verification is explicit and includes basic validation; Carrier/HLR need no extra detail request. Preserve missing values, `null`, `false` and `0`.

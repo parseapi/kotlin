@@ -51,7 +51,7 @@ class CompanyDirectoryTest {
   assertEquals(expected.size,stub.requests.size)
   stub.requests.zip(expected).forEach {(request,path)->
    assertEquals("https://api.parseapi.com"+path,request.url)
-   assertEquals("2.1.0",request.headers["X-API-Version"])
+   assertEquals("2.2.0",request.headers["X-API-Version"])
   }
  }
  @OptIn(ExperimentalSerializationApi::class)

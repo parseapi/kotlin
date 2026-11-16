@@ -220,21 +220,28 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 			get("/state/${enc(code)}", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
-	suspend fun stateDistricts(code: String): StateDistricts =
-		stateDistricts(code) {}
+	suspend fun stateCounties(code: String): StateCounties =
+		stateCounties(code) {}
 
-	suspend fun stateDistricts(code: String, configure: StateDistrictsOptions.() -> Unit): StateDistricts =
-		with(StateDistrictsOptions().apply(configure)) {
-			get("/state/${enc(code)}/districts", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
+	suspend fun stateCounties(code: String, configure: StateCountiesOptions.() -> Unit): StateCounties =
+		with(StateCountiesOptions().apply(configure)) {
+			get("/state/${enc(code)}/counties", listOf("country" to country) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
-	suspend fun district(code: String): District =
-		district(code) {}
+	suspend fun county(code: String): County =
+		county(code) {}
 
-	suspend fun district(code: String, configure: DistrictOptions.() -> Unit): District =
-		with(DistrictOptions().apply(configure)) {
-			get("/district/${enc(code)}", listOf("country" to country, "state" to state) + deepQuery(deep) + listOf("lang" to lang))
+	suspend fun county(code: String, configure: CountyOptions.() -> Unit): County =
+		with(CountyOptions().apply(configure)) {
+			get("/county/${enc(code)}", listOf("country" to country, "state" to state) + deepQuery(deep) + listOf("lang" to lang))
 		}
+
+    /** Legacy method spelling; delegates to County without another request. */
+    suspend fun district(code:String):District = county(code)
+    suspend fun district(code:String,configure:DistrictOptions.()->Unit):District = county(code,configure)
+    /** Legacy method spelling; delegates to the County collection. */
+    suspend fun stateDistricts(code:String):StateDistricts = stateCounties(code)
+    suspend fun stateDistricts(code:String,configure:StateDistrictsOptions.()->Unit):StateDistricts = stateCounties(code,configure)
 
 	suspend fun city(name: String): City =
 		city(name) {}
@@ -744,7 +751,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/elevation", listOf("lat" to num(lat), "lon" to num(lon)))
 
 	/**
-	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
+	 * Resolve the country, state, county and timezone at coordinates. Deep adds terrain and compact
 	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
 	 * none is within 200 km.
 	 */
@@ -752,7 +759,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		point(lat, lon) {}
 
 	/**
-	 * Resolve the country, state, district and timezone at coordinates. Deep adds terrain and compact
+	 * Resolve the country, state, county and timezone at coordinates. Deep adds terrain and compact
 	 * nearest-city context on every plan. The timezone ID stays in core. The nearest city is null when
 	 * none is within 200 km.
 	 */
@@ -986,9 +993,9 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.12.0"
+		const val VERSION = "1.13.0"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
-		private const val API_VERSION = "2.1.0"
+		private const val API_VERSION = "2.2.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
 		private const val RETRY_AFTER_CAP_MS = 5_000L
 	}
