@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.13.1 - 2026-11-16
+
+- Correct the separately built consumer checks for the existing API `2.2.0` County responses. Use the mapped Westminster ISO code and preserve null ISO values for US counties.
+- Keep the same API selection, response models, public signatures and dependencies. Existing published tags and saved account versions are unchanged.
+
 ## 1.13.0 - 2026-11-16
 
 - State uses `iso_code` with its existing value or null. County and State county items add nullable `iso_code` for the exact place. Other ISO representations and package versions are unchanged.

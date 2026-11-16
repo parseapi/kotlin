@@ -17,7 +17,9 @@ fun main() = runBlocking {
                 request.url.endsWith("/country/US?deep=true") ->
                     """{"country":"US","name":"United States","continent":"NA","iso_alpha3":"USA","iso_numeric":840,"tax":{"name":"Sales tax","rate":0}}"""
                 request.url.endsWith("/state/NC/counties?country=US&deep=true") ->
-                    """{"state":"NC","country":"US","counties":[{"county":"37081","name":"Guilford","country":"US","iso_code":"US-NC-081","population":0},{"county":"37001","name":"Alamance","country":"US","iso_code":null}]}"""
+                    """{"state":"NC","country":"US","counties":[{"county":"37081","name":"Guilford","country":"US","iso_code":null,"population":0},{"county":"37001","name":"Alamance","country":"US","iso_code":null}]}"""
+                request.url.endsWith("/county/E09000033?country=GB") ->
+                    """{"county":"E09000033","iso_code":"GB-WSM","name":"City of Westminster","type":"district","state":"ENG","state_name":"England","country":"GB","country_name":"United Kingdom","latitude":51.512215,"longitude":-0.152953,"timezones":["Europe/London"]}"""
                 request.url.endsWith("/email/verify") -> {
                     check(request.method == "POST")
                     check(Json.parseToJsonElement(request.body ?: error("missing verify body")) ==
@@ -33,10 +35,12 @@ fun main() = runBlocking {
     val districts = parse.stateDistricts("NC") { country = "US"; deep = true }.districts
     check(districts[0].population == 0L)
     check(districts[1].population == null)
-    check(districts[0].isoCode == "US-NC-081" && districts[1].isoCode == null)
+    check(districts.all { it.isoCode == null })
+    val county = parse.county("E09000033") { country = "GB" }
+    check(county.isoCode == "GB-WSM" && county.county == "E09000033")
     val verified = parse.emailVerify("fixture@example.com")
     check(verified.deliverable == null && verified.catchall == false)
-    check(paths.size == 3)
+    check(paths.size == 4)
 
     // Public serializers decode the candidate contract without SDK-private settings.
     val core = Json.decodeFromString(Country.serializer(), """{"country":"US","name":"United States","continent":"NA"}""")

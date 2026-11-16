@@ -1,7 +1,7 @@
 
 County migration: this SDK selects HTTP API `2.2.0`. Use County methods and the `county`, `county_name`, `county_name_local`, `counties` and State `iso_code` fields. This is a breaking field-read migration. Earlier published packages retain their documented contract and saved account defaults stay unchanged.
 ```sh
-git clone --branch 1.13.0 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
+git clone --branch 1.13.1 --depth 1 https://github.com/parseapi/kotlin.git ../parseapi-kotlin
 ```
 
 Use the source checkout as an included Gradle build. Maven Central publication is not available yet.
@@ -13,7 +13,7 @@ includeBuild("../parseapi-kotlin")
 
 ```kotlin
 // build.gradle.kts dependencies
-implementation("com.parseapi:parseapi:1.13.0")
+implementation("com.parseapi:parseapi:1.13.1")
 ```
 
 ```kotlin
