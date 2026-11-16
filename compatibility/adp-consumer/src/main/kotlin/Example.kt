@@ -11,13 +11,13 @@ fun main() = runBlocking {
     val parse = ParseAPI("test") {
         transport = ParseAPITransport { request ->
             paths += request.url
-            check(request.headers["X-API-Version"] == "2.1.0")
+            check(request.headers["X-API-Version"] == "2.2.0")
             check("Parse-Version" !in request.headers)
             val body = when {
                 request.url.endsWith("/country/US?deep=true") ->
                     """{"country":"US","name":"United States","continent":"NA","iso_alpha3":"USA","iso_numeric":840,"tax":{"name":"Sales tax","rate":0}}"""
-                request.url.endsWith("/state/NC/districts?country=US&deep=true") ->
-                    """{"state":"NC","country":"US","districts":[{"district":"37081","name":"Guilford","country":"US","population":0},{"district":"37001","name":"Alamance","country":"US"}]}"""
+                request.url.endsWith("/state/NC/counties?country=US&deep=true") ->
+                    """{"state":"NC","country":"US","counties":[{"county":"37081","name":"Guilford","country":"US","iso_code":"US-NC-081","population":0},{"county":"37001","name":"Alamance","country":"US","iso_code":null}]}"""
                 request.url.endsWith("/email/verify") -> {
                     check(request.method == "POST")
                     check(Json.parseToJsonElement(request.body ?: error("missing verify body")) ==
@@ -33,6 +33,7 @@ fun main() = runBlocking {
     val districts = parse.stateDistricts("NC") { country = "US"; deep = true }.districts
     check(districts[0].population == 0L)
     check(districts[1].population == null)
+    check(districts[0].isoCode == "US-NC-081" && districts[1].isoCode == null)
     val verified = parse.emailVerify("fixture@example.com")
     check(verified.deliverable == null && verified.catchall == false)
     check(paths.size == 3)
