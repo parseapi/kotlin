@@ -32,12 +32,12 @@ else->error("Unknown fixture")}
 }
 
 class EmailVerifyContractTest {
- @Test fun explicitPostDoesNotAutomaticallyRetry() = kotlinx.coroutines.runBlocking {
+ @Test fun explicitGetDoesNotAutomaticallyRetry() = kotlinx.coroutines.runBlocking {
   val stub=StubTransport(200,"""{"email":"a+tag@example.com","valid":true,"free":false,"disposable":false,"role":false,"deliverable":false,"catchall":null}""")
   val client=ParseAPI("fixture"){transport=stub};val result=client.emailVerify("a+tag@example.com")
   assertEquals(false,result.deliverable);assertNull(result.catchall)
-  val request=stub.requests.single();assertEquals("POST",request.method);assertEquals("https://api.parseapi.com/email/verify",request.url)
-  assertEquals(Json.parseToJsonElement("""{"email":"a+tag@example.com"}"""),Json.parseToJsonElement(request.body!!))
+  val request=stub.requests.single();assertEquals("GET",request.method);assertEquals("https://api.parseapi.com/email/verify?email=a%2Btag%40example.com",request.url)
+  assertNull(request.body)
   val failure=StubTransport(503,"""{"code":"service_unavailable","message":"pending"}""")
   val failing=ParseAPI("fixture"){transport=failure}
   try {failing.emailVerify("a@example.com");fail("Expected a service error")} catch (_:Exception) { }

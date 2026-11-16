@@ -20,8 +20,8 @@ fun main() = runBlocking {
                     """{"state":"NC","country":"US","counties":[{"county":"37081","name":"Guilford","country":"US","iso_code":null,"population":0},{"county":"37001","name":"Alamance","country":"US","iso_code":null}]}"""
                 request.url.endsWith("/county/E09000033?country=GB") ->
                     """{"county":"E09000033","iso_code":"GB-WSM","name":"City of Westminster","type":"district","state":"ENG","state_name":"England","country":"GB","country_name":"United Kingdom","latitude":51.512215,"longitude":-0.152953,"timezones":["Europe/London"]}"""
-                request.url.endsWith("/email/verify") -> {
-                    check(request.method == "POST")
+                request.url.contains("/email/verify?email=") -> {
+                    check(request.method == "GET")
                     check(Json.parseToJsonElement(request.body ?: error("missing verify body")) ==
                         Json.parseToJsonElement("""{"email":"fixture@example.com"}"""))
                     """{"email":"fixture@example.com","valid":true,"role":false,"disposable":false,"deliverable":null,"catchall":false}"""

@@ -37,9 +37,9 @@ class EmojiTest {
   val result=ParseAPI("test") {transport=parse}.emojiParse("x 👍🏿 👍🏿") {deep=true;lang="fr"}
   assertEquals(1,result.emojis.size);assertEquals(11,result.emojis[0].positions[1].end)
   assertEquals("👍",result.emojis[0]?.base);assertEquals(listOf("dark"),result.emojis[0]?.variants?.first()?.tones)
-  assertEquals("POST",parse.requests[0].method)
-  assertEquals("x 👍🏿 👍🏿",Json.parseToJsonElement(parse.requests[0].body!!).jsonObject["text"]!!.jsonPrimitive.content)
-  assertEquals("https://api.parseapi.com/emoji/parse?deep=true&lang=fr",parse.requests[0].url)
+  assertEquals("GET",parse.requests[0].method)
+  assertNull(parse.requests[0].body)
+  assertEquals("https://api.parseapi.com/emoji/parse?text=x%20%F0%9F%91%8D%F0%9F%8F%BF%20%F0%9F%91%8D%F0%9F%8F%BF&deep=true&lang=fr",parse.requests[0].url)
   assertEquals("2.2.0",parse.requests[0].headers["X-API-Version"])
   val categories=ParseAPI("test") {transport=StubTransport(200,"""
 {"categories":[{"category":"People & Body","subcategories":["hand-fingers-closed"]}]}
@@ -76,9 +76,21 @@ class EmojiTest {
 {"text":"🐈","unresolved":[]}
 """)
   assertEquals("🐈",ParseAPI("test") {transport=conversion}.emojiConvert(":cat:","to_emoji","cldr").text)
-  assertEquals("POST",conversion.requests[0].method)
-  assertEquals(":cat:",Json.parseToJsonElement(conversion.requests[0].body!!).jsonObject["text"]!!.jsonPrimitive.content)
+  assertEquals("GET",conversion.requests[0].method)
+  assertNull(conversion.requests[0].body);assertTrue(conversion.requests[0].url.contains("text=%3Acat%3A"))
  }
 
+
+
+ @Test fun longAndUnpairedTextKeepOnePostWhileEmptyTextKeepsGet() = runBlocking {
+  for(text in listOf("🚀".repeat(8000), "\uD800", "")) {
+   val stub=StubTransport(200,"""{"emojis":[]}""")
+   ParseAPI("fixture"){transport=stub}.emojiParse(text)
+   assertEquals(1,stub.requests.size)
+   val request=stub.requests.single()
+   if(text.isEmpty()) {assertEquals("GET",request.method);assertTrue(request.url.contains("text="))}
+   else {assertEquals("POST",request.method);assertEquals(text,Json.parseToJsonElement(request.body!!).jsonObject["text"]!!.jsonPrimitive.content)}
+  }
+ }
 
 }

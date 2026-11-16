@@ -427,7 +427,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	 */
 	/** Run one explicit metered mailbox check. App keys receive permission_denied. */
 	suspend fun emailVerify(email: String): Email =
-		post("/email/verify", kotlinx.serialization.json.buildJsonObject { put("email", kotlinx.serialization.json.JsonPrimitive(email)) }.toString())
+		get("/email/verify", listOf("email" to email))
 
 	suspend fun email(email: String): Email =
 		email(email) {}
@@ -808,7 +808,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		get("/emoji/catalog", listOf("lang" to lang, "category" to category, "subcategory" to subcategory, "version" to version, "max_version" to maxVersion, "include_skin_tones" to includeSkinTones?.toString()))
 	}
 	suspend fun emojiConvert(text: String, direction: String, shortcodeSource: String): EmojiConversion =
-		post("/emoji/convert", buildJsonObject { put("text",text) }.toString(), listOf("direction" to direction,"shortcode_source" to shortcodeSource))
+		get("/emoji/convert", listOf("text" to text,"direction" to direction,"shortcode_source" to shortcodeSource))
 
 
 	suspend fun emojiCategories(): EmojiCategories = get("/emoji/categories")
@@ -817,7 +817,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	suspend fun emojiParse(text: String): EmojiParse = emojiParse(text) {}
 	suspend fun emojiParse(text: String, configure: EmojiParseOptions.() -> Unit): EmojiParse =
 		with(EmojiParseOptions().apply(configure)) {
-			post("/emoji/parse", buildJsonObject { put("text", text) }.toString(), deepQuery(deep) + listOf("lang" to lang))
+			get("/emoji/parse", listOf("text" to text) + deepQuery(deep) + listOf("lang" to lang))
 		}
 
 
@@ -889,18 +889,29 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 		json.decodeFromString(fetch(path, query, null, body))
 
 	private suspend fun fetch(path: String, query: List<Pair<String, String?>>, userAgent: String?, body: String? = null): String {
+		var requestBody = body
 		var url = baseUrl + path
 		val pairs = query.mapNotNull { (name, value) -> value?.let { "$name=${enc(it)}" } }
 		if (pairs.isNotEmpty()) url += "?" + pairs.joinToString("&")
 
+		if (requestBody == null && path in listOf("/email/verify", "/emoji/parse", "/emoji/convert")) {
+			val field = if (path == "/email/verify") "email" else "text"
+			val value = query.firstOrNull { it.first == field }?.second
+			if (value != null && (url.length > 8000 || !Charsets.UTF_8.newEncoder().canEncode(value))) {
+				requestBody = buildJsonObject { put(field, JsonPrimitive(value)) }.toString()
+				val remaining = query.filter { it.first != field }.mapNotNull { (name, value) -> value?.let { "$name=${enc(it)}" } }
+				url = baseUrl + path + if (remaining.isEmpty()) "" else "?" + remaining.joinToString("&")
+			}
+		}
+
 		val headers = buildMap {
-			if (body != null) put("Content-Type", "application/json")
+			if (requestBody != null) put("Content-Type", "application/json")
 			put("X-API-Key", key)
 			put("X-API-Version", API_VERSION)
 			put("User-Agent", userAgent ?: "parseapi-kotlin/$VERSION")
 			appId?.let { put("X-App-Id", it) }
 		}
-		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs, if (body == null) "GET" else "POST", body)
+		val request = ParseAPIRequest(url, headers, if (!timeoutConfigured && path.startsWith("/stack/")) 35_000 else timeoutMs, if (requestBody == null) "GET" else "POST", requestBody)
 
 		val retryLimit = retries ?: defaultRetries(path, query)
 		var attempt = 0
@@ -993,7 +1004,7 @@ class ParseAPI private constructor(key: String?, options: ParseAPIOptions) {
 	}
 
 	companion object {
-		const val VERSION = "1.13.1"
+		const val VERSION = "1.13.2"
 		// The response types' wire contract. Changes require a reviewed major SDK release.
 		private const val API_VERSION = "2.2.0"
 		private val RETRY_STATUS = setOf(429, 500, 502, 503, 504)
