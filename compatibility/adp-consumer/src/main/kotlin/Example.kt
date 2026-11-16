@@ -22,8 +22,8 @@ fun main() = runBlocking {
                     """{"county":"E09000033","iso_code":"GB-WSM","name":"City of Westminster","type":"district","state":"ENG","state_name":"England","country":"GB","country_name":"United Kingdom","latitude":51.512215,"longitude":-0.152953,"timezones":["Europe/London"]}"""
                 request.url.contains("/email/verify?email=") -> {
                     check(request.method == "GET")
-                    check(Json.parseToJsonElement(request.body ?: error("missing verify body")) ==
-                        Json.parseToJsonElement("""{"email":"fixture@example.com"}"""))
+                    check(request.body == null)
+                    check(request.url.substringAfter("?email=") == "fixture%40example.com")
                     """{"email":"fixture@example.com","valid":true,"role":false,"disposable":false,"deliverable":null,"catchall":false}"""
                 }
                 else -> error("Unexpected SDK request: ${request.url}")
